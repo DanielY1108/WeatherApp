@@ -9,18 +9,18 @@
 /* Begin PBXBuildFile section */
 		65430AE32920CC8B00E95B96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE22920CC8B00E95B96 /* AppDelegate.swift */; };
 		65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE42920CC8B00E95B96 /* SceneDelegate.swift */; };
-		65430AE72920CC8B00E95B96 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE62920CC8B00E95B96 /* ViewController.swift */; };
-		65430AEA2920CC8B00E95B96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65430AE82920CC8B00E95B96 /* Main.storyboard */; };
+		65430AE72920CC8B00E95B96 /* MainWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE62920CC8B00E95B96 /* MainWeatherViewController.swift */; };
 		65430AEC2920CC8C00E95B96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65430AEB2920CC8C00E95B96 /* Assets.xcassets */; };
 		65430AEF2920CC8C00E95B96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65430AED2920CC8C00E95B96 /* LaunchScreen.storyboard */; };
+		65430AF82920CCD400E95B96 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 65430AF72920CCD400E95B96 /* Realm */; };
+		65430AFA2920CCD400E95B96 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 65430AF92920CCD400E95B96 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		65430ADF2920CC8B00E95B96 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65430AE22920CC8B00E95B96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65430AE42920CC8B00E95B96 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		65430AE62920CC8B00E95B96 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		65430AE92920CC8B00E95B96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		65430AE62920CC8B00E95B96 /* MainWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWeatherViewController.swift; sourceTree = "<group>"; };
 		65430AEB2920CC8C00E95B96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65430AEE2920CC8C00E95B96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65430AF02920CC8C00E95B96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -31,6 +31,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65430AFA2920CCD400E95B96 /* RealmSwift in Frameworks */,
+				65430AF82920CCD400E95B96 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,13 +60,36 @@
 			children = (
 				65430AE22920CC8B00E95B96 /* AppDelegate.swift */,
 				65430AE42920CC8B00E95B96 /* SceneDelegate.swift */,
-				65430AE62920CC8B00E95B96 /* ViewController.swift */,
-				65430AE82920CC8B00E95B96 /* Main.storyboard */,
+				65430AFB2920CCE100E95B96 /* Models */,
+				65430AFC2920CCE700E95B96 /* Views */,
+				65430AFD2920CCEC00E95B96 /* Controllers */,
 				65430AEB2920CC8C00E95B96 /* Assets.xcassets */,
 				65430AED2920CC8C00E95B96 /* LaunchScreen.storyboard */,
 				65430AF02920CC8C00E95B96 /* Info.plist */,
 			);
 			path = WeatherApp;
+			sourceTree = "<group>";
+		};
+		65430AFB2920CCE100E95B96 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		65430AFC2920CCE700E95B96 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		65430AFD2920CCEC00E95B96 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				65430AE62920CC8B00E95B96 /* MainWeatherViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +108,10 @@
 			dependencies = (
 			);
 			name = WeatherApp;
+			packageProductDependencies = (
+				65430AF72920CCD400E95B96 /* Realm */,
+				65430AF92920CCD400E95B96 /* RealmSwift */,
+			);
 			productName = WeatherApp;
 			productReference = 65430ADF2920CC8B00E95B96 /* WeatherApp.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +140,9 @@
 				Base,
 			);
 			mainGroup = 65430AD62920CC8B00E95B96;
+			packageReferences = (
+				65430AF62920CCD400E95B96 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 65430AE02920CC8B00E95B96 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +159,6 @@
 			files = (
 				65430AEF2920CC8C00E95B96 /* LaunchScreen.storyboard in Resources */,
 				65430AEC2920CC8C00E95B96 /* Assets.xcassets in Resources */,
-				65430AEA2920CC8B00E95B96 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65430AE72920CC8B00E95B96 /* ViewController.swift in Sources */,
+				65430AE72920CC8B00E95B96 /* MainWeatherViewController.swift in Sources */,
 				65430AE32920CC8B00E95B96 /* AppDelegate.swift in Sources */,
 				65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */,
 			);
@@ -147,14 +178,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		65430AE82920CC8B00E95B96 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				65430AE92920CC8B00E95B96 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		65430AED2920CC8C00E95B96 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -216,7 +239,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -270,7 +293,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -291,9 +314,9 @@
 				INFOPLIST_FILE = WeatherApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,9 +324,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.lucidwild.github.WeatherApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -318,9 +344,9 @@
 				INFOPLIST_FILE = WeatherApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,9 +354,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.lucidwild.github.WeatherApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -356,6 +385,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		65430AF62920CCD400E95B96 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		65430AF72920CCD400E95B96 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65430AF62920CCD400E95B96 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		65430AF92920CCD400E95B96 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65430AF62920CCD400E95B96 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 65430AD72920CC8B00E95B96 /* Project object */;
 }
