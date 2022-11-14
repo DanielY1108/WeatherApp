@@ -12,6 +12,7 @@ final class MainWeatherViewController: UIViewController {
     
     private var collectionView: UICollectionView?
     
+    let net = NetworkManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +20,7 @@ final class MainWeatherViewController: UIViewController {
         view.backgroundColor = .white
         
         configureCollectionView()
+        net.fetchWeather(cityName: "seoul")
     }
     
     
@@ -61,7 +63,7 @@ final class MainWeatherViewController: UIViewController {
                 section.contentInsets.trailing = 20
 
                 // header, footer 등등 만드는 배열
-                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(240)), elementKind: self.categoryHeaderID, alignment: .topLeading)
+                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(250)), elementKind: self.categoryHeaderID, alignment: .topLeading)
                 section.boundarySupplementaryItems = [secionHeader]
                 section.orthogonalScrollingBehavior = .continuous
                 

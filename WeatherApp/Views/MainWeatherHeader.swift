@@ -56,6 +56,13 @@ final class MainWeatherHeader: UICollectionReusableView {
         return lable
     }()
     
+    private let pressure: UILabel = {
+        let lable = UILabel()
+        lable.backgroundColor = .green
+        lable.text = "pressure"
+        return lable
+    }()
+    
     private let humidity: UILabel = {
         let lable = UILabel()
         lable.backgroundColor = .green
@@ -83,7 +90,7 @@ final class MainWeatherHeader: UICollectionReusableView {
     }()
 
     private lazy var stackViewBottom: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [currentLocation, windSpeed, humidity])
+        let stack = UIStackView(arrangedSubviews: [pressure, windSpeed, humidity])
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         stack.alignment = .center
@@ -106,6 +113,7 @@ final class MainWeatherHeader: UICollectionReusableView {
     func configureUI() {
         self.addSubview(stackViewBottom)
         self.addSubview(stackViewTop)
+        self.addSubview(currentLocation)
        
 
     }
@@ -113,12 +121,17 @@ final class MainWeatherHeader: UICollectionReusableView {
     func configureLayout() {
         
         stackViewTop.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(30)
+            make.top.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(30)
+        }
+        
+        currentLocation.snp.makeConstraints { make in
+            make.top.equalTo(stackViewTop.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(30)
         }
         
         stackViewBottom.snp.makeConstraints { make in
-            make.top.equalTo(stackViewTop.snp.bottom).offset(30)
+            make.top.equalTo(currentLocation.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(30)
         }
     }
