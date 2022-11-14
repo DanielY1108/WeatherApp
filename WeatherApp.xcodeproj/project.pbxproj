@@ -22,6 +22,8 @@
 		659C52C82922778200EEEA70 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52C72922778200EEEA70 /* NetworkManager.swift */; };
 		659C52CA292278BD00EEEA70 /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 659C52C9292278BD00EEEA70 /* SecretKey.plist */; };
 		659C52CD2922790800EEEA70 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52CC2922790800EEEA70 /* Bundle.swift */; };
+		659C52D1292285D100EEEA70 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52D0292285D100EEEA70 /* Constants.swift */; };
+		659C52D3292288E300EEEA70 /* CollectionView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52D2292288E300EEEA70 /* CollectionView+Layout.swift */; };
 		65EB5B35292248B600ADF406 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65EB5B34292248B600ADF406 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +43,8 @@
 		659C52C72922778200EEEA70 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		659C52C9292278BD00EEEA70 /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
 		659C52CC2922790800EEEA70 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		659C52D0292285D100EEEA70 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		659C52D2292288E300EEEA70 /* CollectionView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+Layout.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,7 @@
 				65430AE22920CC8B00E95B96 /* AppDelegate.swift */,
 				65430AE42920CC8B00E95B96 /* SceneDelegate.swift */,
 				659C52CB292278DC00EEEA70 /* Helper */,
+				659C52D629228E6E00EEEA70 /* Extenstions */,
 				65430AFB2920CCE100E95B96 /* Models */,
 				65430AFC2920CCE700E95B96 /* Views */,
 				65430AFD2920CCEC00E95B96 /* Controllers */,
@@ -118,9 +123,9 @@
 		65430AFC2920CCE700E95B96 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6511D37B2920D8A0008BF87C /* MainWeatherHeader.swift */,
-				6511D37F29210BA1008BF87C /* Hourly_Vertical  */,
+				659C52D429228BEB00EEEA70 /* Header */,
 				6511D38029210BCC008BF87C /* Daily_Horizontal */,
+				6511D37F29210BA1008BF87C /* Hourly_Vertical  */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -138,8 +143,25 @@
 			children = (
 				659C52C9292278BD00EEEA70 /* SecretKey.plist */,
 				659C52CC2922790800EEEA70 /* Bundle.swift */,
+				659C52D0292285D100EEEA70 /* Constants.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		659C52D429228BEB00EEEA70 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				6511D37B2920D8A0008BF87C /* MainWeatherHeader.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		659C52D629228E6E00EEEA70 /* Extenstions */ = {
+			isa = PBXGroup;
+			children = (
+				659C52D2292288E300EEEA70 /* CollectionView+Layout.swift */,
+			);
+			path = Extenstions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,10 +245,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				659C52C82922778200EEEA70 /* NetworkManager.swift in Sources */,
+				659C52D1292285D100EEEA70 /* Constants.swift in Sources */,
 				65430AE72920CC8B00E95B96 /* MainWeatherViewController.swift in Sources */,
 				65430AE32920CC8B00E95B96 /* AppDelegate.swift in Sources */,
 				659C52CD2922790800EEEA70 /* Bundle.swift in Sources */,
 				6511D38629211D16008BF87C /* PreviewExtension.swift in Sources */,
+				659C52D3292288E300EEEA70 /* CollectionView+Layout.swift in Sources */,
 				659C52C62922758100EEEA70 /* Weather.swift in Sources */,
 				6511D37C2920D8A0008BF87C /* MainWeatherHeader.swift in Sources */,
 				6511D3822921108E008BF87C /* HourlyCell.swift in Sources */,

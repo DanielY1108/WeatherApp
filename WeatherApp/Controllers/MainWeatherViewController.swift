@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import SnapKit
 
 
 final class MainWeatherViewController: UIViewController {
     
     private var collectionView: UICollectionView?
+    private var customLayout = UICollectionViewLayout()
     
-    let net = NetworkManager.shared
+    let networkManager = NetworkManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,78 +22,32 @@ final class MainWeatherViewController: UIViewController {
         view.backgroundColor = .white
         
         configureCollectionView()
-        net.fetchWeather(cityName: "seoul")
+        networkManager.fetchWeather(cityName: "seoul")
     }
     
     
-    
     func configureCollectionView() {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createlLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
         
         collectionView.delegate = self
         collectionView.dataSource = self
         
         collectionView.backgroundColor = .clear
         
-        collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: self.categoryHeaderID, withReuseIdentifier: headerId)
+        collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.HeaderID)
         
-        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: "DailyCell")
-        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: "HourlyCell")
+        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.DailyID)
+        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.HourlyID)
         
         self.view.addSubview(collectionView)
         
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ])
-    }
-    
-    func createlLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionNumber, env in
-            
-            if sectionNumber == 0 {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.25), heightDimension: .absolute(160)))
-                item.contentInsets.trailing = 10
-                item.contentInsets.bottom = 15
-                
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets.leading = 20
-                section.contentInsets.trailing = 20
-
-                // header, footer 등등 만드는 배열
-                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(250)), elementKind: self.categoryHeaderID, alignment: .topLeading)
-                section.boundarySupplementaryItems = [secionHeader]
-                section.orthogonalScrollingBehavior = .continuous
-                
-                return section
-                
-            } else {
-                
-                let itme = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(70)))
-                itme.contentInsets.bottom = 10
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [itme])
-                
-                let section = NSCollectionLayoutSection(group: group)
-                
-                section.contentInsets.leading = 20
-                section.contentInsets.trailing = 20
-                
-                return section
-            }
+        collectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(40)
+            make.bottom.leading.trailing.equalToSuperview()
         }
-        return layout
+        
     }
-    
-    let categoryHeaderID = "categoryHeaderID"
-    let headerId = "headerId"
-    
 }
-
-
 // MARK: - UICollectionViewDataSource
 
 extension MainWeatherViewController: UICollectionViewDataSource {
@@ -112,30 +68,23 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.section {
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyCell", for: indexPath) as! HourlyCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.HourlyID, for: indexPath) as! HourlyCell
             cell.backgroundColor = .blue
             return cell
         default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DailyCell", for: indexPath) as! DailyCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.DailyID, for: indexPath) as! DailyCell
             cell.backgroundColor = .blue
             return cell
         }
-      
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! MainWeatherHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.HeaderID, for: indexPath) as! MainWeatherHeader
         return header
     }
     
 }
-
-
-
-
-
-
 
 // MARK: - UICollectionViewDelegate
 

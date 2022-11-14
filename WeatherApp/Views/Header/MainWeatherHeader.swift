@@ -91,9 +91,10 @@ final class MainWeatherHeader: UICollectionReusableView {
 
     private lazy var stackViewBottom: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [pressure, windSpeed, humidity])
+        stack.spacing = 10
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        stack.alignment = .center
+        stack.alignment = .fill
         return stack
     }()
 
