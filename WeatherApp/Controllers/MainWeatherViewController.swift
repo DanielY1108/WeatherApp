@@ -31,16 +31,16 @@ final class MainWeatherViewController: UIViewController {
         
         collectionView.backgroundColor = .clear
         
-        collectionView.register(Header.self, forSupplementaryViewOfKind: self.categoryHeaderID, withReuseIdentifier: headerId)
-        collectionView.register(Header.self, forSupplementaryViewOfKind: self.dailycategoryHeaderID, withReuseIdentifier: dailyheaderId)
-        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: "DailyContainerCell")
-        collectionView.register(HourlyContainerCell.self, forCellWithReuseIdentifier: "HourlyContainerCell")
+        collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: self.categoryHeaderID, withReuseIdentifier: headerId)
+        
+        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: "DailyCell")
+        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: "HourlyCell")
         
         self.view.addSubview(collectionView)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
             collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
@@ -51,49 +51,41 @@ final class MainWeatherViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout { sectionNumber, env in
             
             if sectionNumber == 0 {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-                
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(250)), subitems: [item])
-               
-                let section = NSCollectionLayoutSection(group: group)
-                
-                return section
-            } else if sectionNumber == 1 {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.25), heightDimension: .absolute(150)))
+                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.25), heightDimension: .absolute(160)))
                 item.contentInsets.trailing = 10
                 item.contentInsets.bottom = 15
-
+                
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets.leading = 10
-//                section.contentInsets.trailing = 10
+                section.contentInsets.leading = 20
+                section.contentInsets.trailing = 20
+
                 // header, footer 등등 만드는 배열
-                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(30)), elementKind: self.categoryHeaderID, alignment: .topLeading)
+                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(240)), elementKind: self.categoryHeaderID, alignment: .topLeading)
                 section.boundarySupplementaryItems = [secionHeader]
                 section.orthogonalScrollingBehavior = .continuous
                 
-
                 return section
+                
             } else {
+                
                 let itme = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(70)))
                 itme.contentInsets.bottom = 10
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [itme])
                 
                 let section = NSCollectionLayoutSection(group: group)
-                section.boundarySupplementaryItems = [.init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(30)), elementKind: self.dailycategoryHeaderID, alignment: .topLeading)]
-                section.contentInsets.leading = 10
-                section.contentInsets.trailing = 10
+                
+                section.contentInsets.leading = 20
+                section.contentInsets.trailing = 20
                 
                 return section
             }
         }
         return layout
     }
+    
     let categoryHeaderID = "categoryHeaderID"
     let headerId = "headerId"
-    
-    let dailycategoryHeaderID = "dailycategoryHeaderID"
-    let dailyheaderId = "dailyheaderId"
     
 }
 
@@ -102,15 +94,13 @@ final class MainWeatherViewController: UIViewController {
 
 extension MainWeatherViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch section {
         case 0:
-            return 1
-        case 1:
             return 8
         default:
             return 7
@@ -118,25 +108,27 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DailyContainerCell", for: indexPath)
-        cell.backgroundColor = .blue
-        return cell
+        switch indexPath.section {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyCell", for: indexPath) as! HourlyCell
+            cell.backgroundColor = .blue
+            return cell
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DailyCell", for: indexPath) as! DailyCell
+            cell.backgroundColor = .blue
+            return cell
+        }
+      
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        print(kind)
-        switch kind {
-        case categoryHeaderID:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! Header
-            return header
-        default:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dailyheaderId, for: indexPath) as! Header
-            return header
-            
-        }
-       
+        
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! MainWeatherHeader
+        return header
     }
+    
 }
+
 
 
 

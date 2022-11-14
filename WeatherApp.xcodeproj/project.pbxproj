@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6511D37A2920D50C008BF87C /* DailyContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D3792920D50C008BF87C /* DailyContainerCell.swift */; };
-		6511D37C2920D8A0008BF87C /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D37B2920D8A0008BF87C /* Header.swift */; };
+		6511D37C2920D8A0008BF87C /* MainWeatherHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D37B2920D8A0008BF87C /* MainWeatherHeader.swift */; };
 		6511D37E29210803008BF87C /* HourlyContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D37D29210803008BF87C /* HourlyContainerCell.swift */; };
 		6511D3822921108E008BF87C /* HourlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D3812921108E008BF87C /* HourlyCell.swift */; };
 		6511D38429211415008BF87C /* DailyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D38329211415008BF87C /* DailyCell.swift */; };
@@ -20,11 +20,12 @@
 		65430AEF2920CC8C00E95B96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65430AED2920CC8C00E95B96 /* LaunchScreen.storyboard */; };
 		65430AF82920CCD400E95B96 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 65430AF72920CCD400E95B96 /* Realm */; };
 		65430AFA2920CCD400E95B96 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 65430AF92920CCD400E95B96 /* RealmSwift */; };
+		65EB5B35292248B600ADF406 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65EB5B34292248B600ADF406 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6511D3792920D50C008BF87C /* DailyContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyContainerCell.swift; sourceTree = "<group>"; };
-		6511D37B2920D8A0008BF87C /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
+		6511D37B2920D8A0008BF87C /* MainWeatherHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWeatherHeader.swift; sourceTree = "<group>"; };
 		6511D37D29210803008BF87C /* HourlyContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyContainerCell.swift; sourceTree = "<group>"; };
 		6511D3812921108E008BF87C /* HourlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCell.swift; sourceTree = "<group>"; };
 		6511D38329211415008BF87C /* DailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCell.swift; sourceTree = "<group>"; };
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65EB5B35292248B600ADF406 /* SnapKit in Frameworks */,
 				65430AFA2920CCD400E95B96 /* RealmSwift in Frameworks */,
 				65430AF82920CCD400E95B96 /* Realm in Frameworks */,
 			);
@@ -54,7 +56,6 @@
 		6511D37F29210BA1008BF87C /* Hourly_Vertical  */ = {
 			isa = PBXGroup;
 			children = (
-				6511D37D29210803008BF87C /* HourlyContainerCell.swift */,
 				6511D3812921108E008BF87C /* HourlyCell.swift */,
 			);
 			path = "Hourly_Vertical ";
@@ -63,7 +64,6 @@
 		6511D38029210BCC008BF87C /* Daily_Horizontal */ = {
 			isa = PBXGroup;
 			children = (
-				6511D3792920D50C008BF87C /* DailyContainerCell.swift */,
 				6511D38329211415008BF87C /* DailyCell.swift */,
 			);
 			path = Daily_Horizontal;
@@ -97,6 +97,8 @@
 				65430AED2920CC8C00E95B96 /* LaunchScreen.storyboard */,
 				65430AF02920CC8C00E95B96 /* Info.plist */,
 				6511D38529211D16008BF87C /* PreviewExtension.swift */,
+				6511D37D29210803008BF87C /* HourlyContainerCell.swift */,
+				6511D3792920D50C008BF87C /* DailyContainerCell.swift */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -111,7 +113,7 @@
 		65430AFC2920CCE700E95B96 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6511D37B2920D8A0008BF87C /* Header.swift */,
+				6511D37B2920D8A0008BF87C /* MainWeatherHeader.swift */,
 				6511D37F29210BA1008BF87C /* Hourly_Vertical  */,
 				6511D38029210BCC008BF87C /* Daily_Horizontal */,
 			);
@@ -145,6 +147,7 @@
 			packageProductDependencies = (
 				65430AF72920CCD400E95B96 /* Realm */,
 				65430AF92920CCD400E95B96 /* RealmSwift */,
+				65EB5B34292248B600ADF406 /* SnapKit */,
 			);
 			productName = WeatherApp;
 			productReference = 65430ADF2920CC8B00E95B96 /* WeatherApp.app */;
@@ -176,6 +179,7 @@
 			mainGroup = 65430AD62920CC8B00E95B96;
 			packageReferences = (
 				65430AF62920CCD400E95B96 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				65EB5B33292248B600ADF406 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 65430AE02920CC8B00E95B96 /* Products */;
 			projectDirPath = "";
@@ -207,7 +211,7 @@
 				65430AE32920CC8B00E95B96 /* AppDelegate.swift in Sources */,
 				6511D38629211D16008BF87C /* PreviewExtension.swift in Sources */,
 				6511D37A2920D50C008BF87C /* DailyContainerCell.swift in Sources */,
-				6511D37C2920D8A0008BF87C /* Header.swift in Sources */,
+				6511D37C2920D8A0008BF87C /* MainWeatherHeader.swift in Sources */,
 				6511D3822921108E008BF87C /* HourlyCell.swift in Sources */,
 				6511D38429211415008BF87C /* DailyCell.swift in Sources */,
 				65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */,
@@ -435,6 +439,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		65EB5B33292248B600ADF406 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -447,6 +459,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65430AF62920CCD400E95B96 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		65EB5B34292248B600ADF406 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65EB5B33292248B600ADF406 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
