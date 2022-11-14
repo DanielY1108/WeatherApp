@@ -9,4 +9,7 @@ import UIKit
 
 class DailyCell: UICollectionViewCell {
     
+
+    
 }
+
