@@ -11,29 +11,25 @@ class DailyCell: UICollectionViewCell {
     
     private let dayLabel: UILabel = {
         let lable = UILabel()
-        lable.backgroundColor = .green
         lable.text = "Monday"
         return lable
     }()
     
     private let highTemp: UILabel = {
         let lable = UILabel()
-        lable.backgroundColor = .green
         lable.text = "high"
         return lable
     }()
     
     private let lowTemp: UILabel = {
         let lable = UILabel()
-        lable.backgroundColor = .green
         lable.text = "low"
         return lable
     }()
     
     private let weatherImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "image 11.png")
-        image.backgroundColor = .black
+        image.image = UIImage(named: "image11.png")
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -59,9 +55,9 @@ class DailyCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .red
         configureUI()
         configureLayout()
+        self.backgroundColor = .blue
     }
     
     required init?(coder: NSCoder) {

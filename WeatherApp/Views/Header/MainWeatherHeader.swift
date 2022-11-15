@@ -14,15 +14,15 @@ final class MainWeatherHeader: UICollectionReusableView {
     
     // 레이블
     private let currentTemp = Utilities().configLabel(font: 60, weight: .bold)
-    private let highTemp = Utilities().configLabel(font: 16, weight: .regular)
-    private let lowTemp = Utilities().configLabel(font: 16, weight: .regular)
-    private let weatherStatue = Utilities().configLabel(font: 16, weight: .regular)
-    private let currentLocation = Utilities().configLabel(font: 16, weight: .regular)
-    private let windSpeed = Utilities().configLabel(font: 16, weight: .regular)
-    private let pressure = Utilities().configLabel(font: 16, weight: .regular)
-    private let humidity = Utilities().configLabel(font: 16, weight: .regular)
-    private let sunrise = Utilities().configLabel(font: 16, weight: .regular)
-    private let sunset = Utilities().configLabel(font: 16, weight: .regular)
+    private let highTemp = Utilities().configLabel(font: 20, weight: .regular)
+    private let lowTemp = Utilities().configLabel(font: 20, weight: .regular)
+    private let weatherStatue = Utilities().configLabel(font: 20, weight: .regular)
+    private let currentLocation = Utilities().configLabel(font: 20, weight: .regular)
+    private let windSpeed = Utilities().configLabel(font: 20, weight: .regular)
+    private let pressure = Utilities().configLabel(font: 20, weight: .regular)
+    private let humidity = Utilities().configLabel(font: 20, weight: .regular)
+    private let sunrise = Utilities().configLabel(font: 20, weight: .regular)
+    private let sunset = Utilities().configLabel(font: 20, weight: .regular)
 
     // 이미지
     private let highTempImg = Utilities().configImange(name: "thermometer.high", of: .system)
@@ -55,10 +55,11 @@ final class MainWeatherHeader: UICollectionReusableView {
    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .red
+        self.backgroundColor = .clear
         configureUI()
         configureLayout()
         weatherManager.delegate = self
+        self.backgroundColor = .red
     }
     
     required init?(coder: NSCoder) {
@@ -75,22 +76,22 @@ final class MainWeatherHeader: UICollectionReusableView {
     private func configureLayout() {
         topSideStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(30)
-            make.leading.equalToSuperview().inset(30)
+            make.leading.equalToSuperview().inset(20)
         }
         
         LocationStackView.snp.makeConstraints { make in
             make.top.equalTo(topSideStackView.snp.bottom).offset(30)
-            make.leading.equalToSuperview().inset(30)
+            make.leading.equalToSuperview().inset(20)
         }
         
         sunStackView.snp.makeConstraints { make in
             make.top.equalTo(topSideStackView.snp.bottom).offset(30)
-            make.trailing.equalToSuperview().inset(30)
+            make.trailing.equalToSuperview().inset(20)
         }
         
         BottomSideStackView.snp.makeConstraints { make in
-            make.top.equalTo(currentLocation.snp.bottom).offset(30)
-            make.trailing.leading.equalToSuperview().inset(30)
+            make.top.equalTo(currentLocation.snp.bottom).offset(20)
+            make.trailing.leading.equalToSuperview().inset(20)
         }
     }
 }

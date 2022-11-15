@@ -10,10 +10,13 @@ import Foundation
 struct Constants {
     
     struct ID {
-        static let HeaderID = "headerId"
+        static let headerID = "headerId"
         static let categoryHeaderID = "categoryHeaderID"
+        
+        static let footerID = "footerID"
+        static let categoryFooterID = "categoryFooterID"
 
-        static let DailyID = "DailyCell"
-        static let HourlyID = "HourlyCell"
+        static let dailyID = "dailyCell"
+        static let hourlyID = "hourlyCell"
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum ImageName {
+enum ImageFormat {
     case user
     case system
 }
@@ -21,7 +21,7 @@ struct Utilities {
         return label
     }
     
-    func configImange(name: String, of: ImageName) -> UIImageView {
+    func configImange(name: String, of: ImageFormat) -> UIImageView {
         let view = UIImageView()
         switch of {
         case .user:
@@ -36,7 +36,7 @@ struct Utilities {
     
     func configStackView(_ stacks: [UIView], axis: NSLayoutConstraint.Axis, distribution: UIStackView.Distribution = .fill) -> UIStackView {
         let stack = UIStackView(arrangedSubviews: stacks)
-        stack.spacing = 5
+        stack.spacing = 7
         stack.axis = axis
         stack.alignment = .fill
         stack.distribution = distribution

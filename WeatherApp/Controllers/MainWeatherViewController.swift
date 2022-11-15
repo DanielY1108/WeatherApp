@@ -11,6 +11,7 @@ import SnapKit
 
 final class MainWeatherViewController: UIViewController {
     
+    private var backgroundView = BackgroundView()
     private var collectionView: UICollectionView?
     private var customLayout = UICollectionViewLayout()
     
@@ -21,8 +22,7 @@ final class MainWeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
-        
+        self.view.addSubview(backgroundView)
         configureCollectionView()
         weatherManager.fetchWeather(cityName: "seoul")
     }
@@ -34,19 +34,23 @@ final class MainWeatherViewController: UIViewController {
         collectionView.dataSource = self
         
         collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+
+        collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
+                
+        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
+        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
         
-        collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.HeaderID)
+        self.backgroundView.addSubview(collectionView)
         
-        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.DailyID)
-        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.HourlyID)
-        
-        self.view.addSubview(collectionView)
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.bottom.leading.trailing.equalToSuperview().inset(20)
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(backgroundView)
+            make.bottom.leading.trailing.equalTo(backgroundView).inset(20)
+        }
     }
 }
 // MARK: - UICollectionViewDataSource
@@ -69,25 +73,22 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.section {
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.HourlyID, for: indexPath) as! HourlyCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
             cell.backgroundColor = .blue
             return cell
         default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.DailyID, for: indexPath) as! DailyCell
-            cell.backgroundColor = .blue
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.HeaderID, for: indexPath) as! MainWeatherHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! MainWeatherHeader
         if let currentWeather = currentWeather {
             header.updateCurrentWeather(model: currentWeather)
         }
         return header
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate

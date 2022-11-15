@@ -11,23 +11,20 @@ class HourlyCell: UICollectionViewCell {
     
     private let timeLabel: UILabel = {
         let lable = UILabel()
-        lable.backgroundColor = .green
         lable.text = "Time"
         return lable
     }()
     
     private let currentTemp: UILabel = {
         let lable = UILabel()
-        lable.backgroundColor = .green
         lable.text = "Temp"
         return lable
     }()
     
     private let weatherImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "image 11.png")
+        image.image = UIImage(named: "image11.png")
         image.frame = .init(x: 0, y: 0, width: 100, height: 100)
-        image.backgroundColor = .black
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -44,9 +41,9 @@ class HourlyCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .red
         configureUI()
         configureLayout()
+        self.backgroundColor = .green
     }
     
     required init?(coder: NSCoder) {
