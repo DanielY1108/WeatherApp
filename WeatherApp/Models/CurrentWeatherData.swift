@@ -5,13 +5,14 @@
 
 import Foundation
 
-struct CurrnetWeather: Codable {
+struct CurrentWeatherData: Codable {
     let coord: Coord
     let weather: [Weather]
     let main: Main
     let wind: Wind
     let dt: Int
     let name: String
+    let sys: Sys
 }
 
 
@@ -42,6 +43,11 @@ struct Weather: Codable {
         case weatherDescription = "description"
         case icon
     }
+}
+
+// MARK: - Sys
+struct Sys: Codable {
+    let sunrise, sunset: Int
 }
 
 // MARK: - Wind

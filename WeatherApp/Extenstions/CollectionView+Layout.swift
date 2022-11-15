@@ -20,10 +20,8 @@ extension UICollectionViewLayout {
                 
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets.leading = 20
-                section.contentInsets.trailing = 20
                 
-                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(250)), elementKind: Constants.ID.categoryHeaderID, alignment: .topLeading)
+                let secionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(290)), elementKind: Constants.ID.categoryHeaderID, alignment: .topLeading)
                 section.boundarySupplementaryItems = [secionHeader]
                 section.orthogonalScrollingBehavior = .continuous
                 
@@ -36,10 +34,7 @@ extension UICollectionViewLayout {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [itme])
                 
                 let section = NSCollectionLayoutSection(group: group)
-                
-                section.contentInsets.leading = 20
-                section.contentInsets.trailing = 20
-                
+                                
                 return section
             }
         }
@@ -47,3 +42,15 @@ extension UICollectionViewLayout {
     }
 }
 
+
+// MARK: - PreView
+import SwiftUI
+
+#if DEBUG
+struct PreView6: PreviewProvider {
+    static var previews: some View {
+        MainWeatherViewController()
+            .toPreview()
+    }
+}
+#endif

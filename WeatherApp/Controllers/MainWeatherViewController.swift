@@ -14,7 +14,9 @@ final class MainWeatherViewController: UIViewController {
     private var collectionView: UICollectionView?
     private var customLayout = UICollectionViewLayout()
     
-    let networkManager = NetworkManager.shared
+    private var currentWeather: CurrentWeatherModel?
+    
+    let weatherManager = WeatherManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,9 +24,8 @@ final class MainWeatherViewController: UIViewController {
         view.backgroundColor = .white
         
         configureCollectionView()
-        networkManager.fetchWeather(cityName: "seoul")
+        weatherManager.fetchWeather(cityName: "seoul")
     }
-    
     
     func configureCollectionView() {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
@@ -42,8 +43,8 @@ final class MainWeatherViewController: UIViewController {
         self.view.addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
-            make.bottom.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.leading.trailing.equalToSuperview().inset(20)
         }
         
     }
@@ -81,6 +82,9 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.HeaderID, for: indexPath) as! MainWeatherHeader
+        if let currentWeather = currentWeather {
+            header.updateCurrentWeather(model: currentWeather)
+        }
         return header
     }
     
@@ -95,6 +99,17 @@ extension MainWeatherViewController: UICollectionViewDelegate  {
         present(controller, animated: true)
     }
 }
+
+
+
+// MARK: - CurrentWeatherDelegate
+//extension MainWeatherHeader: CurrentWeatherDelegate {
+//    func updateCurrentWeather(_ weatherManager: WeatherManager, model: CurrentWeatherModel) {
+//
+//    }
+//
+//
+//}
 
 
 // MARK: - PreView

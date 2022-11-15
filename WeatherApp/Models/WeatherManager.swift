@@ -7,11 +7,19 @@
 
 import Foundation
 
-class NetworkManager {
+protocol CurrentWeatherDelegate: AnyObject {
+    func updateCurrentWeather(model: CurrentWeatherModel)
+}
+
+class WeatherManager {
     
-    static let shared = NetworkManager()
-    
+    static let shared = WeatherManager()
     private let apiKey = Bundle.main.apiKey
+    
+    private var currentWeatherModel: CurrentWeatherModel?
+
+    var delegate: CurrentWeatherDelegate?
+    
         
 //    let url = "https://api.openweathermap.org/data/2.5/weather"
     let location = "q"
@@ -26,6 +34,7 @@ class NetworkManager {
     func fetchWeather(cityName: String) {
         let urlStr = "\(url)=\(apiKey)&q=\(cityName)"
         self.performRequset(urlStr)
+        debugPrint(urlStr)
     }
     
     func performRequset(_ urlStr: String) {
@@ -39,16 +48,24 @@ class NetworkManager {
                 print("Error Data: \(error!)")
                 return
             }
-            do {
-                let weather = try JSONDecoder().decode(CurrnetWeather.self, from: safeData)
-                debugPrint(weather)
-            } catch {
-                print("Error ParseJSON: \(error)")
+            if let weather = self.parseJSON(safeData) {
+                self.delegate?.updateCurrentWeather(model: weather)
             }
         }
         task.resume()
     }
     
+    func parseJSON(_ safeData: Data) -> CurrentWeatherModel? {
+        do {
+            let decodeData = try JSONDecoder().decode(CurrentWeatherData.self, from: safeData)
+            
+            let currentWeather = CurrentWeatherModel(data: decodeData)
+            return currentWeather
+        } catch {
+            print("Error ParseJSON: \(error)")
+            return nil
+        }
+    }
     
     
 }

@@ -9,137 +9,108 @@ import UIKit
 import SnapKit
 
 final class MainWeatherHeader: UICollectionReusableView {
+    
+    let weatherManager = WeatherManager.shared
+    
+    // 레이블
+    private let currentTemp = Utilities().configLabel(font: 60, weight: .bold)
+    private let highTemp = Utilities().configLabel(font: 16, weight: .regular)
+    private let lowTemp = Utilities().configLabel(font: 16, weight: .regular)
+    private let weatherStatue = Utilities().configLabel(font: 16, weight: .regular)
+    private let currentLocation = Utilities().configLabel(font: 16, weight: .regular)
+    private let windSpeed = Utilities().configLabel(font: 16, weight: .regular)
+    private let pressure = Utilities().configLabel(font: 16, weight: .regular)
+    private let humidity = Utilities().configLabel(font: 16, weight: .regular)
+    private let sunrise = Utilities().configLabel(font: 16, weight: .regular)
+    private let sunset = Utilities().configLabel(font: 16, weight: .regular)
 
-    private let currentTemp: UILabel = {
-        let lable = UILabel()
-        lable.font = .systemFont(ofSize: 60, weight: .bold)
-        lable.backgroundColor = .green
-        lable.text = "Temp"
-        return lable
-    }()
-    
-    private let highTemp: UILabel = {
-        let lable = UILabel()
-        lable.font = .systemFont(ofSize: 20, weight: .bold)
-        lable.backgroundColor = .green
-        lable.text = "high"
-        return lable
-    }()
-    
-    private let lowTemp: UILabel = {
-        let lable = UILabel()
-        lable.font = .systemFont(ofSize: 20, weight: .bold)
-        lable.backgroundColor = .green
-        lable.text = "low"
-        return lable
-    }()
-    
-    private let weatherStatue: UILabel = {
-        let lable = UILabel()
-        lable.backgroundColor = .green
-        lable.text = "statue"
-        return lable
-    }()
-    
-    private let currentLocation: UILabel = {
-        let lable = UILabel()
-        lable.textColor = .systemGray
-        lable.backgroundColor = .green
-        lable.text = "location"
-        return lable
-    }()
-    
-    private let windSpeed: UILabel = {
-        let lable = UILabel()
-        lable.backgroundColor = .green
-        lable.text = "wind"
-        return lable
-    }()
-    
-    private let pressure: UILabel = {
-        let lable = UILabel()
-        lable.backgroundColor = .green
-        lable.text = "pressure"
-        return lable
-    }()
-    
-    private let humidity: UILabel = {
-        let lable = UILabel()
-        lable.backgroundColor = .green
-        lable.text = "humidity"
-        return lable
-    }()
-    
-    
-    private lazy var stackViewHighLow: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [highTemp, lowTemp])
-        stack.spacing = 10
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        stack.alignment = .fill
-        return stack
-    }()
-    
-    private lazy var stackViewTop: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [currentTemp, stackViewHighLow, weatherStatue])
-        stack.spacing = 10
-        stack.axis = .vertical
-        stack.distribution = .fill
-        stack.alignment = .leading
-        return stack
-    }()
+    // 이미지
+    private let highTempImg = Utilities().configImange(name: "thermometer.high", of: .system)
+    private let lowTempImg = Utilities().configImange(name: "thermometer.low", of: .system)
+    private let LocationImg = Utilities().configImange(name: "CurrentLocation.png", of: .user)
+    private let pressureImg = Utilities().configImange(name: "speedometer", of: .system)
+    private let windSpeedImg = Utilities().configImange(name: "wind", of: .system)
+    private let humidityImg = Utilities().configImange(name: "humidity", of: .system)
+    private let sunsetImg = Utilities().configImange(name: "sunset.fill", of: .system)
+    private let sunriseImg = Utilities().configImange(name: "sunrise.fill", of: .system)
 
-    private lazy var stackViewBottom: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [pressure, windSpeed, humidity])
-        stack.spacing = 10
-        stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        stack.alignment = .fill
-        return stack
-    }()
+    // 스택뷰
+    private lazy var topSideStackView = Utilities().configStackView([currentTemp, highLowStackView, weatherStatue], axis: .vertical)
+    private lazy var BottomSideStackView = Utilities().configStackView([pressureStackView, windSpeedStackView, humidityStackView], axis: .horizontal, distribution: .equalSpacing)
 
+    private lazy var hightStackView = Utilities().configStackView([highTempImg, highTemp], axis: .horizontal)
+    private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTemp], axis: .horizontal)
+    private lazy var highLowStackView = Utilities().configStackView([hightStackView, lowStackView], axis: .horizontal)
+
+    private lazy var sunriseStackView = Utilities().configStackView([sunriseImg, sunrise], axis: .horizontal)
+    private lazy var sunsetStackView = Utilities().configStackView([sunsetImg, sunset], axis: .horizontal)
+    private lazy var sunStackView = Utilities().configStackView([sunriseStackView, sunsetStackView], axis: .horizontal)
+
+    private lazy var LocationStackView = Utilities().configStackView([LocationImg, currentLocation], axis: .horizontal)
     
+    private lazy var pressureStackView = Utilities().configStackView([pressureImg, pressure], axis: .horizontal, distribution: .fill)
+    private lazy var windSpeedStackView = Utilities().configStackView([windSpeedImg, windSpeed], axis: .horizontal, distribution: .fill)
+    private lazy var humidityStackView = Utilities().configStackView([humidityImg, humidity], axis: .horizontal,
+                                                                distribution: .fill)
+   
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .red
         configureUI()
         configureLayout()
+        weatherManager.delegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func configureUI() {
+        self.addSubview(topSideStackView)
+        self.addSubview(LocationStackView)
+        self.addSubview(BottomSideStackView)
+        self.addSubview(sunStackView)
+    }
     
-    func configureUI() {
-        self.addSubview(stackViewBottom)
-        self.addSubview(stackViewTop)
-        self.addSubview(currentLocation)
-       
+    private func configureLayout() {
+        topSideStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(30)
+            make.leading.equalToSuperview().inset(30)
+        }
+        
+        LocationStackView.snp.makeConstraints { make in
+            make.top.equalTo(topSideStackView.snp.bottom).offset(30)
+            make.leading.equalToSuperview().inset(30)
+        }
+        
+        sunStackView.snp.makeConstraints { make in
+            make.top.equalTo(topSideStackView.snp.bottom).offset(30)
+            make.trailing.equalToSuperview().inset(30)
+        }
+        
+        BottomSideStackView.snp.makeConstraints { make in
+            make.top.equalTo(currentLocation.snp.bottom).offset(30)
+            make.trailing.leading.equalToSuperview().inset(30)
+        }
+    }
+}
 
-    }
-    
-    func configureLayout() {
-        
-        stackViewTop.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(30)
-        }
-        
-        currentLocation.snp.makeConstraints { make in
-            make.top.equalTo(stackViewTop.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(30)
-        }
-        
-        stackViewBottom.snp.makeConstraints { make in
-            make.top.equalTo(currentLocation.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(30)
+// MARK: - CurrentWeatherDelegate
+extension MainWeatherHeader: CurrentWeatherDelegate {
+    func updateCurrentWeather(model: CurrentWeatherModel) {
+        DispatchQueue.main.async {
+            self.currentTemp.text = "\(model.tempStr)°"
+            self.highTemp.text = "\(model.tempMaxStr)°"
+            self.lowTemp.text = "\(model.tempMinStr)°"
+            self.humidity.text = "\(model.humidityStr) %"
+            self.windSpeed.text = "\(model.windSpeedStr) m/s"
+            self.pressure.text = "\(model.pressureStr) hPa"
+            self.currentLocation.text = "\(model.location)"
+            self.weatherStatue.text = model.weatherStatue
+            self.sunrise.text = model.sunriseStr
+            self.sunset.text = model.sunsetStr
         }
     }
-    
-    
-    
-    
 }
 
 
