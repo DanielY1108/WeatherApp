@@ -38,9 +38,9 @@ final class MainWeatherHeader: UICollectionReusableView {
     private lazy var topSideStackView = Utilities().configStackView([currentTemp, highLowStackView, weatherStatue], axis: .vertical)
     private lazy var BottomSideStackView = Utilities().configStackView([pressureStackView, windSpeedStackView, humidityStackView], axis: .horizontal, distribution: .equalSpacing)
 
-    private lazy var hightStackView = Utilities().configStackView([highTempImg, highTemp], axis: .horizontal)
-    private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTemp], axis: .horizontal)
-    private lazy var highLowStackView = Utilities().configStackView([hightStackView, lowStackView], axis: .horizontal)
+    private lazy var hightStackView = Utilities().configStackView([highTempImg, highTemp], axis: .horizontal, distribution: .fillEqually)
+    private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTemp], axis: .horizontal, distribution: .fillEqually)
+    private lazy var highLowStackView = Utilities().configStackView([hightStackView, lowStackView], axis: .horizontal, distribution: .equalCentering)
 
     private lazy var sunriseStackView = Utilities().configStackView([sunriseImg, sunrise], axis: .horizontal)
     private lazy var sunsetStackView = Utilities().configStackView([sunsetImg, sunset], axis: .horizontal)
@@ -50,8 +50,7 @@ final class MainWeatherHeader: UICollectionReusableView {
     
     private lazy var pressureStackView = Utilities().configStackView([pressureImg, pressure], axis: .horizontal, distribution: .fill)
     private lazy var windSpeedStackView = Utilities().configStackView([windSpeedImg, windSpeed], axis: .horizontal, distribution: .fill)
-    private lazy var humidityStackView = Utilities().configStackView([humidityImg, humidity], axis: .horizontal,
-                                                                distribution: .fill)
+    private lazy var humidityStackView = Utilities().configStackView([humidityImg, humidity], axis: .horizontal, distribution: .fill)
    
     override init(frame: CGRect) {
         super.init(frame: frame)
