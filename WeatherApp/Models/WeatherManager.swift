@@ -10,34 +10,39 @@ import Foundation
 protocol CurrentWeatherDelegate: AnyObject {
     func updateCurrentWeather(model: CurrentWeatherModel)
 }
+protocol ForecastWeatherDelegate: AnyObject {
+    func updateForecastWeather(model: ForecastWeatherModel)
+}
+
+
+enum WeatherType {
+    case current
+    case forecast
+}
 
 class WeatherManager {
     
     static let shared = WeatherManager()
     private let apiKey = Bundle.main.apiKey
     
-    private var currentWeatherModel: CurrentWeatherModel?
-
     var delegate: CurrentWeatherDelegate?
-    
-        
-//    let url = "https://api.openweathermap.org/data/2.5/weather"
-    let location = "q"
-    let appId = "appid="
-    let unit = "units=metric"
-    
+
     let url1 = "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}&units=metric"
     
-    let url = "https://api.openweathermap.org/data/2.5/weather?&units=metric&appid"
+    let url = "https://api.openweathermap.org/data/2.5/"
 
-
-    func fetchWeather(cityName: String) {
-        let urlStr = "\(url)=\(apiKey)&q=\(cityName)"
-        self.performRequset(urlStr)
-        debugPrint(urlStr)
+    func fetchWeather(cityName: String, completion: @escaping ([List]) -> Void) {
+        let currentUrlStr = "\(url)weather?units=metric&appid=\(apiKey)&q=\(cityName)"
+        let forecastUrlStr = "\(url)forecast?units=metric&appid=\(apiKey)&q=\(cityName)"
+        
+        self.performRequset(currentUrlStr, forecast: .current) {_ in }
+        self.performRequset(forecastUrlStr, forecast: .forecast) { listArray in
+            completion(listArray)
+        }
+        debugPrint(currentUrlStr, forecastUrlStr)
     }
     
-    func performRequset(_ urlStr: String) {
+    private func performRequset(_ urlStr: String, forecast: WeatherType, completion: @escaping ([List]) -> Void) {
         guard let url = URL(string: urlStr) else { return }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -48,19 +53,37 @@ class WeatherManager {
                 print("Error Data: \(error!)")
                 return
             }
-            if let weather = self.parseJSON(safeData) {
-                self.delegate?.updateCurrentWeather(model: weather)
+            switch forecast {
+            case .current:
+                if let weather = self.parseJSONCurrent(safeData) {
+                    self.delegate?.updateCurrentWeather(model: weather)
+            }
+            case .forecast:
+                if let weather = self.parseJSONForecast(safeData) {
+                    completion(weather.list)
+                }
             }
         }
         task.resume()
     }
     
-    func parseJSON(_ safeData: Data) -> CurrentWeatherModel? {
+    private func parseJSONCurrent(_ safeData: Data) -> CurrentWeatherModel? {
         do {
             let decodeData = try JSONDecoder().decode(CurrentWeatherData.self, from: safeData)
             
             let currentWeather = CurrentWeatherModel(data: decodeData)
             return currentWeather
+        } catch {
+            print("Error ParseJSON: \(error)")
+            return nil
+        }
+    }
+    
+    private func parseJSONForecast(_ safeData: Data) -> ForecastWeatherModel? {
+        do {
+            let decodeData = try JSONDecoder().decode(ForecastWeatherModel.self, from: safeData)
+            let forecastWeather = ForecastWeatherModel(list: decodeData.list)
+            return forecastWeather
         } catch {
             print("Error ParseJSON: \(error)")
             return nil

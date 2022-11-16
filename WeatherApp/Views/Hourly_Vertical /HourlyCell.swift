@@ -38,7 +38,6 @@ class HourlyCell: UICollectionViewCell {
         return stack
     }()
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -50,24 +49,33 @@ class HourlyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func configureUI() {
         self.addSubview(stackView)
-       
-
     }
     
     func configureLayout() {
-        
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
     }
     
+    var forecastWeather: List? {
+        didSet {
+            configureData()
+        }
+    }
     
-    
-    
+    private func configureData() {
+        if let forecastWeather = forecastWeather {
+            DispatchQueue.main.async {
+                self.timeLabel.text = forecastWeather.hourOfDateStr
+                self.currentTemp.text = "\(forecastWeather.main.tempStr)°"
+            }
+        }
+    }
 }
+
+
 
 
 // MARK: - PreView

@@ -15,7 +15,7 @@ final class MainWeatherViewController: UIViewController {
     private var collectionView: UICollectionView?
     private var customLayout = UICollectionViewLayout()
     
-    private var currentWeather: CurrentWeatherModel?
+    private var currentWeatherModel: CurrentWeatherModel?
     
     let weatherManager = WeatherManager.shared
     
@@ -24,7 +24,6 @@ final class MainWeatherViewController: UIViewController {
         
         self.view.addSubview(backgroundView)
         configureCollectionView()
-        weatherManager.fetchWeather(cityName: "seoul")
     }
     
     func configureCollectionView() {
@@ -74,18 +73,23 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            cell.backgroundColor = .blue
+            weatherManager.fetchWeather(cityName: "seoul") { listArray in
+                cell.forecastWeather = listArray[indexPath.item]
+            }
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
+            weatherManager.fetchWeather(cityName: "seoul") { listArray in
+                cell.forecastWeather = listArray[indexPath.item]
+            }
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! MainWeatherHeader
-        if let currentWeather = currentWeather {
-            header.updateCurrentWeather(model: currentWeather)
+        if let currentWeatherModel = currentWeatherModel {
+            header.updateCurrentWeather(model: currentWeatherModel)
         }
         return header
     }
@@ -103,14 +107,7 @@ extension MainWeatherViewController: UICollectionViewDelegate  {
 
 
 
-// MARK: - CurrentWeatherDelegate
-//extension MainWeatherHeader: CurrentWeatherDelegate {
-//    func updateCurrentWeather(_ weatherManager: WeatherManager, model: CurrentWeatherModel) {
-//
-//    }
-//
-//
-//}
+
 
 
 // MARK: - PreView

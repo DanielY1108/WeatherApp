@@ -52,7 +52,6 @@ class DailyCell: UICollectionViewCell {
         return stack
     }()
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -64,17 +63,12 @@ class DailyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func configureUI() {
         self.addSubview(stackViewLeftSide)
-
         self.addSubview(stackViewRightSide)
-       
-
     }
     
     func configureLayout() {
-        
         stackViewLeftSide.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview().inset(20)
         }
@@ -84,7 +78,21 @@ class DailyCell: UICollectionViewCell {
         }
     }
     
+    var forecastWeather: List? {
+        didSet {
+            configureDate()
+        }
+    }
     
+    private func configureDate() {
+        if let forecastWeather = forecastWeather {
+            DispatchQueue.main.async { [self] in
+                dayLabel.text = forecastWeather.dayOfDateStr
+                highTemp.text = forecastWeather.main.tempMaxStr
+                lowTemp.text = forecastWeather.main.tempMinStr
+            }
+        }
+    }
     
     
 }
