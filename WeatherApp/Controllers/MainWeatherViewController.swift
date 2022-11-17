@@ -7,26 +7,37 @@
 
 import UIKit
 import SnapKit
+import WeatherKit
+import CoreLocation
 
 
 final class MainWeatherViewController: UIViewController {
     
     private var backgroundView = BackgroundView()
-    private var collectionView: UICollectionView?
-    private var customLayout = UICollectionViewLayout()
     
     private var currentWeatherModel: CurrentWeatherModel?
     
-    let weatherManager = WeatherManager.shared
+    private let weatherManager = WeatherManager.shared
+    
+    private let weatherService = WeatherService()
+    private let locationManager = CLLocationManager()
+    private var currentLocation: CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.addSubview(backgroundView)
         configureCollectionView()
+        weatherManager.fetchWeather(cityName: "seoul") {_ in}
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupLocation()
     }
     
     func configureCollectionView() {
+        let customLayout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
         
         collectionView.delegate = self
@@ -34,9 +45,9 @@ final class MainWeatherViewController: UIViewController {
         
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
-
+        
         collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
-                
+        
         collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
         collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
         
@@ -52,6 +63,52 @@ final class MainWeatherViewController: UIViewController {
         }
     }
 }
+
+// MARK: - WeatherKit
+
+extension MainWeatherViewController {
+    func getWeather(location: CLLocation) {
+        Task {
+            do {
+                let result = try await weatherService.weather(for: location)
+            } catch {
+                print(String(describing: error))
+            }
+        }
+    }
+    
+    
+}
+
+// MARK: - Location Delegate
+
+extension MainWeatherViewController: CLLocationManagerDelegate {
+    func setupLocation() {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if !locations.isEmpty, currentLocation == nil {
+            currentLocation = locations.first
+            locationManager.stopUpdatingLocation()
+            requestWeatherForLocation()
+        }
+    }
+    
+    func requestWeatherForLocation() {
+        guard let currentLocation = currentLocation else { return }
+        let long = currentLocation.coordinate.longitude
+        let lat = currentLocation.coordinate.latitude
+        print("\(long) | \(lat)")
+    }
+}
+
+
+
 // MARK: - UICollectionViewDataSource
 
 extension MainWeatherViewController: UICollectionViewDataSource {
@@ -73,15 +130,15 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            weatherManager.fetchWeather(cityName: "seoul") { listArray in
-                cell.forecastWeather = listArray[indexPath.item]
-            }
+                        weatherManager.fetchWeather(cityName: "seoul") { listArray in
+                            cell.forecastWeather = listArray[indexPath.item]
+                        }
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            weatherManager.fetchWeather(cityName: "seoul") { listArray in
-                cell.forecastWeather = listArray[indexPath.item]
-            }
+                        weatherManager.fetchWeather(cityName: "seoul") { listArray in
+                            cell.forecastWeather = listArray[indexPath.item]
+                        }
             return cell
         }
     }
