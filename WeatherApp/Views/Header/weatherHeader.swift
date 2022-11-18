@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class MainWeatherHeader: UICollectionReusableView {
+final class weatherHeader: UICollectionReusableView {
     
     let weatherManager = WeatherManager.shared
     
@@ -96,7 +96,7 @@ final class MainWeatherHeader: UICollectionReusableView {
 }
 
 // MARK: - CurrentWeatherDelegate
-extension MainWeatherHeader: CurrentWeatherDelegate {
+extension weatherHeader: CurrentWeatherDelegate {
     func updateCurrentWeather(model: CurrentWeatherModel) {
         DispatchQueue.main.async {
             self.tempLabel.text = "\(model.tempStr)°"

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class BackgroundView: UIView {
+final class BackgroundView: UIView {
 
     let backgruondImg = UIImageView()
     

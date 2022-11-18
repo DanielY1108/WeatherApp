@@ -13,19 +13,14 @@ import CoreLocation
 
 final class MainWeatherViewController: UIViewController {
     
-  
     private var backgroundView = BackgroundView()
     
     private var currentWeatherModel: CurrentWeatherModel?
-    
     private let weatherManager = WeatherManager.shared
+    private let locationManager = LocationManager.shared
     
     private var weatherKit: Weather?
-    private let locationManager = CLLocationManager()
-    private var currentLocation: CLLocation?
-    
-    private var hourlyCast = HourlyCell()
-    
+        
     let customLayout = UICollectionViewLayout()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
     
@@ -34,26 +29,26 @@ final class MainWeatherViewController: UIViewController {
         
         self.view.addSubview(backgroundView)
         configureCollectionView()
-        weatherManager.fetchWeather(lat: 10, lon: 100)
-        getWeather(location: CLLocation(latitude: 10, longitude: 100))
+//        weatherManager.fetchWeather(lat: 10, lon: 100)
+//        getWeather(location: CLLocation(latitude: 10, longitude: 100))
 
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupLocation()
+        locationManager.setupLocation {
+            getWeather(location: locationManager.currentLocation)
+        }
     }
     
     func configureCollectionView() {
-     
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         
-        collectionView.register(MainWeatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
+        collectionView.register(weatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
         
         collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
         collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
@@ -63,7 +58,6 @@ final class MainWeatherViewController: UIViewController {
         backgroundView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(backgroundView)
             make.bottom.leading.trailing.equalTo(backgroundView).inset(20)
@@ -86,35 +80,6 @@ extension MainWeatherViewController {
         }
     }
 }
-
-// MARK: - Location Delegate
-
-extension MainWeatherViewController: CLLocationManagerDelegate {
-    func setupLocation() {
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.startUpdatingLocation()
-        
-    }
-    
-     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
-        if let location = locations.first {
-            currentLocation = location
-            getWeather(location: location)
-            locationManager.stopUpdatingLocation()
-            requestWeatherForLocation()
-        }
-    }
-    
-    func requestWeatherForLocation() {
-        guard let currentLocation = currentLocation else { return }
-        let lat = currentLocation.coordinate.latitude
-        let lon = currentLocation.coordinate.longitude
-        print(lat, lon)
-    }
-}
-
 
 
 // MARK: - UICollectionViewDataSource
@@ -153,7 +118,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! MainWeatherHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
         if let currentWeatherModel = currentWeatherModel {
             header.updateCurrentWeather(model: currentWeatherModel)
         }

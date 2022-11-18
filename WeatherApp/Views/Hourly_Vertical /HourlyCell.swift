@@ -8,7 +8,7 @@
 import UIKit
 import WeatherKit
 
-class HourlyCell: UICollectionViewCell {
+final class HourlyCell: UICollectionViewCell {
     
     // 레이블
     private let hourLabel = Utilities().configLabel(font: 16, weight: .regular)

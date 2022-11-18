@@ -8,7 +8,7 @@
 import UIKit
 import WeatherKit
 
-class DailyCell: UICollectionViewCell {
+final class DailyCell: UICollectionViewCell {
     
     // 레이블
     private let dayLabel = Utilities().configLabel(font: 16, weight: .regular)
