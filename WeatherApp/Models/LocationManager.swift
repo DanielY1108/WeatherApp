@@ -5,45 +5,47 @@
 //  Created by JINSEOK on 2022/11/18.
 //
 
-import Foundation
+import UIKit
 import CoreLocation
 
 final class LocationManager: NSObject{
     static let shared = LocationManager()
     
     private let locationManager = CLLocationManager()
-    var currentLocation = CLLocation()
+    var location: CLLocation?
 }
 // MARK: - Location Delegate
 
 extension LocationManager: CLLocationManagerDelegate {
-    func setupLocation(completion: () -> Void) {
+    func setupLocation() {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
-        completion()
     }
     
     private func setupCoordinate() {
-        let lat = currentLocation.coordinate.latitude
-        let lon = currentLocation.coordinate.longitude
-        print(lat, lon)
-        
+        if let location = self.location {
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            print(lat, lon)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
         if let location = locations.first {
-            currentLocation = location
-            setupCoordinate()
+            self.location = location
             locationManager.stopUpdatingLocation()
+            setupCoordinate()
         }
     }
     
+    // 실패시
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         manager.stopUpdatingLocation()
     }
     
+    // 인증
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedAlways , .authorizedWhenInUse:
@@ -55,77 +57,3 @@ extension LocationManager: CLLocationManagerDelegate {
         }
     }
 }
-
-
-
-//
-//import UIKit
-//import CoreLocation
-//extension NSNotification.Name {
-//    static let sharedLocation = NSNotification.Name("sharedLocation")
-//}
-//class LocationManager: NSObject, CLLocationManagerDelegate {
-//    static let shared = LocationManager()
-//    let manager = CLLocationManager()
-//    private let notificationCenter = NotificationCenter.default
-//    private override init() { }
-//    func checkLocationService() {
-//        if CLLocationManager.locationServicesEnabled() {
-//            setupLocationManager()
-//            checkLocationManagerAuthorization()
-//        } else {
-//            setupNotificationCenter(object: ["error": true])
-//        }
-//    }
-//    func setupLocationManager() {
-//        manager.delegate = self
-//        manager.desiredAccuracy = kCLLocationAccuracyBest
-//    }
-//    func checkLocationManagerAuthorization() {
-//        switch authorizationStatus() {
-//        case .notDetermined:
-//            print("Auth: notDetermined")
-//            manager.requestWhenInUseAuthorization()
-//        case .authorizedAlways, .authorizedWhenInUse:
-//            print("Auth: authorizedWhenInUse")
-//            manager.startUpdatingLocation()
-//        case .denied, .restricted:
-//            print("Auth: denied")
-//            setupNotificationCenter(object: ["error": true])
-//            break
-//        default:
-//            setupNotificationCenter(object: ["error": true])
-//            break
-//        }
-//    }
-//    func authorizationStatus() -> CLAuthorizationStatus {
-//        var status: CLAuthorizationStatus
-//        if #available(iOS 14.0, *) {
-//            status = CLLocationManager().authorizationStatus
-//        } else {
-//            status = CLLocationManager.authorizationStatus()
-//        }
-//        return status
-//    }
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.last {
-//            let object: [String: Any] = [
-//                "error": false,
-//                "location": location
-//            ]
-//            DispatchQueue.main.async {
-//                self.setupNotificationCenter(object: object)
-//            }
-//            manager.stopUpdatingLocation()
-//        }
-//    }
-//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//        checkLocationService()
-//    }
-//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//        manager.stopUpdatingLocation()
-//    }
-//    func setupNotificationCenter(object: Any? = nil) {
-//        notificationCenter.post(name: .sharedLocation, object: object)
-//    }
-//}

@@ -5,7 +5,8 @@
 //  Created by JINSEOK on 2022/11/14.
 //
 
-import Foundation
+import UIKit
+import WeatherKit
 import CoreLocation
 
 protocol CurrentWeatherDelegate: AnyObject {
@@ -13,28 +14,27 @@ protocol CurrentWeatherDelegate: AnyObject {
 }
 
 class WeatherManager {
-    private let apiKey = Bundle.main.apiKey
-
     static let shared = WeatherManager()
     var delegate: CurrentWeatherDelegate?
+    var weatherKit: Weather?
+}
 
-    let url1 = "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}&units=metric"
-    let url = "https://api.openweathermap.org/data/2.5/"
-    
-    func fetchWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        let currentUrlStr = "\(url)weather?units=metric&appid=\(apiKey)&lat=\(lat)&lon=\(lon)"
-        self.performRequset(currentUrlStr)
-        debugPrint(currentUrlStr)
+// MARK: - Get from OpenWeatherMap
+extension WeatherManager {
+    func fetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        let urlComponent = API.coordinate(lat, lon).getURLComponent
+        self.performRequset(urlComponent)
+        debugPrint(urlComponent)
     }
 
-    func fetchWeather(cityName: String) {
-        let currentUrlStr = "\(url)weather?units=metric&appid=\(apiKey)&q=\(cityName)"
-        self.performRequset(currentUrlStr)
-        debugPrint(currentUrlStr)
+    func fetchFromWeatherAPI(name: String) {
+        let urlComponent = API.city(name).getURLComponent
+        self.performRequset(urlComponent)
+        debugPrint(urlComponent)
     }
     
-    private func performRequset(_ urlStr: String) {
-        guard let url = URL(string: urlStr) else { return }
+    private func performRequset(_ urlComponent: URLComponents) {
+        guard let url = urlComponent.url else { return }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if error != nil {
@@ -62,6 +62,21 @@ class WeatherManager {
             return nil
         }
     }
+}
 
+// MARK: - Get from WeatherKit
+extension WeatherManager {
+
+    func fetchFromWeatherKit(_ collectionView: UICollectionView, location: CLLocation) {
+        Task {
+            do {
+                let weather = try await WeatherService.shared.weather(for: location)
+                weatherKit = weather
+                await collectionView.reloadData()
+            } catch {
+                print(String(describing: error))
+            }
+        }
+    }
     
 }

@@ -19,26 +19,22 @@ final class MainWeatherViewController: UIViewController {
     private let weatherManager = WeatherManager.shared
     private let locationManager = LocationManager.shared
     
-    private var weatherKit: Weather?
-        
     let customLayout = UICollectionViewLayout()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
+    
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.addSubview(backgroundView)
         configureCollectionView()
-//        weatherManager.fetchWeather(lat: 10, lon: 100)
-//        getWeather(location: CLLocation(latitude: 10, longitude: 100))
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        locationManager.setupLocation {
-            getWeather(location: locationManager.currentLocation)
-        }
+        locationManager.setupLocation()
+        defaultWeather()
     }
     
     func configureCollectionView() {
@@ -63,21 +59,10 @@ final class MainWeatherViewController: UIViewController {
             make.bottom.leading.trailing.equalTo(backgroundView).inset(20)
         }
     }
-}
-
-// MARK: - WeatherKit
-
-extension MainWeatherViewController {
-    func getWeather(location: CLLocation) {
-        Task {
-            do {
-                let weather = try await WeatherService.shared.weather(for: location)
-                weatherKit = weather
-                collectionView.reloadData()
-            } catch {
-                print(String(describing: error))
-            }
-        }
+    
+    func defaultWeather() {
+        weatherManager.fetchFromWeatherAPI(lat: 37.566535, lon: 126.97796919999996)
+        weatherManager.fetchFromWeatherKit(collectionView, location: CLLocation(latitude: 37.566535, longitude: 126.97796919999996))
     }
 }
 
@@ -103,14 +88,14 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            if let weatherKit = weatherKit {
+            if let weatherKit = weatherManager.weatherKit {
                 cell.configWeather(with: weatherKit.hourlyForecast[indexPath.item])
             }
             return cell
-
+            
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            if let weatherKit = weatherKit {
+            if let weatherKit = weatherManager.weatherKit {
                 cell.configWeather(with: weatherKit.dailyForecast[indexPath.item])
             }
             return cell
@@ -134,9 +119,8 @@ extension MainWeatherViewController: UICollectionViewDelegate  {
         controller.view.backgroundColor = indexPath.section == 0 ? .yellow : .red
         present(controller, animated: true)
     }
+    
 }
-
-
 
 
 
