@@ -10,34 +10,14 @@ import WeatherKit
 
 class HourlyCell: UICollectionViewCell {
     
-    private let timeLabel: UILabel = {
-        let lable = UILabel()
-        lable.text = "Time"
-        return lable
-    }()
-    
-    private let currentTemp: UILabel = {
-        let lable = UILabel()
-        lable.text = "Temp"
-        return lable
-    }()
-    
-    private let weatherImage: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "image11.png")
-        image.contentMode = .scaleAspectFill
-        return image
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [timeLabel ,weatherImage ,currentTemp])
-        stack.spacing = 5
-        stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.alignment = .center
-        return stack
-    }()
-    
+    // 레이블
+    private let hourLabel = Utilities().configLabel(font: 16, weight: .regular)
+    private let currentTemp = Utilities().configLabel(font: 16, weight: .regular)
+    // 이미지
+    private let weatherImg = Utilities().configImange(name: "thermometer.high", of: .system)
+    // 스택뷰
+    private lazy var stackView = Utilities().configStackView([hourLabel ,weatherImg ,currentTemp], axis: .vertical, alignment: .center)
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -70,8 +50,8 @@ class HourlyCell: UICollectionViewCell {
         df.pmSymbol = "pm"
         
         currentTemp.text = mf.string(from: hourWeather.temperature)
-        timeLabel.text = df.string(from: hourWeather.date)
-        weatherImage.image = UIImage(systemName: "\(hourWeather.symbolName).fill")
+        hourLabel.text = df.string(from: hourWeather.date)
+        weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName).fill")
         print(hourWeather.symbolName)
     }
 }

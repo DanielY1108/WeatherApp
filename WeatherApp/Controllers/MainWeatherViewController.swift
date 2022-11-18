@@ -34,8 +34,8 @@ final class MainWeatherViewController: UIViewController {
         
         self.view.addSubview(backgroundView)
         configureCollectionView()
-        weatherManager.fetchWeather(lat: 30, lon: 100)
-        getWeather(location: CLLocation(latitude: 30, longitude: 100))
+        weatherManager.fetchWeather(lat: 10, lon: 100)
+        getWeather(location: CLLocation(latitude: 10, longitude: 100))
 
     }
     
