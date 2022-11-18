@@ -6,43 +6,23 @@
 //
 
 import UIKit
+import WeatherKit
 
 class HourlyCell: UICollectionViewCell {
     
-    private let timeLabel: UILabel = {
-        let lable = UILabel()
-        lable.text = "Time"
-        return lable
-    }()
-    
-    private let currentTemp: UILabel = {
-        let lable = UILabel()
-        lable.text = "Temp"
-        return lable
-    }()
-    
-    private let weatherImage: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "image11.png")
-        image.frame = .init(x: 0, y: 0, width: 100, height: 100)
-        image.contentMode = .scaleAspectFit
-        return image
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [timeLabel ,weatherImage ,currentTemp])
-        stack.spacing = 5
-        stack.axis = .vertical
-        stack.distribution = .equalSpacing
-        stack.alignment = .center
-        return stack
-    }()
+    // 레이블
+    private let hourLabel = Utilities().configLabel(font: 16, weight: .regular)
+    private let currentTemp = Utilities().configLabel(font: 16, weight: .regular)
+    // 이미지
+    private let weatherImg = Utilities().configImange(name: "thermometer.high", of: .system)
+    // 스택뷰
+    private lazy var stackView = Utilities().configStackView([hourLabel ,weatherImg ,currentTemp], axis: .vertical, alignment: .center)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
         configureLayout()
-        self.backgroundColor = .green
+        self.backgroundColor = .lightGray
     }
     
     required init?(coder: NSCoder) {
@@ -59,19 +39,20 @@ class HourlyCell: UICollectionViewCell {
         }
     }
     
-    var forecastWeather: List? {
-        didSet {
-            configureData()
-        }
-    }
-    
-    private func configureData() {
-        if let forecastWeather = forecastWeather {
-            DispatchQueue.main.async {
-                self.timeLabel.text = forecastWeather.hourOfDateStr
-                self.currentTemp.text = "\(forecastWeather.main.tempStr)°"
-            }
-        }
+    func configWeather(with hourWeather: HourWeather) {
+        let mf = MeasurementFormatter()
+        mf.unitOptions = .providedUnit
+        mf.numberFormatter.maximumFractionDigits = 0
+
+        let df = DateFormatter()
+        df.dateFormat = "h a"
+        df.amSymbol = "am"
+        df.pmSymbol = "pm"
+        
+        currentTemp.text = mf.string(from: hourWeather.temperature)
+        hourLabel.text = df.string(from: hourWeather.date)
+        weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName).fill")
+        print(hourWeather.symbolName)
     }
 }
 

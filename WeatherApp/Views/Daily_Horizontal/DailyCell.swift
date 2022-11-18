@@ -6,57 +6,26 @@
 //
 
 import UIKit
+import WeatherKit
 
 class DailyCell: UICollectionViewCell {
     
-    private let dayLabel: UILabel = {
-        let lable = UILabel()
-        lable.text = "Monday"
-        return lable
-    }()
-    
-    private let highTemp: UILabel = {
-        let lable = UILabel()
-        lable.text = "high"
-        return lable
-    }()
-    
-    private let lowTemp: UILabel = {
-        let lable = UILabel()
-        lable.text = "low"
-        return lable
-    }()
-    
-    private let weatherImage: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "image11.png")
-        image.contentMode = .scaleAspectFit
-        return image
-    }()
-    
-    private lazy var stackViewLeftSide: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [dayLabel ,weatherImage])
-        stack.spacing = 10
-        stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        stack.alignment = .fill
-        return stack
-    }()
-    
-    private lazy var stackViewRightSide: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [highTemp, lowTemp])
-        stack.spacing = 10
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        stack.alignment = .fill
-        return stack
-    }()
+    // 레이블
+    private let dayLabel = Utilities().configLabel(font: 16, weight: .regular)
+    private let highTempLabel = Utilities().configLabel(font: 16, weight: .regular)
+    private let lowTempLabel = Utilities().configLabel(font: 16, weight: .regular)
+    // 이미지
+    private let weatherImg = Utilities().configImange(name: "thermometer.high", of: .system)
+    // 스택뷰
+    private lazy var stackViewLeftSide = Utilities().configStackView([dayLabel ,weatherImg], axis: .horizontal, distribution: .equalCentering)
+    private lazy var stackViewRightSide = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering)
 
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
         configureLayout()
-        self.backgroundColor = .blue
+        self.backgroundColor = .green
     }
     
     required init?(coder: NSCoder) {
@@ -71,29 +40,30 @@ class DailyCell: UICollectionViewCell {
     func configureLayout() {
         stackViewLeftSide.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview().inset(20)
+            make.width.equalTo(80)
+            make.height.equalToSuperview().inset(14)
         }
         
         stackViewRightSide.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(120)
         }
     }
-    
-    var forecastWeather: List? {
-        didSet {
-            configureDate()
-        }
+    func configWeather(with dayWeather: DayWeather) {
+        let mf = MeasurementFormatter()
+        mf.unitOptions = .temperatureWithoutUnit
+        mf.numberFormatter.maximumFractionDigits = 0
+        let df = DateFormatter()
+        df.dateFormat = "E"
+        df.locale = Locale(identifier: "en_us")
+
+        
+        dayLabel.text = df.string(from: dayWeather.date)
+        weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName).fill")
+        highTempLabel.text = "H: \(mf.string(from: dayWeather.highTemperature))"
+        lowTempLabel.text = "L : \(mf.string(from: dayWeather.lowTemperature))"
+
     }
-    
-    private func configureDate() {
-        if let forecastWeather = forecastWeather {
-            DispatchQueue.main.async { [self] in
-                dayLabel.text = forecastWeather.dayOfDateStr
-                highTemp.text = forecastWeather.main.tempMaxStr
-                lowTemp.text = forecastWeather.main.tempMinStr
-            }
-        }
-    }
-    
     
 }
 

@@ -13,16 +13,16 @@ final class MainWeatherHeader: UICollectionReusableView {
     let weatherManager = WeatherManager.shared
     
     // 레이블
-    private let currentTemp = Utilities().configLabel(font: 60, weight: .bold)
-    private let highTemp = Utilities().configLabel(font: 20, weight: .regular)
-    private let lowTemp = Utilities().configLabel(font: 20, weight: .regular)
-    private let weatherStatue = Utilities().configLabel(font: 20, weight: .regular)
-    private let currentLocation = Utilities().configLabel(font: 20, weight: .regular)
-    private let windSpeed = Utilities().configLabel(font: 20, weight: .regular)
-    private let pressure = Utilities().configLabel(font: 20, weight: .regular)
-    private let humidity = Utilities().configLabel(font: 20, weight: .regular)
-    private let sunrise = Utilities().configLabel(font: 20, weight: .regular)
-    private let sunset = Utilities().configLabel(font: 20, weight: .regular)
+    private let tempLabel = Utilities().configLabel(font: 60, weight: .bold)
+    private let highTempLabel = Utilities().configLabel(font: 18, weight: .regular)
+    private let lowTempLabel = Utilities().configLabel(font: 18, weight: .regular)
+    private let weatherStatueLabel = Utilities().configLabel(font: 20, weight: .regular)
+    private let locationLabel = Utilities().configLabel(font: 15, weight: .regular)
+    private let windSpeedLabel = Utilities().configLabel(font: 15, weight: .regular)
+    private let pressureLabel = Utilities().configLabel(font: 15, weight: .regular)
+    private let humidityLabel = Utilities().configLabel(font: 15, weight: .regular)
+    private let sunriseLabel = Utilities().configLabel(font: 15, weight: .regular)
+    private let sunsetLabel = Utilities().configLabel(font: 15, weight: .regular)
 
     // 이미지
     private let highTempImg = Utilities().configImange(name: "thermometer.high", of: .system)
@@ -35,22 +35,22 @@ final class MainWeatherHeader: UICollectionReusableView {
     private let sunriseImg = Utilities().configImange(name: "sunrise.fill", of: .system)
 
     // 스택뷰
-    private lazy var topSideStackView = Utilities().configStackView([currentTemp, highLowStackView, weatherStatue], axis: .vertical)
+    private lazy var topSideStackView = Utilities().configStackView([tempLabel, weatherStatueLabel, highLowStackView], axis: .vertical)
     private lazy var BottomSideStackView = Utilities().configStackView([pressureStackView, windSpeedStackView, humidityStackView], axis: .horizontal, distribution: .equalSpacing)
 
-    private lazy var hightStackView = Utilities().configStackView([highTempImg, highTemp], axis: .horizontal, distribution: .fillEqually)
-    private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTemp], axis: .horizontal, distribution: .fillEqually)
-    private lazy var highLowStackView = Utilities().configStackView([hightStackView, lowStackView], axis: .horizontal, distribution: .equalCentering)
+    private lazy var hightStackView = Utilities().configStackView([highTempImg, highTempLabel], axis: .horizontal, distribution: .fillEqually)
+    private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTempLabel], axis: .horizontal, distribution: .fillEqually)
+    private lazy var highLowStackView = Utilities().configStackView([lowStackView, hightStackView], axis: .horizontal, distribution: .equalCentering)
 
-    private lazy var sunriseStackView = Utilities().configStackView([sunriseImg, sunrise], axis: .horizontal)
-    private lazy var sunsetStackView = Utilities().configStackView([sunsetImg, sunset], axis: .horizontal)
+    private lazy var sunriseStackView = Utilities().configStackView([sunriseImg, sunriseLabel], axis: .horizontal)
+    private lazy var sunsetStackView = Utilities().configStackView([sunsetImg, sunsetLabel], axis: .horizontal)
     private lazy var sunStackView = Utilities().configStackView([sunriseStackView, sunsetStackView], axis: .horizontal)
 
-    private lazy var LocationStackView = Utilities().configStackView([LocationImg, currentLocation], axis: .horizontal)
+    private lazy var LocationStackView = Utilities().configStackView([LocationImg, locationLabel], axis: .horizontal)
     
-    private lazy var pressureStackView = Utilities().configStackView([pressureImg, pressure], axis: .horizontal, distribution: .fill)
-    private lazy var windSpeedStackView = Utilities().configStackView([windSpeedImg, windSpeed], axis: .horizontal, distribution: .fill)
-    private lazy var humidityStackView = Utilities().configStackView([humidityImg, humidity], axis: .horizontal, distribution: .fill)
+    private lazy var pressureStackView = Utilities().configStackView([pressureImg, pressureLabel], axis: .horizontal, distribution: .fill)
+    private lazy var windSpeedStackView = Utilities().configStackView([windSpeedImg, windSpeedLabel], axis: .horizontal, distribution: .fill)
+    private lazy var humidityStackView = Utilities().configStackView([humidityImg, humidityLabel], axis: .horizontal, distribution: .fill)
    
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,22 +74,22 @@ final class MainWeatherHeader: UICollectionReusableView {
     
     private func configureLayout() {
         topSideStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(30)
+            make.top.equalToSuperview().inset(50)
             make.leading.equalToSuperview().inset(20)
         }
         
         LocationStackView.snp.makeConstraints { make in
-            make.top.equalTo(topSideStackView.snp.bottom).offset(30)
+            make.top.equalTo(topSideStackView.snp.bottom).offset(15)
             make.leading.equalToSuperview().inset(20)
         }
         
         sunStackView.snp.makeConstraints { make in
-            make.top.equalTo(topSideStackView.snp.bottom).offset(30)
+            make.top.equalTo(topSideStackView.snp.bottom).offset(15)
             make.trailing.equalToSuperview().inset(20)
         }
         
         BottomSideStackView.snp.makeConstraints { make in
-            make.top.equalTo(currentLocation.snp.bottom).offset(20)
+            make.top.equalTo(locationLabel.snp.bottom).offset(15)
             make.trailing.leading.equalToSuperview().inset(20)
         }
     }
@@ -99,16 +99,16 @@ final class MainWeatherHeader: UICollectionReusableView {
 extension MainWeatherHeader: CurrentWeatherDelegate {
     func updateCurrentWeather(model: CurrentWeatherModel) {
         DispatchQueue.main.async {
-            self.currentTemp.text = "\(model.tempStr)°"
-            self.highTemp.text = "\(model.tempMaxStr)°"
-            self.lowTemp.text = "\(model.tempMinStr)°"
-            self.humidity.text = "\(model.humidityStr) %"
-            self.windSpeed.text = "\(model.windSpeedStr) m/s"
-            self.pressure.text = "\(model.pressureStr) hPa"
-            self.currentLocation.text = "\(model.location)"
-            self.weatherStatue.text = model.weatherStatue
-            self.sunrise.text = model.sunriseStr
-            self.sunset.text = model.sunsetStr
+            self.tempLabel.text = "\(model.tempStr)°"
+            self.highTempLabel.text = "\(model.tempMaxStr)°"
+            self.lowTempLabel.text = "\(model.tempMinStr)°"
+            self.humidityLabel.text = "\(model.humidityStr) %"
+            self.windSpeedLabel.text = "\(model.windSpeedStr) m/s"
+            self.pressureLabel.text = "\(model.pressureStr) hPa"
+            self.locationLabel.text = "\(model.location)"
+            self.weatherStatueLabel.text = model.weatherStatue
+            self.sunriseLabel.text = model.sunriseStr
+            self.sunsetLabel.text = model.sunsetStr
         }
     }
 }
