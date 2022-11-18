@@ -13,15 +13,12 @@ extension UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionNumber, env in
             // section 1
             if sectionNumber == 0 {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.25), heightDimension: .absolute(140)))
+                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.25), heightDimension: .absolute(100)))
                 item.contentInsets.trailing = 10
-                item.contentInsets.bottom = 15
-                item.contentInsets.top = 15
-                
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
                 
-                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(290)), elementKind: Constants.ID.categoryHeaderID, alignment: .top)
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(270)), elementKind: Constants.ID.categoryHeaderID, alignment: .top)
                 
                 sectionHeader.pinToVisibleBounds = true
                 
@@ -31,8 +28,8 @@ extension UICollectionViewLayout {
                 
             } else {
                 // section 2
-                let itme = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(70)))
-                itme.contentInsets.bottom = 10
+                let itme = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60)))
+                itme.contentInsets.bottom = 5
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [itme])
                 
                 let section = NSCollectionLayoutSection(group: group)

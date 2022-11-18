@@ -14,15 +14,15 @@ final class MainWeatherHeader: UICollectionReusableView {
     
     // 레이블
     private let currentTemp = Utilities().configLabel(font: 60, weight: .bold)
-    private let highTemp = Utilities().configLabel(font: 20, weight: .regular)
-    private let lowTemp = Utilities().configLabel(font: 20, weight: .regular)
+    private let highTemp = Utilities().configLabel(font: 18, weight: .regular)
+    private let lowTemp = Utilities().configLabel(font: 18, weight: .regular)
     private let weatherStatue = Utilities().configLabel(font: 20, weight: .regular)
-    private let currentLocation = Utilities().configLabel(font: 20, weight: .regular)
-    private let windSpeed = Utilities().configLabel(font: 20, weight: .regular)
-    private let pressure = Utilities().configLabel(font: 20, weight: .regular)
-    private let humidity = Utilities().configLabel(font: 20, weight: .regular)
-    private let sunrise = Utilities().configLabel(font: 20, weight: .regular)
-    private let sunset = Utilities().configLabel(font: 20, weight: .regular)
+    private let currentLocation = Utilities().configLabel(font: 15, weight: .regular)
+    private let windSpeed = Utilities().configLabel(font: 15, weight: .regular)
+    private let pressure = Utilities().configLabel(font: 15, weight: .regular)
+    private let humidity = Utilities().configLabel(font: 15, weight: .regular)
+    private let sunrise = Utilities().configLabel(font: 15, weight: .regular)
+    private let sunset = Utilities().configLabel(font: 15, weight: .regular)
 
     // 이미지
     private let highTempImg = Utilities().configImange(name: "thermometer.high", of: .system)
@@ -35,12 +35,12 @@ final class MainWeatherHeader: UICollectionReusableView {
     private let sunriseImg = Utilities().configImange(name: "sunrise.fill", of: .system)
 
     // 스택뷰
-    private lazy var topSideStackView = Utilities().configStackView([currentTemp, highLowStackView, weatherStatue], axis: .vertical)
+    private lazy var topSideStackView = Utilities().configStackView([currentTemp, weatherStatue, highLowStackView], axis: .vertical)
     private lazy var BottomSideStackView = Utilities().configStackView([pressureStackView, windSpeedStackView, humidityStackView], axis: .horizontal, distribution: .equalSpacing)
 
     private lazy var hightStackView = Utilities().configStackView([highTempImg, highTemp], axis: .horizontal, distribution: .fillEqually)
     private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTemp], axis: .horizontal, distribution: .fillEqually)
-    private lazy var highLowStackView = Utilities().configStackView([hightStackView, lowStackView], axis: .horizontal, distribution: .equalCentering)
+    private lazy var highLowStackView = Utilities().configStackView([lowStackView, hightStackView], axis: .horizontal, distribution: .equalCentering)
 
     private lazy var sunriseStackView = Utilities().configStackView([sunriseImg, sunrise], axis: .horizontal)
     private lazy var sunsetStackView = Utilities().configStackView([sunsetImg, sunset], axis: .horizontal)
@@ -74,22 +74,22 @@ final class MainWeatherHeader: UICollectionReusableView {
     
     private func configureLayout() {
         topSideStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(30)
+            make.top.equalToSuperview().inset(50)
             make.leading.equalToSuperview().inset(20)
         }
         
         LocationStackView.snp.makeConstraints { make in
-            make.top.equalTo(topSideStackView.snp.bottom).offset(30)
+            make.top.equalTo(topSideStackView.snp.bottom).offset(15)
             make.leading.equalToSuperview().inset(20)
         }
         
         sunStackView.snp.makeConstraints { make in
-            make.top.equalTo(topSideStackView.snp.bottom).offset(30)
+            make.top.equalTo(topSideStackView.snp.bottom).offset(15)
             make.trailing.equalToSuperview().inset(20)
         }
         
         BottomSideStackView.snp.makeConstraints { make in
-            make.top.equalTo(currentLocation.snp.bottom).offset(20)
+            make.top.equalTo(currentLocation.snp.bottom).offset(15)
             make.trailing.leading.equalToSuperview().inset(20)
         }
     }

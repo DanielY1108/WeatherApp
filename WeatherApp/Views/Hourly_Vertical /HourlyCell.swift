@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import WeatherKit
 
 class HourlyCell: UICollectionViewCell {
     
@@ -24,8 +25,7 @@ class HourlyCell: UICollectionViewCell {
     private let weatherImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "image11.png")
-        image.frame = .init(x: 0, y: 0, width: 100, height: 100)
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
@@ -33,16 +33,16 @@ class HourlyCell: UICollectionViewCell {
         let stack = UIStackView(arrangedSubviews: [timeLabel ,weatherImage ,currentTemp])
         stack.spacing = 5
         stack.axis = .vertical
-        stack.distribution = .equalSpacing
+        stack.distribution = .fillEqually
         stack.alignment = .center
         return stack
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
         configureLayout()
-        self.backgroundColor = .green
+        self.backgroundColor = .lightGray
     }
     
     required init?(coder: NSCoder) {
@@ -59,19 +59,20 @@ class HourlyCell: UICollectionViewCell {
         }
     }
     
-    var forecastWeather: List? {
-        didSet {
-            configureData()
-        }
-    }
-    
-    private func configureData() {
-        if let forecastWeather = forecastWeather {
-            DispatchQueue.main.async {
-                self.timeLabel.text = forecastWeather.hourOfDateStr
-                self.currentTemp.text = "\(forecastWeather.main.tempStr)°"
-            }
-        }
+    func configWeather(with hourWeather: HourWeather) {
+        let mf = MeasurementFormatter()
+        mf.unitOptions = .providedUnit
+        mf.numberFormatter.maximumFractionDigits = 0
+
+        let df = DateFormatter()
+        df.dateFormat = "h a"
+        df.amSymbol = "am"
+        df.pmSymbol = "pm"
+        
+        currentTemp.text = mf.string(from: hourWeather.temperature)
+        timeLabel.text = df.string(from: hourWeather.date)
+        weatherImage.image = UIImage(systemName: "\(hourWeather.symbolName).fill")
+        print(hourWeather.symbolName)
     }
 }
 

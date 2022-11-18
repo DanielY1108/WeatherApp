@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import WeatherKit
 
 class DailyCell: UICollectionViewCell {
     
     private let dayLabel: UILabel = {
         let lable = UILabel()
-        lable.text = "Monday"
+        lable.text = "Sun"
         return lable
     }()
     
@@ -30,24 +31,23 @@ class DailyCell: UICollectionViewCell {
     private let weatherImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "image11.png")
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
     private lazy var stackViewLeftSide: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [dayLabel ,weatherImage])
-        stack.spacing = 10
+        stack.spacing = 20
         stack.axis = .horizontal
-        stack.distribution = .fillEqually
+        stack.distribution = .equalCentering
         stack.alignment = .fill
         return stack
     }()
     
     private lazy var stackViewRightSide: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [highTemp, lowTemp])
-        stack.spacing = 10
+        let stack = UIStackView(arrangedSubviews: [lowTemp, highTemp])
         stack.axis = .horizontal
-        stack.distribution = .fill
+        stack.distribution = .equalCentering
         stack.alignment = .fill
         return stack
     }()
@@ -56,7 +56,7 @@ class DailyCell: UICollectionViewCell {
         super.init(frame: frame)
         configureUI()
         configureLayout()
-        self.backgroundColor = .blue
+        self.backgroundColor = .green
     }
     
     required init?(coder: NSCoder) {
@@ -71,29 +71,30 @@ class DailyCell: UICollectionViewCell {
     func configureLayout() {
         stackViewLeftSide.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview().inset(20)
+            make.width.equalTo(90)
+            make.height.equalToSuperview().inset(14)
         }
         
         stackViewRightSide.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(120)
         }
     }
-    
-    var forecastWeather: List? {
-        didSet {
-            configureDate()
-        }
+    func configWeather(with dayWeather: DayWeather) {
+        let mf = MeasurementFormatter()
+        mf.unitOptions = .temperatureWithoutUnit
+        mf.numberFormatter.maximumFractionDigits = 0
+        let df = DateFormatter()
+        df.dateFormat = "E"
+        df.locale = Locale(identifier: "en_us")
+
+        
+        dayLabel.text = df.string(from: dayWeather.date)
+        weatherImage.image = UIImage(systemName: "\(dayWeather.symbolName).fill")
+        highTemp.text = "H: \(mf.string(from: dayWeather.highTemperature))"
+        lowTemp.text = "L : \(mf.string(from: dayWeather.lowTemperature))"
+
     }
-    
-    private func configureDate() {
-        if let forecastWeather = forecastWeather {
-            DispatchQueue.main.async { [self] in
-                dayLabel.text = forecastWeather.dayOfDateStr
-                highTemp.text = forecastWeather.main.tempMaxStr
-                lowTemp.text = forecastWeather.main.tempMinStr
-            }
-        }
-    }
-    
     
 }
 

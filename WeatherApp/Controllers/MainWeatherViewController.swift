@@ -13,22 +13,30 @@ import CoreLocation
 
 final class MainWeatherViewController: UIViewController {
     
+  
     private var backgroundView = BackgroundView()
     
     private var currentWeatherModel: CurrentWeatherModel?
     
     private let weatherManager = WeatherManager.shared
     
-    private let weatherService = WeatherService()
+    private var weatherKit: Weather?
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
+    
+    private var hourlyCast = HourlyCell()
+    
+    let customLayout = UICollectionViewLayout()
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.addSubview(backgroundView)
         configureCollectionView()
-        weatherManager.fetchWeather(cityName: "seoul") {_ in}
+        weatherManager.fetchWeather(lat: 30, lon: 100)
+        getWeather(location: CLLocation(latitude: 30, longitude: 100))
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,8 +45,7 @@ final class MainWeatherViewController: UIViewController {
     }
     
     func configureCollectionView() {
-        let customLayout = UICollectionViewLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
+     
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -70,14 +77,14 @@ extension MainWeatherViewController {
     func getWeather(location: CLLocation) {
         Task {
             do {
-                let result = try await weatherService.weather(for: location)
+                let weather = try await WeatherService.shared.weather(for: location)
+                weatherKit = weather
+                collectionView.reloadData()
             } catch {
                 print(String(describing: error))
             }
         }
     }
-    
-    
 }
 
 // MARK: - Location Delegate
@@ -91,9 +98,10 @@ extension MainWeatherViewController: CLLocationManagerDelegate {
         
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if !locations.isEmpty, currentLocation == nil {
-            currentLocation = locations.first
+     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
+        if let location = locations.first {
+            currentLocation = location
+            getWeather(location: location)
             locationManager.stopUpdatingLocation()
             requestWeatherForLocation()
         }
@@ -101,9 +109,9 @@ extension MainWeatherViewController: CLLocationManagerDelegate {
     
     func requestWeatherForLocation() {
         guard let currentLocation = currentLocation else { return }
-        let long = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
-        print("\(long) | \(lat)")
+        let lon = currentLocation.coordinate.longitude
+        print(lat, lon)
     }
 }
 
@@ -120,9 +128,9 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         
         switch section {
         case 0:
-            return 8
+            return 12
         default:
-            return 7
+            return 6
         }
     }
     
@@ -130,15 +138,16 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-                        weatherManager.fetchWeather(cityName: "seoul") { listArray in
-                            cell.forecastWeather = listArray[indexPath.item]
-                        }
+            if let weatherKit = weatherKit {
+                cell.configWeather(with: weatherKit.hourlyForecast[indexPath.item])
+            }
             return cell
+
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-                        weatherManager.fetchWeather(cityName: "seoul") { listArray in
-                            cell.forecastWeather = listArray[indexPath.item]
-                        }
+            if let weatherKit = weatherKit {
+                cell.configWeather(with: weatherKit.dailyForecast[indexPath.item])
+            }
             return cell
         }
     }
