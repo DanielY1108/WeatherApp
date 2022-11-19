@@ -10,10 +10,19 @@ import Foundation
 struct Constants {
     
     struct ID {
-        static let headerID = "headerId"
-        static let categoryHeaderID = "categoryHeaderID"
-      
-        static let dailyID = "dailyCell"
-        static let hourlyID = "hourlyCell"
+        static let headerID = "Header_ID"
+        static let categoryHeaderID = "Category_Header_ID"
+        
+        static let dailyID = "Daily_Cell"
+        static let hourlyID = "Hourly_Cell"
+        
+        static let menuID = "Menu_Cell"
     }
+    
+    
+}
+let url1 = "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}&units=metric"
+enum Search {
+    case city
+    case coordinate
 }

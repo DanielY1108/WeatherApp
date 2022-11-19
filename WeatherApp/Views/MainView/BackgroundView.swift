@@ -40,7 +40,7 @@ final class BackgroundView: UIView {
 import SwiftUI
 
 #if DEBUG
-struct PreView9: PreviewProvider {
+struct PreView2: PreviewProvider {
     static var previews: some View {
         MainWeatherViewController()
             .toPreview()
