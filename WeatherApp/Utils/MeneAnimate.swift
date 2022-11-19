@@ -7,13 +7,18 @@
 
 import UIKit
 
+enum MenuAction {
+    case show
+    case hide
+}
+
 struct MenuAnimate {
     // 슬라이드 확인 여부를 Bool로 처리
     var menu: Bool
     // 새로운 그리는 좌표를 구하는데 필요하다
     var home: CGAffineTransform
     
-    mutating func showMenu(view: UIView, with collectionView: UICollectionView) {
+    mutating func showMenu(menuList: UITableView, view: UIView, with collectionView: UICollectionView) {
         let x = view.bounds.width * 0.3
         let originalTransform = collectionView.transform
         let scaledTransform = originalTransform.scaledBy(x: 0.9, y: 0.9)
@@ -25,7 +30,7 @@ struct MenuAnimate {
         self.menu = true
     }
     
-    mutating func hideMenu(collectionView: UICollectionView, defualtSize: CGAffineTransform) {
+    mutating func hideMenu(menuList: UITableView, view: UIView ,collectionView: UICollectionView, defualtSize: CGAffineTransform) {
         UIView.animate(withDuration: 0.7) {
             collectionView.transform = defualtSize
         }

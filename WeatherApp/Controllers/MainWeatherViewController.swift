@@ -18,7 +18,7 @@ final class MainWeatherViewController: UIViewController {
     private var currentWeatherModel: CurrentWeatherModel?
     private let weatherManager = WeatherManager.shared
     private let locationManager = LocationManager.shared
-        
+    
     private let customLayout = UICollectionViewLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
     
@@ -42,10 +42,20 @@ final class MainWeatherViewController: UIViewController {
         configMenuTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //        locationManager.setupLocation()
-        //        defaultWeather()
+        //                locationManager.setupLocation()
+        //                defaultWeather()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     // 레이아웃 및 서브뷰 관리
@@ -58,12 +68,13 @@ final class MainWeatherViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         menuTableView.snp.makeConstraints { make in
-            make.bottom.trailing.equalTo(backgroundView)
-            make.top.leading.equalTo(backgroundView).inset(25)
+            make.top.equalTo(backgroundView).offset(80)
+            make.leading.equalTo(backgroundView).inset(25)
+            make.trailing.bottom.equalTo(backgroundView)
         }
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(menuTableView)
-            make.bottom.equalTo(backgroundView).inset(70)
+            make.bottom.equalTo(backgroundView).inset(80)
             make.leading.equalTo(menuTableView)
             make.trailing.equalTo(backgroundView).inset(25)
         }
@@ -83,14 +94,25 @@ final class MainWeatherViewController: UIViewController {
         menuTableView.addGestureRecognizer(swipeGestureRight)
         swipeGestureLeft.direction = .left
     }
+    func menuSwipeAnimate(action: MenuAction) {
+        switch action {
+        case .show:
+            menuAnimate.showMenu(menuList: menuTableView, view: self.view, with: collectionView)
+        case .hide:
+            menuAnimate.hideMenu(menuList: menuTableView,view: self.view ,collectionView: collectionView, defualtSize: menuAnimate.home)
+        }
+        
+        
+        
+    }
     @objc func showMenu(_ sender: UISwipeGestureRecognizer) {
         if menuAnimate.menu == false && sender.direction == .right {
-            menuAnimate.showMenu(view: self.view, with: collectionView)
+            menuSwipeAnimate(action: .show)
         }
     }
     @objc func hideMenu(_ sender: UISwipeGestureRecognizer) {
         if menuAnimate.menu == true && sender.direction == .left {
-            menuAnimate.hideMenu(collectionView: collectionView, defualtSize: menuAnimate.home)
+            menuSwipeAnimate(action: .hide)
         }
     }
     
@@ -148,11 +170,13 @@ extension MainWeatherViewController: UITableViewDelegate {
             
             switch menuList[indexPath.row].segue {
             case .main:
-                menuAnimate.hideMenu(collectionView: collectionView, defualtSize: menuAnimate.home)
+                menuSwipeAnimate(action: .hide)
             case .myList:
                 navigationController?.show(MyListViewController(), sender: self)
+                menuSwipeAnimate(action: .hide)
             case .setting:
                 navigationController?.show(SettingViewController(), sender: self)
+                menuSwipeAnimate(action: .hide)
             }
             print(menuList[indexPath.row].segue)
         }
