@@ -97,9 +97,9 @@ final class MainWeatherViewController: UIViewController {
     func menuSwipeAnimate(action: MenuAction) {
         switch action {
         case .show:
-            menuAnimate.showMenu(with: menuTableView, and: collectionView)
+            menuAnimate.showMenu(with: menuTableView)
         case .hide:
-            menuAnimate.hideMenu(with: menuTableView, and: collectionView)
+            menuAnimate.hideMenu(with: menuTableView)
         }
     }
     @objc func showMenu(_ sender: UISwipeGestureRecognizer) {
