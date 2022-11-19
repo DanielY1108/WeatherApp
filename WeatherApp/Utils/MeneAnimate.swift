@@ -15,24 +15,24 @@ enum MenuAction {
 struct MenuAnimate {
     // 슬라이드 확인 여부를 Bool로 처리
     var menu: Bool
-    // 새로운 그리는 좌표를 구하는데 필요하다
-    var home: CGAffineTransform
     
-    mutating func showMenu(menuList: UITableView, view: UIView, with collectionView: UICollectionView) {
-        let x = view.bounds.width * 0.3
-        let originalTransform = collectionView.transform
-        let scaledTransform = originalTransform.scaledBy(x: 0.9, y: 0.9)
+    mutating func showMenu(with tableView: UITableView, and collectionView: UICollectionView) {
+        let x = tableView.bounds.width * 0.32
+        let originalTransform = tableView.transform
+        let scaledTransform = originalTransform.scaledBy(x: 0.85, y: 0.85)
         let scaledAndTranslatedTransform = scaledTransform.translatedBy(x: x, y: 0)
         
         UIView.animate(withDuration: 0.7) {
-            collectionView.transform = scaledAndTranslatedTransform
+            tableView.transform = scaledAndTranslatedTransform
         }
         self.menu = true
     }
     
-    mutating func hideMenu(menuList: UITableView, view: UIView ,collectionView: UICollectionView, defualtSize: CGAffineTransform) {
+    mutating func hideMenu(with tableView: UITableView ,and collectionView: UICollectionView) {
+        
         UIView.animate(withDuration: 0.7) {
-            collectionView.transform = defualtSize
+            
+            tableView.transform = .identity
         }
         self.menu = false
     }
