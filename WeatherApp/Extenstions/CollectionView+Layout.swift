@@ -18,7 +18,7 @@ extension UICollectionViewLayout {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
                 
-                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(270)), elementKind: Constants.ID.categoryHeaderID, alignment: .top)
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(230)), elementKind: Constants.ID.categoryHeaderID, alignment: .top)
                 
                 sectionHeader.pinToVisibleBounds = true
                 

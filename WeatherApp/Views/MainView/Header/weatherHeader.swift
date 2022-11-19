@@ -74,7 +74,7 @@ final class weatherHeader: UICollectionReusableView {
     
     private func configureLayout() {
         topSideStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(50)
+            make.top.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(20)
         }
         

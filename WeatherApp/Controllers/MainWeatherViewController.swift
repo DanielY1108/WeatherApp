@@ -7,36 +7,94 @@
 
 import UIKit
 import SnapKit
-import WeatherKit
 import CoreLocation
-
 
 final class MainWeatherViewController: UIViewController {
     
-    private var backgroundView = BackgroundView()
+    private let menuTableView = UITableView()
+    
+    private let backgroundView = BackgroundView()
     
     private var currentWeatherModel: CurrentWeatherModel?
     private let weatherManager = WeatherManager.shared
     private let locationManager = LocationManager.shared
+        
+    private let customLayout = UICollectionViewLayout()
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
     
-    let customLayout = UICollectionViewLayout()
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
+    private lazy var menuAnimate = MenuAnimate(menu: false, home: collectionView.transform)
+    lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
+    lazy var swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
+    
+    private var menuList: [Menu] = [
+        Menu(title: "Main", segue: .main),
+        Menu(title: "MyList", segue: .myList),
+        Menu(title: "Setting", segue: .setting)
+    ]
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.addSubview(backgroundView)
+        configUI()
+        configSwipeGesture()
         configureCollectionView()
+        configMenuTableView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        locationManager.setupLocation()
-        defaultWeather()
+        //        locationManager.setupLocation()
+        //        defaultWeather()
     }
     
+    // 레이아웃 및 서브뷰 관리
+    func configUI() {
+        self.view.addSubview(backgroundView)
+        self.backgroundView.addSubview(menuTableView)
+        self.menuTableView.addSubview(collectionView)
+        
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        menuTableView.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(backgroundView)
+            make.top.leading.equalTo(backgroundView).inset(25)
+        }
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(menuTableView)
+            make.bottom.equalTo(backgroundView).inset(70)
+            make.leading.equalTo(menuTableView)
+            make.trailing.equalTo(backgroundView).inset(25)
+        }
+    }
+    // 메뉴바
+    func configMenuTableView() {
+        menuTableView.delegate = self
+        menuTableView.dataSource = self
+        menuTableView.backgroundColor = .clear
+        menuTableView.separatorStyle = .none
+        menuTableView.register(MenuCell.self, forCellReuseIdentifier: Constants.ID.menuID)
+    }
+    
+    // 제스처 애니매이션
+    func configSwipeGesture() {
+        menuTableView.addGestureRecognizer(swipeGestureLeft)
+        menuTableView.addGestureRecognizer(swipeGestureRight)
+        swipeGestureLeft.direction = .left
+    }
+    @objc func showMenu(_ sender: UISwipeGestureRecognizer) {
+        if menuAnimate.menu == false && sender.direction == .right {
+            menuAnimate.showMenu(view: self.view, with: collectionView)
+        }
+    }
+    @objc func hideMenu(_ sender: UISwipeGestureRecognizer) {
+        if menuAnimate.menu == true && sender.direction == .left {
+            menuAnimate.hideMenu(collectionView: collectionView, defualtSize: menuAnimate.home)
+        }
+    }
+    
+    // 콜렉션뷰
     func configureCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -48,21 +106,60 @@ final class MainWeatherViewController: UIViewController {
         
         collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
         collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
-        
-        self.backgroundView.addSubview(collectionView)
-        
-        backgroundView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(backgroundView)
-            make.bottom.leading.trailing.equalTo(backgroundView).inset(20)
-        }
     }
     
     func defaultWeather() {
         weatherManager.fetchFromWeatherAPI(lat: 37.566535, lon: 126.97796919999996)
         weatherManager.fetchFromWeatherKit(collectionView, location: CLLocation(latitude: 37.566535, longitude: 126.97796919999996))
+    }
+}
+
+
+
+// MARK: - Menu TableView DataSource
+
+extension MainWeatherViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return menuList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.menuID, for: indexPath) as! MenuCell
+        cell.backgroundColor = .clear
+        cell.titleLabel.text = menuList[indexPath.row].title
+        cell.titleLabel.textColor = .white
+        cell.selectionStyle = .none
+        
+        return cell
+    }
+}
+
+// MARK: - Menu TableView Delegate
+
+extension MainWeatherViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let currentCell = (tableView.cellForRow(at: indexPath) ?? UITableViewCell())
+            
+            currentCell.alpha = 0.5
+            UIView.animate(withDuration: 1) {
+                currentCell.alpha = 1
+            }
+            
+            switch menuList[indexPath.row].segue {
+            case .main:
+                menuAnimate.hideMenu(collectionView: collectionView, defualtSize: menuAnimate.home)
+            case .myList:
+                navigationController?.show(MyListViewController(), sender: self)
+            case .setting:
+                navigationController?.show(SettingViewController(), sender: self)
+            }
+            print(menuList[indexPath.row].segue)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }
 
@@ -80,7 +177,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         case 0:
             return 12
         default:
-            return 6
+            return 7
         }
     }
     
@@ -114,13 +211,15 @@ extension MainWeatherViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension MainWeatherViewController: UICollectionViewDelegate  {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let controller =  UIViewController()
-        controller.view.backgroundColor = indexPath.section == 0 ? .yellow : .red
-        present(controller, animated: true)
-    }
+    //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    //        let controller =  UIViewController()
+    //        controller.view.backgroundColor = indexPath.section == 0 ? .yellow : .red
+    //        present(controller, animated: true)
+    //    }
     
 }
+
+
 
 
 
