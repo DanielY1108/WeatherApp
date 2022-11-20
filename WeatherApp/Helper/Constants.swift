@@ -17,12 +17,18 @@ struct Constants {
         static let hourlyID = "Hourly_Cell"
         
         static let menuID = "Menu_Cell"
+        
+        static let myListID = "MyList_ID"
+        static let resultID = "Result_ID"
+
     }
     
     
 }
-let url1 = "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}&units=metric"
+
 enum Search {
     case city
     case coordinate
 }
+
+

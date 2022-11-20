@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class MenuCell: UITableViewCell {
+final class MenuListCell: UITableViewCell {
 
     let titleLabel = Utilities().configLabel(font: 20, weight: .regular)
     

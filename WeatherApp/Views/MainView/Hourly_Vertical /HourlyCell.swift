@@ -15,7 +15,7 @@ final class HourlyCell: UICollectionViewCell {
     private let hourLabel = Utilities().configLabel(font: 16, weight: .regular)
     private let currentTemp = Utilities().configLabel(font: 16, weight: .regular)
     // 이미지
-    private let weatherImg = Utilities().configImange(name: "thermometer.high", of: .system)
+    private let weatherImg = Utilities().configImange(format: .system, name: "thermometer.high")
     // 스택뷰
     private lazy var stackView = Utilities().configStackView([hourLabel ,weatherImg ,currentTemp], axis: .vertical, alignment: .center)
 

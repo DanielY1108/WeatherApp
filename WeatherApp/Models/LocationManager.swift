@@ -14,6 +14,56 @@ final class LocationManager: NSObject{
     private let locationManager = CLLocationManager()
     var location: CLLocation?
 }
+
+
+// MARK: - City list
+
+extension LocationManager {
+    func fetchGeoLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (CityModel) -> Void) {
+        let url = WeatherAPI.coordinate(lat, lon).getGeoURLComponent
+        self.perfomRequest(url) { result in
+            completion(result)
+        }
+    }
+    func fetchGeoLocation(name: String, completion: @escaping (CityModel) -> Void) {
+        let url = WeatherAPI.city(name).getGeoURLComponent
+        self.perfomRequest(url) { result in
+            completion(result)
+        }
+    }
+    
+    private func perfomRequest(_ urlComponent: URLComponents, completion: @escaping (CityModel) -> Void) {
+        guard let url = urlComponent.url else { return }
+        print(url)
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if error != nil {
+                debugPrint("Error URL: \(error!)")
+            }
+            guard let safeData = data else {
+                debugPrint("Error get Data: \(data!)")
+                return
+            }
+            if let cityModel = self.parseJSON(safeData) {
+                completion(cityModel)
+            }
+        }
+        task.resume()
+    }
+    
+    private func parseJSON(_ data: Data) -> CityModel? {
+        do {
+            let decodeData = try JSONDecoder().decode(CityModel.self, from: data)
+            return decodeData
+        } catch {
+            print("Error Parse: \(error)")
+            return nil
+        }
+      
+    }
+}
+
+
+
 // MARK: - Location Delegate
 
 extension LocationManager: CLLocationManagerDelegate {

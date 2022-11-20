@@ -20,7 +20,7 @@ final class MainWeatherViewController: UIViewController {
     private let locationManager = LocationManager.shared
     
     private let customLayout = UICollectionViewLayout()
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createlLayout())
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
     
     private lazy var menuAnimate = MenuAnimate(menu: false)
     lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
@@ -48,14 +48,28 @@ final class MainWeatherViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-                        locationManager.setupLocation()
-                        defaultWeather()
+        super.viewDidAppear(true)
+//        locationManager.setupLocation()
+//        weatherManager.defaultWeather(reload: collectionView)
+//        weatherManager.fetchFromWeatherAPI(name: "서울")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    // 콜렉션뷰
+    func configureCollectionView() {
+        collectionView.dataSource = self
+        
+        collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        
+        collectionView.register(weatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
+        
+        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
+        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
     }
     
     // 레이아웃 및 서브뷰 관리
@@ -79,21 +93,27 @@ final class MainWeatherViewController: UIViewController {
             make.trailing.equalTo(backgroundView).inset(25)
         }
     }
-    // 메뉴바
+}
+
+
+// MARK: - SwipeGesture & menuList & Animate
+
+extension MainWeatherViewController {
+    // 메뉴리스트
     func configMenuTableView() {
         menuTableView.delegate = self
         menuTableView.dataSource = self
         menuTableView.backgroundColor = .clear
         menuTableView.separatorStyle = .none
-        menuTableView.register(MenuCell.self, forCellReuseIdentifier: Constants.ID.menuID)
+        menuTableView.register(MenuListCell.self, forCellReuseIdentifier: Constants.ID.menuID)
     }
-    
-    // 제스처 애니매이션
+    // 제스처
     func configSwipeGesture() {
         menuTableView.addGestureRecognizer(swipeGestureLeft)
         menuTableView.addGestureRecognizer(swipeGestureRight)
         swipeGestureLeft.direction = .left
     }
+    // 애니메이션
     func menuSwipeAnimate(action: MenuAction) {
         switch action {
         case .show:
@@ -112,29 +132,7 @@ final class MainWeatherViewController: UIViewController {
             menuSwipeAnimate(action: .hide)
         }
     }
-    
-    // 콜렉션뷰
-    func configureCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-        collectionView.backgroundColor = .clear
-        collectionView.showsVerticalScrollIndicator = false
-        
-        collectionView.register(weatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
-        
-        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
-        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
-    }
-    
-    func defaultWeather() {
-        weatherManager.fetchFromWeatherAPI(lat: 37.566535, lon: 126.97796919999996)
-        weatherManager.fetchFromWeatherKit(collectionView, location: CLLocation(latitude: 37.566535, longitude: 126.97796919999996))
-    }
 }
-
-
-
 
 // MARK: - Menu TableView DataSource
 
@@ -144,11 +142,11 @@ extension MainWeatherViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.menuID, for: indexPath) as! MenuCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.menuID, for: indexPath) as! MenuListCell
         cell.backgroundColor = .clear
-        cell.titleLabel.text = menuList[indexPath.row].title
         cell.titleLabel.textColor = .white
         cell.selectionStyle = .none
+        cell.titleLabel.text = menuList[indexPath.row].title
         
         return cell
     }
@@ -230,16 +228,6 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: - UICollectionViewDelegate
-
-extension MainWeatherViewController: UICollectionViewDelegate  {
-    //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    //        let controller =  UIViewController()
-    //        controller.view.backgroundColor = indexPath.section == 0 ? .yellow : .red
-    //        present(controller, animated: true)
-    //    }
-    
-}
 
 
 

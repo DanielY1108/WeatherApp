@@ -22,20 +22,19 @@ class WeatherManager {
 // MARK: - Get from OpenWeatherMap
 extension WeatherManager {
     func fetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        let urlComponent = API.coordinate(lat, lon).getURLComponent
+        let urlComponent = WeatherAPI.coordinate(lat, lon).getWeatherURLComponent
         self.performRequset(urlComponent)
         debugPrint(urlComponent)
     }
 
     func fetchFromWeatherAPI(name: String) {
-        let urlComponent = API.city(name).getURLComponent
+        let urlComponent = WeatherAPI.city(name).getWeatherURLComponent
         self.performRequset(urlComponent)
         debugPrint(urlComponent)
     }
     
     private func performRequset(_ urlComponent: URLComponents) {
         guard let url = urlComponent.url else { return }
-        
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if error != nil {
                 print("Error URL: \(error!)")
@@ -67,7 +66,7 @@ extension WeatherManager {
 // MARK: - Get from WeatherKit
 extension WeatherManager {
 
-    func fetchFromWeatherKit(_ collectionView: UICollectionView, location: CLLocation) {
+    func fetchFromWeatherKit(reload collectionView: UICollectionView, location: CLLocation) {
         Task {
             do {
                 let weather = try await WeatherService.shared.weather(for: location)
@@ -79,4 +78,12 @@ extension WeatherManager {
         }
     }
     
+}
+
+// 기본 날씨
+extension WeatherManager {
+    func defaultWeather(reload collectionView: UICollectionView) {
+        fetchFromWeatherAPI(lat: 37.566535, lon: 126.97796919999996)
+        fetchFromWeatherKit(reload: collectionView, location: CLLocation(latitude: 37.566535, longitude: 126.97796919999996))
+    }
 }

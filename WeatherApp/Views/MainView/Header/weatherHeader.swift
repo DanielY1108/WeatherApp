@@ -25,14 +25,14 @@ final class weatherHeader: UICollectionReusableView {
     private let sunsetLabel = Utilities().configLabel(font: 15, weight: .regular)
 
     // 이미지
-    private let highTempImg = Utilities().configImange(name: "thermometer.high", of: .system)
-    private let lowTempImg = Utilities().configImange(name: "thermometer.low", of: .system)
-    private let LocationImg = Utilities().configImange(name: "CurrentLocation.png", of: .user)
-    private let pressureImg = Utilities().configImange(name: "speedometer", of: .system)
-    private let windSpeedImg = Utilities().configImange(name: "wind", of: .system)
-    private let humidityImg = Utilities().configImange(name: "humidity", of: .system)
-    private let sunsetImg = Utilities().configImange(name: "sunset.fill", of: .system)
-    private let sunriseImg = Utilities().configImange(name: "sunrise.fill", of: .system)
+    private let highTempImg = Utilities().configImange(format: .system, name: "thermometer.high")
+    private let lowTempImg = Utilities().configImange(format: .system, name: "thermometer.low")
+    private let LocationImg = Utilities().configImange(format: .user, name: "CurrentLocation.png")
+    private let pressureImg = Utilities().configImange(format: .system, name: "speedometer")
+    private let windSpeedImg = Utilities().configImange(format: .system, name: "wind")
+    private let humidityImg = Utilities().configImange(format: .system, name: "humidity")
+    private let sunsetImg = Utilities().configImange(format: .system, name: "sunset.fill")
+    private let sunriseImg = Utilities().configImange(format: .system, name: "sunrise.fill")
 
     // 스택뷰
     private lazy var topSideStackView = Utilities().configStackView([tempLabel, weatherStatueLabel, highLowStackView], axis: .vertical)

@@ -16,7 +16,7 @@ final class DailyCell: UICollectionViewCell {
     private let highTempLabel = Utilities().configLabel(font: 16, weight: .regular)
     private let lowTempLabel = Utilities().configLabel(font: 16, weight: .regular)
     // 이미지
-    private let weatherImg = Utilities().configImange(name: "thermometer.high", of: .system)
+    private let weatherImg = Utilities().configImange(format: .system, name: "thermometer.high")
     // 스택뷰
     private lazy var stackViewLeftSide = Utilities().configStackView([dayLabel ,weatherImg], axis: .horizontal, distribution: .equalCentering)
     private lazy var stackViewRightSide = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering)

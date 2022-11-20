@@ -9,7 +9,7 @@ import UIKit
 
 extension UICollectionViewLayout {
 
-    func createlLayout() -> UICollectionViewLayout {
+    func createMainLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionNumber, env in
             // section 1
             if sectionNumber == 0 {
@@ -39,6 +39,17 @@ extension UICollectionViewLayout {
         }
         return layout
     }
+    
+    func createListLayout() -> UICollectionViewLayout {
+        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(120)), subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets.top = 10
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    }
 }
 
 
@@ -48,7 +59,7 @@ import SwiftUI
 #if DEBUG
 struct PreView6: PreviewProvider {
     static var previews: some View {
-        MainWeatherViewController()
+        MyListViewController()
             .toPreview()
     }
 }

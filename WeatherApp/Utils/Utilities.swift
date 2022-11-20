@@ -21,9 +21,9 @@ struct Utilities {
         return label
     }
     
-    func configImange(name: String, of: ImageFormat) -> UIImageView {
+    func configImange(format: ImageFormat, name: String) -> UIImageView {
         let view = UIImageView()
-        switch of {
+        switch format {
         case .user:
             view.image = UIImage(named: name)
         case .system:
