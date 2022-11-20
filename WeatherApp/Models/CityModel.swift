@@ -20,3 +20,5 @@ struct CityModel: Codable {
 
     }
 }
+
+typealias Cities = [CityModel]

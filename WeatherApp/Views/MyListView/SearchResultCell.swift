@@ -10,6 +10,9 @@ import UIKit
 class SearchResultCell: UITableViewCell {
 
     let cityNameLabel = Utilities().configLabel(font: 18, weight: .regular)
+    let countyNameLabel = Utilities().configLabel(font: 18, weight: .regular)
+    
+    private lazy var stackView = Utilities().configStackView([cityNameLabel, countyNameLabel], axis: .horizontal, distribution: .equalSpacing)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
@@ -22,11 +25,11 @@ class SearchResultCell: UITableViewCell {
     }
     
     func configUI() {
-        self.addSubview(cityNameLabel)
+        self.addSubview(stackView)
         
         cityNameLabel.text = "cityNameLabel"
     
-        cityNameLabel.snp.makeConstraints { make in
+        stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }

@@ -51,7 +51,9 @@ final class MainWeatherViewController: UIViewController {
         super.viewDidAppear(true)
 //        locationManager.setupLocation()
 //        weatherManager.defaultWeather(reload: collectionView)
-//        weatherManager.fetchFromWeatherAPI(name: "서울")
+        locationManager.fetchGeoLocation(name: "seoul") { CityModel in
+            
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

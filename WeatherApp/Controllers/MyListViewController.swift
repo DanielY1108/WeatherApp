@@ -54,10 +54,8 @@ extension MyListViewController: UICollectionViewDataSource {
 extension MyListViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        print(searchController.searchBar.text ?? "")
-        if let text = searchController.searchBar.text {
-            print(text)
-        }
+        let searchVC = searchController.searchResultsController as! SearchResultController
+        searchVC.searchStr = searchController.searchBar.text ?? ""
     }
     
     func setupSearchBar() {

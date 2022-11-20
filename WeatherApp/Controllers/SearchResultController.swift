@@ -13,9 +13,32 @@ class SearchResultController: UIViewController {
     private let tavleView = UITableView(frame: .zero)
     private let locationManager = LocationManager.shared
     
+    private var cityArray: [CityModel] = []
+    
+    var searchStr: String? {
+        didSet {
+            scanCity()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .systemBackground
         configTableView()
+    }
+    
+    func scanCity() {
+        guard let search = searchStr?.lowercased() else { return }
+        guard search != "" else {
+            cityArray = []
+            return
+        }
+        locationManager.fetchGeoLocation(name: search) { Cities in
+            self.cityArray.append(contentsOf: Cities)
+            DispatchQueue.main.async {
+                self.tavleView.reloadData()
+            }
+        }
     }
     
     func configTableView() {
@@ -23,7 +46,6 @@ class SearchResultController: UIViewController {
         self.tavleView.register(SearchResultCell.self, forCellReuseIdentifier: Constants.ID.resultID)
         self.tavleView.dataSource = self
         self.tavleView.delegate = self
-        view.backgroundColor = .lightGray
         tavleView.backgroundColor = .clear
         
         tavleView.snp.makeConstraints { make in
@@ -35,12 +57,15 @@ class SearchResultController: UIViewController {
 
 extension SearchResultController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return cityArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.resultID, for: indexPath) as! SearchResultCell
+        cell.cityNameLabel.text = self.cityArray[indexPath.row].name
+        cell.countyNameLabel.text = self.cityArray[indexPath.row].country
         return cell
+        
     }
     
     
@@ -49,7 +74,7 @@ extension SearchResultController: UITableViewDataSource {
 extension SearchResultController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-       
+        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50

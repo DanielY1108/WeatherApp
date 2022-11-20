@@ -19,20 +19,20 @@ final class LocationManager: NSObject{
 // MARK: - City list
 
 extension LocationManager {
-    func fetchGeoLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (CityModel) -> Void) {
+    func fetchGeoLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (Cities) -> Void) {
         let url = WeatherAPI.coordinate(lat, lon).getGeoURLComponent
         self.perfomRequest(url) { result in
             completion(result)
         }
     }
-    func fetchGeoLocation(name: String, completion: @escaping (CityModel) -> Void) {
+    func fetchGeoLocation(name: String, completion: @escaping (Cities) -> Void) {
         let url = WeatherAPI.city(name).getGeoURLComponent
         self.perfomRequest(url) { result in
             completion(result)
         }
     }
     
-    private func perfomRequest(_ urlComponent: URLComponents, completion: @escaping (CityModel) -> Void) {
+    private func perfomRequest(_ urlComponent: URLComponents, completion: @escaping (Cities) -> Void) {
         guard let url = urlComponent.url else { return }
         print(url)
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -50,9 +50,9 @@ extension LocationManager {
         task.resume()
     }
     
-    private func parseJSON(_ data: Data) -> CityModel? {
+    private func parseJSON(_ data: Data) -> Cities? {
         do {
-            let decodeData = try JSONDecoder().decode(CityModel.self, from: data)
+            let decodeData = try JSONDecoder().decode(Cities.self, from: data)
             return decodeData
         } catch {
             print("Error Parse: \(error)")
