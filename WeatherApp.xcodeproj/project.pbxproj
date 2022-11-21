@@ -30,6 +30,7 @@
 		65A0CEEB292A28AC00D6E862 /* SearchLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEEA292A28AC00D6E862 /* SearchLocationController.swift */; };
 		65A0CEED292A2DE900D6E862 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEEC292A2DE900D6E862 /* SearchCell.swift */; };
 		65A0CEF1292B53CF00D6E862 /* UILabel+Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEF0292B53CF00D6E862 /* UILabel+Highlight.swift */; };
+		65A0CEF9292B8AE400D6E862 /* KeyboardEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEF8292B8AE400D6E862 /* KeyboardEvent.swift */; };
 		65EB5B35292248B600ADF406 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65EB5B34292248B600ADF406 /* SnapKit */; };
 		65F0CF312928E41B005C57F2 /* MenuAnimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F0CF302928E41B005C57F2 /* MenuAnimate.swift */; };
 		65F0CF3429294400005C57F2 /* MyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F0CF3329294400005C57F2 /* MyListCell.swift */; };
@@ -66,6 +67,7 @@
 		65A0CEEA292A28AC00D6E862 /* SearchLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationController.swift; sourceTree = "<group>"; };
 		65A0CEEC292A2DE900D6E862 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		65A0CEF0292B53CF00D6E862 /* UILabel+Highlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Highlight.swift"; sourceTree = "<group>"; };
+		65A0CEF8292B8AE400D6E862 /* KeyboardEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardEvent.swift; sourceTree = "<group>"; };
 		65F0CF302928E41B005C57F2 /* MenuAnimate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAnimate.swift; sourceTree = "<group>"; };
 		65F0CF3329294400005C57F2 /* MyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListCell.swift; sourceTree = "<group>"; };
 		65FBC2B129279B5500B5AE35 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 			children = (
 				659C52DB292363FB00EEEA70 /* Utilities.swift */,
 				65F0CF302928E41B005C57F2 /* MenuAnimate.swift */,
+				65A0CEF8292B8AE400D6E862 /* KeyboardEvent.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				65FBC2C32927F7B600B5AE35 /* MenuList.swift in Sources */,
 				65A0CEEB292A28AC00D6E862 /* SearchLocationController.swift in Sources */,
 				65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */,
+				65A0CEF9292B8AE400D6E862 /* KeyboardEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

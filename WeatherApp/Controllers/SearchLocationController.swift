@@ -30,10 +30,10 @@ final class SearchLocationController: UIViewController {
         setupKeyboardEvent()
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
     private func configTableView() {
         self.view.addSubview(tavleView)
@@ -49,27 +49,9 @@ final class SearchLocationController: UIViewController {
 }
 
 // MARK: - Setup for keyboard show & hide animation(tableview height)
-
-extension SearchLocationController {
-    private func setupKeyboardEvent() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    @objc private func keyboardWillAppear(_ notification: Notification) {
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardRectangle = keyboardFrame.cgRectValue
-        let keyboardHeight = keyboardRectangle.height
-        
-        tavleView.snp.updateConstraints { make in
-            make.bottom.equalToSuperview().offset(-keyboardHeight)
-        }
-    }
-    @objc private func keyboardWillDisappear(_ notification: Notification) {
-        tavleView.snp.updateConstraints { make in
-            make.bottom.equalToSuperview()
-        }
-    }
+//
+extension SearchLocationController: KeyboardEvent {
+    var transformView: UIView { return tavleView }
 }
 
 // MARK: - MKLocalSearchCompleter

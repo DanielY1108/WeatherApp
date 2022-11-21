@@ -22,6 +22,8 @@ final class MyListViewController: UIViewController {
         setupSearchBar()
         configUI()
         configCollectionView()
+        setupKeyboardEvent()
+        
     }
     
     private func configCollectionView() {
@@ -36,7 +38,6 @@ final class MyListViewController: UIViewController {
             make.edges.equalTo(view)
         }
     }
- 
     
 }
 
@@ -52,7 +53,11 @@ extension MyListViewController: UICollectionViewDataSource {
     }
 }
 
-
+// MARK: - Setup for keyboard show & hide animation(tableview height)
+//
+extension MyListViewController: KeyboardEvent {
+    var transformView: UIView { return collectionView }
+}
 
 // MARK: - Setup SearchBar & UISearchResultsUpdating
 extension MyListViewController: UISearchResultsUpdating {
