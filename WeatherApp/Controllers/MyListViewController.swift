@@ -12,7 +12,9 @@ class MyListViewController: UIViewController {
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
     private let layout = UICollectionViewLayout()
-    private let searchController = UISearchController(searchResultsController: SearchResultController())
+    private let searchController = UISearchController(searchResultsController: SearchLocationController())
+    
+//    private var myListArray: [] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,11 +52,13 @@ extension MyListViewController: UICollectionViewDataSource {
     }
 }
 
+
+
 // MARK: - Setup SearchBar & UISearchResultsUpdating
 extension MyListViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        let searchVC = searchController.searchResultsController as! SearchResultController
+        let searchVC = searchController.searchResultsController as! SearchLocationController
         searchVC.searchStr = searchController.searchBar.text ?? ""
     }
     
