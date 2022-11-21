@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyListCell: UICollectionViewCell {
+final class MyListCell: UICollectionViewCell {
     private let mainview = UIView()
     
     private let locationLabel = Utilities().configLabel(font: 18, weight: .medium)

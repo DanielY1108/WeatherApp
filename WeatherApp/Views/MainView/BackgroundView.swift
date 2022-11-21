@@ -10,7 +10,7 @@ import SnapKit
 
 final class BackgroundView: UIView {
 
-    let backgruondImg = UIImageView()
+    private let backgruondImg = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,7 +26,7 @@ final class BackgroundView: UIView {
         configureImage()        
     }
     
-    func configureImage() {
+    private func configureImage() {
         backgruondImg.image = UIImage(named: "background.svg")
         backgruondImg.contentMode = .scaleAspectFit
         backgruondImg.snp.makeConstraints { make in

@@ -30,11 +30,11 @@ final class HourlyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureUI() {
+    private func configureUI() {
         self.addSubview(stackView)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }

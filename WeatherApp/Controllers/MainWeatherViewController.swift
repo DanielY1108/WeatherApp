@@ -60,7 +60,7 @@ final class MainWeatherViewController: UIViewController {
     }
     
     // 콜렉션뷰
-    func configureCollectionView() {
+    private func configureCollectionView() {
         collectionView.dataSource = self
         
         collectionView.backgroundColor = .clear
@@ -73,7 +73,7 @@ final class MainWeatherViewController: UIViewController {
     }
     
     // 레이아웃 및 서브뷰 관리
-    func configUI() {
+    private func configUI() {
         self.view.addSubview(backgroundView)
         self.backgroundView.addSubview(menuTableView)
         self.menuTableView.addSubview(collectionView)
@@ -100,7 +100,7 @@ final class MainWeatherViewController: UIViewController {
 
 extension MainWeatherViewController {
     // 메뉴리스트
-    func configMenuTableView() {
+    private func configMenuTableView() {
         menuTableView.delegate = self
         menuTableView.dataSource = self
         menuTableView.backgroundColor = .clear
@@ -108,13 +108,13 @@ extension MainWeatherViewController {
         menuTableView.register(MenuListCell.self, forCellReuseIdentifier: Constants.ID.menuID)
     }
     // 제스처
-    func configSwipeGesture() {
+    private func configSwipeGesture() {
         menuTableView.addGestureRecognizer(swipeGestureLeft)
         menuTableView.addGestureRecognizer(swipeGestureRight)
         swipeGestureLeft.direction = .left
     }
     // 애니메이션
-    func menuSwipeAnimate(action: MenuAction) {
+    private func menuSwipeAnimate(action: MenuAction) {
         switch action {
         case .show:
             menuAnimate.showMenu(with: menuTableView)

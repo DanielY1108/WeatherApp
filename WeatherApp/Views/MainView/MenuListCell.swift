@@ -21,7 +21,7 @@ final class MenuListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configUI() {
+    private func configUI() {
         self.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in

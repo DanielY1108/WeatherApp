@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MyListViewController: UIViewController {
+final class MyListViewController: UIViewController {
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
     private let layout = UICollectionViewLayout()
@@ -24,19 +24,19 @@ class MyListViewController: UIViewController {
         configCollectionView()
     }
     
-    func configCollectionView() {
+    private func configCollectionView() {
         collectionView.dataSource = self
-        
         collectionView.register(MyListCell.self, forCellWithReuseIdentifier: Constants.ID.myListID)
     }
     
-    func configUI() {
+    private func configUI() {
         self.view.addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
     }
+ 
     
 }
 
@@ -62,7 +62,7 @@ extension MyListViewController: UISearchResultsUpdating {
         searchVC.searchStr = searchController.searchBar.text ?? ""
     }
     
-    func setupSearchBar() {
+    private func setupSearchBar() {
         self.navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "Search City"
         searchController.searchBar.autocapitalizationType = .none
@@ -72,7 +72,7 @@ extension MyListViewController: UISearchResultsUpdating {
 
 // MARK: - Setup NavigationBar
 extension MyListViewController {
-    func configNavigationBar() {
+    private func configNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         
@@ -89,8 +89,8 @@ extension MyListViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
     }
     
-    @objc func tabBarButtonTapped() {
-        
+    @objc private func tabBarButtonTapped() {
+        searchController.searchBar.becomeFirstResponder()
     }
 }
 

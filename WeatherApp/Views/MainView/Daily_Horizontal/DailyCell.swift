@@ -33,12 +33,12 @@ final class DailyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureUI() {
+    private func configureUI() {
         self.addSubview(stackViewLeftSide)
         self.addSubview(stackViewRightSide)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         stackViewLeftSide.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview().inset(20)
             make.width.equalTo(80)

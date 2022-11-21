@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import MapKit
 
-class SearchLocationController: UIViewController {
+final class SearchLocationController: UIViewController {
     
     private let tavleView = UITableView(frame: .zero)
     
@@ -27,18 +27,47 @@ class SearchLocationController: UIViewController {
         self.view.backgroundColor = .systemBackground
         configTableView()
         configSearchCompleter()
+        setupKeyboardEvent()
     }
     
-    func configTableView() {
+//    override func viewWillDisappear(_ animated: Bool) {
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+    
+    private func configTableView() {
         self.view.addSubview(tavleView)
         self.tavleView.register(SearchCell.self, forCellReuseIdentifier: Constants.ID.resultID)
         self.tavleView.dataSource = self
         self.tavleView.delegate = self
         tavleView.backgroundColor = .clear
-        tavleView.showsVerticalScrollIndicator = false
         
         tavleView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(20)
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+// MARK: - Setup for keyboard show & hide animation(tableview height)
+
+extension SearchLocationController {
+    private func setupKeyboardEvent() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc private func keyboardWillAppear(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        let keyboardHeight = keyboardRectangle.height
+        
+        tavleView.snp.updateConstraints { make in
+            make.bottom.equalToSuperview().offset(-keyboardHeight)
+        }
+    }
+    @objc private func keyboardWillDisappear(_ notification: Notification) {
+        tavleView.snp.updateConstraints { make in
+            make.bottom.equalToSuperview()
         }
     }
 }
@@ -46,12 +75,12 @@ class SearchLocationController: UIViewController {
 // MARK: - MKLocalSearchCompleter
     
 extension SearchLocationController {
-    func configSearchCompleter() {
+    private func configSearchCompleter() {
         searchCompleter.delegate = self
         searchCompleter.resultTypes = .address
     }
     
-    func scanCity() {
+    private func scanCity() {
         guard let search = searchStr?.lowercased() else { return }
         searchCompleter.queryFragment = search
     }
@@ -109,7 +138,7 @@ extension SearchLocationController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return view.frame.height/15
     }
 }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchCell: UITableViewCell {
+final class SearchCell: UITableViewCell {
 
     let cityNameLabel = Utilities().configLabel(font: 18, weight: .regular)
     let countyNameLabel = Utilities().configLabel(font: 14, weight: .regular)
@@ -24,7 +24,7 @@ class SearchCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configUI() {
+    private func configUI() {
         self.addSubview(cityNameLabel)
         self.addSubview(countyNameLabel)
         
@@ -35,12 +35,12 @@ class SearchCell: UITableViewCell {
         countyNameLabel.text = "countyNameLabel"
         
         cityNameLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
             make.top.equalToSuperview().inset(5)
             make.height.equalToSuperview().multipliedBy(0.6)
         }
         countyNameLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(5)
             make.height.equalToSuperview().multipliedBy(0.2)
             
