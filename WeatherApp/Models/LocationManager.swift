@@ -13,60 +13,7 @@ final class LocationManager: NSObject{
     
     private let locationManager = CLLocationManager()
     var location: CLLocation?
-}
-
-
-// MARK: - City list
-
-extension LocationManager {
-    func fetchGeoLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (Cities) -> Void) {
-        let url = WeatherAPI.coordinate(lat, lon).getGeoURLComponent
-        self.perfomRequest(url) { result in
-            completion(result)
-        }
-    }
-    func fetchGeoLocation(name: String, completion: @escaping (Cities) -> Void) {
-        let url = WeatherAPI.city(name).getGeoURLComponent
-        self.perfomRequest(url) { result in
-            completion(result)
-        }
-    }
     
-    private func perfomRequest(_ urlComponent: URLComponents, completion: @escaping (Cities) -> Void) {
-        guard let url = urlComponent.url else { return }
-        print(url)
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if error != nil {
-                debugPrint("Error URL: \(error!)")
-            }
-            guard let safeData = data else {
-                debugPrint("Error get Data: \(data!)")
-                return
-            }
-            if let cityModel = self.parseJSON(safeData) {
-                completion(cityModel)
-            }
-        }
-        task.resume()
-    }
-    
-    private func parseJSON(_ data: Data) -> Cities? {
-        do {
-            let decodeData = try JSONDecoder().decode(Cities.self, from: data)
-            return decodeData
-        } catch {
-            print("Error Parse: \(error)")
-            return nil
-        }
-      
-    }
-}
-
-
-
-// MARK: - Location Delegate
-
-extension LocationManager: CLLocationManagerDelegate {
     func setupLocation() {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -81,7 +28,12 @@ extension LocationManager: CLLocationManagerDelegate {
             print(lat, lon)
         }
     }
-    
+}
+
+// MARK: - Location Delegate
+
+extension LocationManager: CLLocationManagerDelegate {
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
         if let location = locations.first {
             self.location = location

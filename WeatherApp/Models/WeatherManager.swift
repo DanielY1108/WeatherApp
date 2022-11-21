@@ -20,6 +20,7 @@ class WeatherManager {
 }
 
 // MARK: - Get from OpenWeatherMap
+
 extension WeatherManager {
     func fetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) {
         let urlComponent = WeatherAPI.coordinate(lat, lon).getWeatherURLComponent
@@ -64,6 +65,7 @@ extension WeatherManager {
 }
 
 // MARK: - Get from WeatherKit
+
 extension WeatherManager {
 
     func fetchFromWeatherKit(reload collectionView: UICollectionView, location: CLLocation) {

@@ -26,10 +26,10 @@ final class MainWeatherViewController: UIViewController {
     lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
     lazy var swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
     
-    private var menuList: [Menu] = [
-        Menu(title: "Main", segue: .main),
-        Menu(title: "MyList", segue: .myList),
-        Menu(title: "Setting", segue: .setting)
+    private var menuList: [MenuList] = [
+        MenuList(title: "Main", segue: .main),
+        MenuList(title: "MyList", segue: .myList),
+        MenuList(title: "Setting", segue: .setting)
     ]
     
     // MARK: - Life Cycle
@@ -50,10 +50,8 @@ final class MainWeatherViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
 //        locationManager.setupLocation()
-//        weatherManager.defaultWeather(reload: collectionView)
-        locationManager.fetchGeoLocation(name: "seoul") { CityModel in
-            
-        }
+        weatherManager.defaultWeather(reload: collectionView)
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {

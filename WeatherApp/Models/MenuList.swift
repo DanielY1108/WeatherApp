@@ -13,7 +13,7 @@ enum Segue {
     case setting
 }
 
-struct Menu {
+struct MenuList {
     var title: String
     var segue: Segue
 }
