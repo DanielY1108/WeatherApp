@@ -10,11 +10,11 @@ import UIKit
 final class MyListCell: UICollectionViewCell {
     private let mainview = UIView()
     
-    private let locationLabel = Utilities().configLabel(font: 18, weight: .medium)
-    private let weatherStatueLabel = Utilities().configLabel(font: 18, weight: .medium)
-    private let tempLabel = Utilities().configLabel(font: 40, weight: .medium)
-    private let highTempLabel = Utilities().configLabel(font: 18, weight: .medium)
-    private let lowTempLabel = Utilities().configLabel(font: 18, weight: .medium)
+     let locationLabel = Utilities().configLabel(font: 18, weight: .medium)
+     let weatherStatueLabel = Utilities().configLabel(font: 18, weight: .medium)
+     let tempLabel = Utilities().configLabel(font: 40, weight: .medium)
+     let highTempLabel = Utilities().configLabel(font: 18, weight: .medium)
+     let lowTempLabel = Utilities().configLabel(font: 18, weight: .medium)
     
     private let weatherImg = Utilities().configImange(format: .user, name: "2.svg")
     private let locationImg = Utilities().configImange(format: .user, name: "CurrentLocation.png")

@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import WeatherKit
 
 final class weatherHeader: UICollectionReusableView {
     
@@ -35,7 +36,7 @@ final class weatherHeader: UICollectionReusableView {
     private let sunriseImg = Utilities().configImange(format: .system, name: "sunrise.fill")
 
     // 스택뷰
-    private lazy var topSideStackView = Utilities().configStackView([tempLabel, weatherStatueLabel, highLowStackView], axis: .vertical)
+    private lazy var topSideStackView = Utilities().configStackView([tempLabel, weatherStatueLabel, highLowStackView], axis: .vertical, alignment: .leading)
     private lazy var BottomSideStackView = Utilities().configStackView([pressureStackView, windSpeedStackView, humidityStackView], axis: .horizontal, distribution: .equalSpacing)
 
     private lazy var hightStackView = Utilities().configStackView([highTempImg, highTempLabel], axis: .horizontal, distribution: .fillEqually)
@@ -100,8 +101,6 @@ extension weatherHeader: CurrentWeatherDelegate {
     func updateCurrentWeather(model: CurrentWeatherModel) {
         DispatchQueue.main.async {
             self.tempLabel.text = "\(model.tempStr)°"
-            self.highTempLabel.text = "\(model.tempMaxStr)°"
-            self.lowTempLabel.text = "\(model.tempMinStr)°"
             self.humidityLabel.text = "\(model.humidityStr) %"
             self.windSpeedLabel.text = "\(model.windSpeedStr) m/s"
             self.pressureLabel.text = "\(model.pressureStr) hPa"
@@ -110,6 +109,16 @@ extension weatherHeader: CurrentWeatherDelegate {
             self.sunriseLabel.text = model.sunriseStr
             self.sunsetLabel.text = model.sunsetStr
         }
+    }
+    
+    func configWeather(with dayWeather: DayWeather) {
+        let mf = MeasurementFormatter()
+        mf.unitOptions = .temperatureWithoutUnit
+        mf.numberFormatter.maximumFractionDigits = 0
+        
+        highTempLabel.text = "\(mf.string(from: dayWeather.highTemperature))"
+        lowTempLabel.text = "\(mf.string(from: dayWeather.lowTemperature))"
+
     }
 }
 

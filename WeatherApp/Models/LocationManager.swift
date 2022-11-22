@@ -6,13 +6,16 @@
 //
 
 import UIKit
+import MapKit
 import CoreLocation
 
 final class LocationManager: NSObject{
     static let shared = LocationManager()
     
     private let locationManager = CLLocationManager()
+    
     var location: CLLocation?
+//    var local = 
     
     func setupLocation() {
         locationManager.delegate = self
@@ -21,12 +24,9 @@ final class LocationManager: NSObject{
         locationManager.startUpdatingLocation()
     }
     
-    private func setupCoordinate() {
-        if let location = self.location {
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
-            print(lat, lon)
-        }
+    // 현제 위치 저장
+    func updateLocation(completion: () -> Void) {
+        completion()
     }
 }
 
@@ -36,9 +36,10 @@ extension LocationManager: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
         if let location = locations.first {
-            self.location = location
             locationManager.stopUpdatingLocation()
-            setupCoordinate()
+            updateLocation {
+                self.location = location
+            }
         }
     }
     

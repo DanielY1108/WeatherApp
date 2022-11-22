@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-final class MainWeatherViewController: UIViewController {
+class MainWeatherViewController: UIViewController {
     
     private let menuTableView = UITableView()
     
@@ -20,7 +20,7 @@ final class MainWeatherViewController: UIViewController {
     private let locationManager = LocationManager.shared
     
     private let customLayout = UICollectionViewLayout()
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
     
     private lazy var menuAnimate = MenuAnimate(menu: false)
     lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
@@ -50,8 +50,10 @@ final class MainWeatherViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
 //        locationManager.setupLocation()
-        weatherManager.defaultWeather(reload: collectionView)
-
+//        if let location = locationManager.location {
+//            weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
+//            weatherManager.fetchFromWeatherKit(reload: collectionView, location: location)
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -223,6 +225,9 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
         if let currentWeatherModel = currentWeatherModel {
             header.updateCurrentWeather(model: currentWeatherModel)
+        }
+        if let weatherKit = weatherManager.weatherKit {
+            header.configWeather(with: weatherKit.dailyForecast[indexPath.item])
         }
         return header
     }

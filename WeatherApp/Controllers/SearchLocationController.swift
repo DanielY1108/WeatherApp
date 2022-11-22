@@ -16,6 +16,8 @@ final class SearchLocationController: UIViewController {
     private var searchCompleter = MKLocalSearchCompleter()
     private var searchResults = [MKLocalSearchCompletion]()
     
+    private var locationManager = LocationManager.shared
+    
     var searchStr: String? {
         didSet {
             scanCity()
@@ -74,11 +76,12 @@ extension SearchLocationController: MKLocalSearchCompleterDelegate {
     // 자동완성 완료시 결과를 받는 함수
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         // completer.results를 통해 검색한 결과를 searchResults에 담아줍니다
-        searchResults = completer.results
-        tavleView.reloadData()
+            searchResults = completer.results
+            tavleView.reloadData()
+        
     }
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        print("Error Searchbar empty: \(error.localizedDescription)")
+        print(error.localizedDescription)
     }
 }
 
@@ -114,8 +117,15 @@ extension SearchLocationController: UITableViewDelegate {
         search.start { response, error in
             guard error == nil else { return }
             guard let placemark = response?.mapItems[0].placemark else { return }
+            self.locationManager.location = placemark.location
+//            self.locationManager.location = placemark.coordinate
+            
+            let subWeatherVC = SubWeatherController()
+            self.present(subWeatherVC, animated: true)
+            
             print("lat: \(placemark.coordinate.latitude), lon: \(placemark.coordinate.longitude), location: \(placemark.locality)")
         }
+      
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
