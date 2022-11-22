@@ -14,10 +14,10 @@ enum ImageFormat {
 
 // HeaderView Setting
 struct Utilities {
-    func configLabel(font: CGFloat, weight: UIFont.Weight) -> UILabel {
+    func configLabel(font: CGFloat, weight: UIFont.Weight, color: UIColor = .black) -> UILabel {
         let label = UILabel()
         label.font = .systemFont(ofSize: font, weight: weight)
-        label.textColor = .white
+        label.textColor = color
         return label
     }
     

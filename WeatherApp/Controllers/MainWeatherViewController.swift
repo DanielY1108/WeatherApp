@@ -123,9 +123,7 @@ extension MainWeatherViewController: UITableViewDataSource {
 
 extension MainWeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let currentCell = (tableView.cellForRow(at: indexPath) ?? UITableViewCell())
-            
+        if let indexPath = tableView.indexPathForSelectedRow {            
             switch menuList[indexPath.row].segue {
             case .main:
                 menuSwipeAnimate(action: .hide)

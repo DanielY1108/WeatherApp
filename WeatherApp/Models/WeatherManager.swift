@@ -13,7 +13,7 @@ protocol CurrentWeatherDelegate: AnyObject {
     func updateCurrentWeather(model: CurrentWeatherModel)
 }
 
-class WeatherManager {
+final class WeatherManager {
     static let shared = WeatherManager()
     var delegate: CurrentWeatherDelegate?
     var weatherKit: Weather?

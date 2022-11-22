@@ -9,13 +9,14 @@ import UIKit
 import MapKit
 import CoreLocation
 
-final class LocationManager: NSObject{
+
+final class LocationManager: NSObject {
     static let shared = LocationManager()
     
     private let locationManager = CLLocationManager()
     
     var location: CLLocation?
-    
+
     func setupLocation() {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()

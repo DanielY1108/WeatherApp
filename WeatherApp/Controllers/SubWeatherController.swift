@@ -7,13 +7,18 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 final class SubWeatherController: BaseViewController {
     
+    private let realmManager = RealmDataManager.shared
+    private let realmModel = RealmDataModel()
+       
     private let buttonView = SubViewButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupButtonAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,24 +38,34 @@ final class SubWeatherController: BaseViewController {
             make.height.equalToSuperview().multipliedBy(0.05)
         }
     }
-    
+}
+
+// MARK: - Realm
+
+
+
+
+// MARK: - Button setting
+
+extension SubWeatherController {
     private func setupButtonAction() {
         buttonView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         buttonView.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     @objc func saveButtonTapped() {
-        
+        if let location = locationManager.location {
+            realmModel.lat = location.coordinate.latitude
+            realmModel.lon = location.coordinate.longitude
+            realmManager.write(realmModel)
+        }
+        dismiss(animated: true)
     }
-
+    
     @objc func backButtonTapped() {
-        
+        dismiss(animated: true)
     }
-
-
-
 }
-
 
 import SwiftUI
 

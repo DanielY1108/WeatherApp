@@ -25,11 +25,11 @@ final class SubViewButton: UIView {
         self.addSubview(backButton)
         self.addSubview(saveButton)
         
-        backButton.setTitle("back", for: .normal)
-        backButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        backButton.setTitle("cancel", for: .normal)
+        backButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         backButton.titleLabel?.textColor = .systemFill
         saveButton.setTitle("add", for: .normal)
-        saveButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         saveButton.titleLabel?.textColor = .systemFill
         
         backButton.snp.makeConstraints { make in
