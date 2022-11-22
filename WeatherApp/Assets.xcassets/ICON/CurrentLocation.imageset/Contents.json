@@ -3,16 +3,6 @@
     {
       "filename" : "CurrentLocation_Dark.png",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "CurrentLocation_Light.png",
-      "idiom" : "universal"
     }
   ],
   "info" : {

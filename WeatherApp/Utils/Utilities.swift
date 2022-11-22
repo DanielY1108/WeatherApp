@@ -17,7 +17,7 @@ struct Utilities {
     func configLabel(font: CGFloat, weight: UIFont.Weight) -> UILabel {
         let label = UILabel()
         label.font = .systemFont(ofSize: font, weight: weight)
-        label.textColor = .black
+        label.textColor = .white
         return label
     }
     
@@ -29,7 +29,7 @@ struct Utilities {
         case .system:
             view.image = UIImage(systemName: name)
         }
-        view.tintColor = .black
+        view.tintColor = .darkGray
         view.contentMode = .scaleAspectFit
         return view
     }

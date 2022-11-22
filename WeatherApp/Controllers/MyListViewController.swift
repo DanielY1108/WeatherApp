@@ -70,9 +70,14 @@ extension MyListViewController: UISearchResultsUpdating {
     
     private func setupSearchBar() {
         self.navigationItem.searchController = searchController
-        searchController.searchBar.placeholder = "Search City"
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchResultsUpdater = self
+
+        if #available(iOS 13, *) {
+            searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search City", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        } else {
+            searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search City", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        }
     }
 }
 
@@ -82,17 +87,19 @@ extension MyListViewController {
     private func configNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        
-        appearance.backgroundColor = .white
+        appearance.backgroundColor = UIColor.systemBackground
         appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 18.0),
-                                          .foregroundColor: UIColor.systemGreen]
+                                          .foregroundColor: UIColor.defaultLabelColor]
+        appearance.largeTitleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 35.0),
+                                               .foregroundColor: UIColor.defaultLabelColor]
+        
         // 기본 설정 (standard, compact, scrollEdge)
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         self.navigationItem.title = "My List"
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.tintColor = .red  // 틴트색상 설정
+        self.navigationController?.navigationBar.tintColor = .systemBlue  // 틴트색상 설정
                 self.navigationItem.hidesSearchBarWhenScrolling = false  // 검색창 항상 위
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
     }

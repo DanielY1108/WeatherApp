@@ -15,7 +15,6 @@ final class LocationManager: NSObject{
     private let locationManager = CLLocationManager()
     
     var location: CLLocation?
-//    var local = 
     
     func setupLocation() {
         locationManager.delegate = self
@@ -25,21 +24,20 @@ final class LocationManager: NSObject{
     }
     
     // 현제 위치 저장
-    func updateLocation(completion: () -> Void) {
-        completion()
-    }
+    //    func updateLocation(completion: () -> Void) {
+    //        completion()
+    //    }
 }
 
 // MARK: - Location Delegate
 
 extension LocationManager: CLLocationManagerDelegate {
-
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
         if let location = locations.first {
+            self.location = location
+            print(location)
             locationManager.stopUpdatingLocation()
-            updateLocation {
-                self.location = location
-            }
         }
     }
     

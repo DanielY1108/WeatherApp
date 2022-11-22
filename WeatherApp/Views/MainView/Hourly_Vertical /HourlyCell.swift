@@ -23,7 +23,6 @@ final class HourlyCell: UICollectionViewCell {
         super.init(frame: frame)
         configureUI()
         configureLayout()
-        self.backgroundColor = .lightGray
     }
     
     required init?(coder: NSCoder) {

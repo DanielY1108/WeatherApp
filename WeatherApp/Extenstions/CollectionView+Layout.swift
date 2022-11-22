@@ -17,10 +17,10 @@ extension UICollectionViewLayout {
                 item.contentInsets.trailing = 10
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
-                
+                section.contentInsets.bottom = 5
                 let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(230)), elementKind: Constants.ID.categoryHeaderID, alignment: .top)
                 
-                sectionHeader.pinToVisibleBounds = true
+//                sectionHeader.pinToVisibleBounds = true
                 
                 section.boundarySupplementaryItems = [sectionHeader]
                 section.orthogonalScrollingBehavior = .continuous

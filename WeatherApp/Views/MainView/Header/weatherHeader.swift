@@ -28,7 +28,7 @@ final class weatherHeader: UICollectionReusableView {
     // 이미지
     private let highTempImg = Utilities().configImange(format: .system, name: "thermometer.high")
     private let lowTempImg = Utilities().configImange(format: .system, name: "thermometer.low")
-    private let LocationImg = Utilities().configImange(format: .user, name: "CurrentLocation.png")
+    private let LocationImg = Utilities().configImange(format: .system, name: "location")
     private let pressureImg = Utilities().configImange(format: .system, name: "speedometer")
     private let windSpeedImg = Utilities().configImange(format: .system, name: "wind")
     private let humidityImg = Utilities().configImange(format: .system, name: "humidity")
@@ -59,7 +59,6 @@ final class weatherHeader: UICollectionReusableView {
         configureUI()
         configureLayout()
         weatherManager.delegate = self
-        self.backgroundColor = .red
     }
     
     required init?(coder: NSCoder) {

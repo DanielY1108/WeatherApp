@@ -17,7 +17,7 @@ final class MyListCell: UICollectionViewCell {
      let lowTempLabel = Utilities().configLabel(font: 18, weight: .medium)
     
     private let weatherImg = Utilities().configImange(format: .user, name: "2.svg")
-    private let locationImg = Utilities().configImange(format: .user, name: "CurrentLocation.png")
+    private let locationImg = Utilities().configImange(format: .system, name: "location")
     
     private lazy var locationStackView = Utilities().configStackView([locationImg, locationLabel], axis: .horizontal)
     private lazy var highLowStackView = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering)

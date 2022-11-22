@@ -118,7 +118,6 @@ extension SearchLocationController: UITableViewDelegate {
             guard error == nil else { return }
             guard let placemark = response?.mapItems[0].placemark else { return }
             self.locationManager.location = placemark.location
-//            self.locationManager.location = placemark.coordinate
             
             let subWeatherVC = SubWeatherController()
             self.present(subWeatherVC, animated: true)
