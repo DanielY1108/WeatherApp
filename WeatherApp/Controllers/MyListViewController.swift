@@ -19,6 +19,7 @@ final class MyListViewController: UIViewController {
 
     let realmManager = RealmDataManager.shared
     let weatherManager = WeatherManager.shared
+    let locationManager = LocationManager.shared
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,7 @@ final class MyListViewController: UIViewController {
     
     private func configCollectionView() {
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(MyListCell.self, forCellWithReuseIdentifier: Constants.ID.myListID)
     }
     
@@ -61,9 +63,19 @@ extension MyListViewController: UICollectionViewDataSource {
         cell.layer.cornerRadius = 20
         
         cell.weatherData = weatherManager.getWeahterList()[indexPath.item]
-        let waetherKit = weatherManager.getweatherKitList()[indexPath.item]
-        cell.configWeather(with: waetherKit)
+        cell.configWeather(with: weatherManager.getWeahterKitList()[indexPath.item])
+
         return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension MyListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let location = realmManager.read(RealmDataModel.self)[indexPath.item]
+        locationManager.location = CLLocation(latitude: location.lat, longitude: location.lon)
+        
     }
 }
 

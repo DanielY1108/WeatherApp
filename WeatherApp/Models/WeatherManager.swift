@@ -18,8 +18,8 @@ final class WeatherManager {
     private var weatherArray: CurrentWeatherModel?
     var weatherList: [CurrentWeatherModel] = []
     
-    var weatherKitList: [Weather] = []
-    
+    var weatherKitList: [DayWeather] = []
+        
     private init() {
         RealmWeatherList()
     }
@@ -35,9 +35,11 @@ extension WeatherManager {
     func getWeahterList() -> [CurrentWeatherModel] {
         return weatherList
     }
-    func getweatherKitList() -> [Weather] {
+    
+    func getWeahterKitList() -> [DayWeather] {
         return weatherKitList
     }
+
     func fetchFromWeatherAPI(lat: Double, lon: Double, completion: @escaping () -> Void) {
         self.fetchFromWeatherAPI(lat: lat, lon: lon) { result in
             self.weatherArray = result
@@ -50,7 +52,7 @@ extension WeatherManager {
             fetchFromWeatherAPI(lat: location.lat, lon: location.lon) { result in
                 self.weatherList.append(result)
             }
-            fetchFromWeatherKit(lat: location.lat, lon: location.lon) { result in
+            self.fetchFromWeatherKit(lat: location.lat, lon: location.lon) { result in
                 self.weatherKitList.append(result)
             }
         }
@@ -61,6 +63,10 @@ extension WeatherManager {
             self.fetchFromWeatherAPI(lat: location.lat, lon: location.lon) { result in
                 self.weatherList.append(contentsOf: [result])
             }
+            self.fetchFromWeatherKit(lat: location.lat, lon: location.lon) { result in
+                self.weatherKitList.append(result)
+            }
+            
         }
     }
     
@@ -134,18 +140,17 @@ extension WeatherManager {
         }
     }
     
-    func fetchFromWeatherKit(lat: Double, lon: Double, completion: @escaping (Weather) -> Void) {
+    func fetchFromWeatherKit(lat: Double, lon: Double, completion: @escaping (DayWeather) -> Void) {
         Task {
             do {
                 let location = CLLocation(latitude: lat, longitude: lon)
                 let weather = try await WeatherService.shared.weather(for: location)
-                completion(weather)
+                completion(weather.dailyForecast[0])
             } catch {
                 print(String(describing: error))
             }
         }
     }
-    
 }
 
 // 기본 날씨
