@@ -9,32 +9,45 @@ import UIKit
 import WeatherKit
 import CoreLocation
 
-protocol CurrentWeatherDelegate: AnyObject {
-    func updateCurrentWeather(model: CurrentWeatherModel)
-}
-
 final class WeatherManager {
     static let shared = WeatherManager()
-    var delegate: CurrentWeatherDelegate?
     var weatherKit: Weather?
+    
+    var weatherArray: [CurrentWeatherModel] = []
 }
+
+// MARK: - Data Setup
+
+extension WeatherManager {
+    func fetchFromWeatherAPI(lat: Double, lon: Double, completion: @escaping () -> Void) {
+        self.fetchFromWeatherAPI(lat: lat, lon: lon) { result in
+            self.weatherArray = [result]
+            completion()
+        }
+    }
+}
+
 
 // MARK: - Get from OpenWeatherMap
 
 extension WeatherManager {
-    func fetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+    private func fetchFromWeatherAPI(lat: Double, lon: Double, completion: @escaping (CurrentWeatherModel) -> Void) {
         let urlComponent = WeatherAPI.coordinate(lat, lon).getWeatherURLComponent
-        self.performRequset(urlComponent)
+        self.performRequset(urlComponent) { result in
+            completion(result)
+        }
         debugPrint(urlComponent)
     }
 
-    func fetchFromWeatherAPI(name: String) {
+    private func fetchFromWeatherAPI(name: String, completion: @escaping (CurrentWeatherModel) -> Void) {
         let urlComponent = WeatherAPI.city(name).getWeatherURLComponent
-        self.performRequset(urlComponent)
+        self.performRequset(urlComponent) { result in
+            completion(result)
+        }
         debugPrint(urlComponent)
     }
     
-    private func performRequset(_ urlComponent: URLComponents) {
+    private func performRequset(_ urlComponent: URLComponents, completion: @escaping (CurrentWeatherModel) -> Void) {
         guard let url = urlComponent.url else { return }
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if error != nil {
@@ -45,7 +58,7 @@ extension WeatherManager {
                 return
             }
                 if let weather = self.parseJSONCurrent(safeData) {
-                    self.delegate?.updateCurrentWeather(model: weather)
+                    completion(weather)
             }
         }
         task.resume()
@@ -83,9 +96,11 @@ extension WeatherManager {
 }
 
 // 기본 날씨
-extension WeatherManager {
-    func defaultWeather(reload collectionView: UICollectionView) {
-        fetchFromWeatherAPI(lat: 37.566535, lon: 126.97796919999996)
-        fetchFromWeatherKit(reload: collectionView, location: CLLocation(latitude: 37.566535, longitude: 126.97796919999996))
-    }
-}
+//extension WeatherManager {
+//    func defaultWeather(reload collectionView: UICollectionView) {
+//        fetchFromWeatherAPI(lat: 37.566535, lon: 126.97796919999996) { <#CurrentWeatherModel#> in
+//            <#code#>
+//        }
+//        fetchFromWeatherKit(reload: collectionView, location: CLLocation(latitude: 37.566535, longitude: 126.97796919999996))
+//    }
+//}

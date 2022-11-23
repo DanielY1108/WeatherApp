@@ -34,7 +34,9 @@ final class MainWeatherViewController: BaseViewController {
         super.viewWillAppear(animated)
         locationManager.setupLocation()
         if let location = locationManager.location {
-            weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
+            weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude) {
+                
+            }
             weatherManager.fetchFromWeatherKit(reload: collectionView, location: location)
         }
     }

@@ -106,8 +106,8 @@ extension BaseViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
-        if let currentWeatherModel = currentWeatherModel {
-            header.updateCurrentWeather(model: currentWeatherModel)
+        weatherManager.fetchFromWeatherAPI(lat: 30, lon: 100) {
+            header.weatherData = self.weatherManager.weatherArray[0]
         }
         if let weatherKit = weatherManager.weatherKit {
             header.configWeather(with: weatherKit.dailyForecast[indexPath.item])

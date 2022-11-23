@@ -24,7 +24,8 @@ final class SubWeatherController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let location = locationManager.location {
-            weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
+            weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude) {
+            }
             weatherManager.fetchFromWeatherKit(reload: collectionView, location: location)
         }
     }

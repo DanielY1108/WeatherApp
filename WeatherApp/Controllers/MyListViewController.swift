@@ -14,7 +14,10 @@ final class MyListViewController: UIViewController {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
     private let layout = UICollectionViewLayout()
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
-
+    let weatherManager = WeatherManager.shared
+    let realmManager = RealmDataManager.shared
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
