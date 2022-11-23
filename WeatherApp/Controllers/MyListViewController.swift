@@ -6,14 +6,20 @@
 //
 
 import UIKit
+import RealmSwift
 import SnapKit
+import CoreLocation
+
 
 final class MyListViewController: UIViewController {
     
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
     private let layout = UICollectionViewLayout()
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
 
+    let realmManager = RealmDataManager.shared
+    let weatherManager = WeatherManager.shared
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
@@ -21,6 +27,10 @@ final class MyListViewController: UIViewController {
         configUI()
         configCollectionView()
         setupKeyboardEvent()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     private func configCollectionView() {
@@ -43,12 +53,16 @@ final class MyListViewController: UIViewController {
 
 extension MyListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return weatherManager.getWeahterList().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
         cell.layer.cornerRadius = 20
+        
+        cell.weatherData = weatherManager.getWeahterList()[indexPath.item]
+        let waetherKit = weatherManager.getweatherKitList()[indexPath.item]
+        cell.configWeather(with: waetherKit)
         return cell
     }
 }
@@ -70,9 +84,14 @@ extension MyListViewController: UISearchResultsUpdating {
     
     private func setupSearchBar() {
         self.navigationItem.searchController = searchController
-        searchController.searchBar.placeholder = "Search City"
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchResultsUpdater = self
+        
+        if #available(iOS 13, *) {
+            searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search City", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        } else {
+            searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search City", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        }
     }
 }
 
@@ -82,18 +101,20 @@ extension MyListViewController {
     private func configNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        
-        appearance.backgroundColor = .white
+        appearance.backgroundColor = UIColor.systemBackground
         appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 18.0),
-                                          .foregroundColor: UIColor.systemGreen]
+                                          .foregroundColor: UIColor.defaultLabelColor]
+        appearance.largeTitleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 35.0),
+                                               .foregroundColor: UIColor.defaultLabelColor]
+        
         // 기본 설정 (standard, compact, scrollEdge)
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         self.navigationItem.title = "My List"
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.tintColor = .red  // 틴트색상 설정
-                self.navigationItem.hidesSearchBarWhenScrolling = false  // 검색창 항상 위
+        self.navigationController?.navigationBar.tintColor = .systemBlue  // 틴트색상 설정
+        self.navigationItem.hidesSearchBarWhenScrolling = false  // 검색창 항상 위
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
     }
     

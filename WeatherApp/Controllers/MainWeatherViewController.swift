@@ -9,73 +9,35 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-class MainWeatherViewController: UIViewController {
+final class MainWeatherViewController: BaseViewController {
     
     private let menuTableView = UITableView()
-    
-    private let backgroundView = BackgroundView()
-    
-    private var currentWeatherModel: CurrentWeatherModel?
-    private let weatherManager = WeatherManager.shared
-    private let locationManager = LocationManager.shared
-    
-    private let customLayout = UICollectionViewLayout()
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
+
+    private lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
+    private lazy var swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
     
     private lazy var menuAnimate = MenuAnimate(menu: false)
-    lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
-    lazy var swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
-    
+
     private var menuList: [MenuList] = [
         MenuList(title: "Main", segue: .main),
         MenuList(title: "MyList", segue: .myList),
         MenuList(title: "Setting", segue: .setting)
     ]
     
-    // MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configUI()
         configSwipeGesture()
-        configureCollectionView()
         configMenuTableView()
     }
-    
+  
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+        locationManager.setupLocation()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-//        locationManager.setupLocation()
-//        if let location = locationManager.location {
-//            weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
-//            weatherManager.fetchFromWeatherKit(reload: collectionView, location: location)
-//        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-    }
-    
-    // 콜렉션뷰
-    private func configureCollectionView() {
+    override func configUI() {
         collectionView.dataSource = self
-        
-        collectionView.backgroundColor = .clear
-        collectionView.showsVerticalScrollIndicator = false
-        
-        collectionView.register(weatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
-        
-        collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
-        collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
-    }
-    
-    // 레이아웃 및 서브뷰 관리
-    private func configUI() {
+
         self.view.addSubview(backgroundView)
         self.backgroundView.addSubview(menuTableView)
         self.menuTableView.addSubview(collectionView)
@@ -95,6 +57,7 @@ class MainWeatherViewController: UIViewController {
             make.trailing.equalTo(backgroundView).inset(25)
         }
     }
+    
 }
 
 
@@ -158,14 +121,7 @@ extension MainWeatherViewController: UITableViewDataSource {
 
 extension MainWeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let currentCell = (tableView.cellForRow(at: indexPath) ?? UITableViewCell())
-            
-            currentCell.alpha = 0.5
-            UIView.animate(withDuration: 1) {
-                currentCell.alpha = 1
-            }
-            
+        if let indexPath = tableView.indexPathForSelectedRow {            
             switch menuList[indexPath.row].segue {
             case .main:
                 menuSwipeAnimate(action: .hide)
@@ -184,7 +140,6 @@ extension MainWeatherViewController: UITableViewDelegate {
         return 50
     }
 }
-
 
 // MARK: - UICollectionViewDataSource
 
@@ -215,7 +170,8 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             if let weatherKit = weatherManager.weatherKit {
-                cell.configWeather(with: weatherKit.dailyForecast[indexPath.item])
+                let tomorrowIndextPath = indexPath.item + 1
+                cell.configWeather(with: weatherKit.dailyForecast[tomorrowIndextPath])
             }
             return cell
         }
@@ -223,18 +179,13 @@ extension MainWeatherViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
-        if let currentWeatherModel = currentWeatherModel {
-            header.updateCurrentWeather(model: currentWeatherModel)
-        }
+        
         if let weatherKit = weatherManager.weatherKit {
             header.configWeather(with: weatherKit.dailyForecast[indexPath.item])
         }
         return header
     }
 }
-
-
-
 
 
 

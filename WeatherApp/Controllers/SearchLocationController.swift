@@ -17,6 +17,7 @@ final class SearchLocationController: UIViewController {
     private var searchResults = [MKLocalSearchCompletion]()
     
     private var locationManager = LocationManager.shared
+    private var weatherManager = WeatherManager.shared
     
     var searchStr: String? {
         didSet {
@@ -118,12 +119,16 @@ extension SearchLocationController: UITableViewDelegate {
             guard error == nil else { return }
             guard let placemark = response?.mapItems[0].placemark else { return }
             self.locationManager.location = placemark.location
-//            self.locationManager.location = placemark.coordinate
             
-            let subWeatherVC = SubWeatherController()
-            self.present(subWeatherVC, animated: true)
-            
-            print("lat: \(placemark.coordinate.latitude), lon: \(placemark.coordinate.longitude), location: \(placemark.locality)")
+            if let location = self.locationManager.location {
+                self.weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude) {
+                    DispatchQueue.main.async {
+                        let subWeatherVC = SubWeatherController()
+                        self.present(subWeatherVC, animated: true)
+                    }
+                }
+                
+            }
         }
       
         tableView.deselectRow(at: indexPath, animated: true)

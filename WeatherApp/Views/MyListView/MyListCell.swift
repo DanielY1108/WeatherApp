@@ -6,18 +6,27 @@
 //
 
 import UIKit
+import WeatherKit
+
 
 final class MyListCell: UICollectionViewCell {
+    
+    var weatherData: CurrentWeatherModel? {
+        didSet {
+            configData()
+        }
+    }
+    
     private let mainview = UIView()
     
-     let locationLabel = Utilities().configLabel(font: 18, weight: .medium)
-     let weatherStatueLabel = Utilities().configLabel(font: 18, weight: .medium)
-     let tempLabel = Utilities().configLabel(font: 40, weight: .medium)
-     let highTempLabel = Utilities().configLabel(font: 18, weight: .medium)
-     let lowTempLabel = Utilities().configLabel(font: 18, weight: .medium)
+    private let locationLabel = Utilities().configLabel(font: 18, weight: .medium)
+    private let weatherStatueLabel = Utilities().configLabel(font: 18, weight: .medium)
+    private let tempLabel = Utilities().configLabel(font: 40, weight: .medium)
+    private let highTempLabel = Utilities().configLabel(font: 18, weight: .medium)
+    private let lowTempLabel = Utilities().configLabel(font: 18, weight: .medium)
     
     private let weatherImg = Utilities().configImange(format: .user, name: "2.svg")
-    private let locationImg = Utilities().configImange(format: .user, name: "CurrentLocation.png")
+    private let locationImg = Utilities().configImange(format: .system, name: "location")
     
     private lazy var locationStackView = Utilities().configStackView([locationImg, locationLabel], axis: .horizontal)
     private lazy var highLowStackView = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering)
@@ -66,6 +75,28 @@ final class MyListCell: UICollectionViewCell {
             make.trailing.equalTo(mainview).offset(20)
             make.width.equalTo(mainview).multipliedBy(0.5)
         }
+    }
+}
+
+extension MyListCell {
+    func configData() {
+        if let weatherData = weatherData {
+            DispatchQueue.main.async {
+                self.tempLabel.text = weatherData.tempStr
+                self.locationLabel.text = weatherData.location
+                self.weatherStatueLabel.text = weatherData.weatherStatue
+            }
+        }
+    }
+    
+    func configWeather(with weather: Weather) {
+        let mf = MeasurementFormatter()
+        mf.unitOptions = .temperatureWithoutUnit
+        mf.numberFormatter.maximumFractionDigits = 0
+        
+        highTempLabel.text = "\(mf.string(from: weather.dailyForecast[0].highTemperature))"
+        lowTempLabel.text = "\(mf.string(from: weather.dailyForecast[0].lowTemperature))"
+
     }
 }
 

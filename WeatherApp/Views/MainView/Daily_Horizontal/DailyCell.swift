@@ -26,7 +26,6 @@ final class DailyCell: UICollectionViewCell {
         super.init(frame: frame)
         configureUI()
         configureLayout()
-        self.backgroundColor = .green
     }
     
     required init?(coder: NSCoder) {

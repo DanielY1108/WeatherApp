@@ -11,8 +11,11 @@ import WeatherKit
 
 final class weatherHeader: UICollectionReusableView {
     
-    let weatherManager = WeatherManager.shared
-    
+    var weatherData: CurrentWeatherModel? {
+        didSet {
+            configData()
+        }
+    }
     // 레이블
     private let tempLabel = Utilities().configLabel(font: 60, weight: .bold)
     private let highTempLabel = Utilities().configLabel(font: 18, weight: .regular)
@@ -28,7 +31,7 @@ final class weatherHeader: UICollectionReusableView {
     // 이미지
     private let highTempImg = Utilities().configImange(format: .system, name: "thermometer.high")
     private let lowTempImg = Utilities().configImange(format: .system, name: "thermometer.low")
-    private let LocationImg = Utilities().configImange(format: .user, name: "CurrentLocation.png")
+    private let LocationImg = Utilities().configImange(format: .system, name: "location")
     private let pressureImg = Utilities().configImange(format: .system, name: "speedometer")
     private let windSpeedImg = Utilities().configImange(format: .system, name: "wind")
     private let humidityImg = Utilities().configImange(format: .system, name: "humidity")
@@ -58,8 +61,6 @@ final class weatherHeader: UICollectionReusableView {
         self.backgroundColor = .clear
         configureUI()
         configureLayout()
-        weatherManager.delegate = self
-        self.backgroundColor = .red
     }
     
     required init?(coder: NSCoder) {
@@ -97,17 +98,19 @@ final class weatherHeader: UICollectionReusableView {
 }
 
 // MARK: - CurrentWeatherDelegate
-extension weatherHeader: CurrentWeatherDelegate {
-    func updateCurrentWeather(model: CurrentWeatherModel) {
-        DispatchQueue.main.async {
-            self.tempLabel.text = "\(model.tempStr)°"
-            self.humidityLabel.text = "\(model.humidityStr) %"
-            self.windSpeedLabel.text = "\(model.windSpeedStr) m/s"
-            self.pressureLabel.text = "\(model.pressureStr) hPa"
-            self.locationLabel.text = "\(model.location)"
-            self.weatherStatueLabel.text = model.weatherStatue
-            self.sunriseLabel.text = model.sunriseStr
-            self.sunsetLabel.text = model.sunsetStr
+extension weatherHeader {
+    func configData() {
+        if let weatherData = weatherData {
+            DispatchQueue.main.async {
+                self.tempLabel.text = "\(weatherData.tempStr)°"
+                self.humidityLabel.text = "\(weatherData.humidityStr) %"
+                self.windSpeedLabel.text = "\(weatherData.windSpeedStr) m/s"
+                self.pressureLabel.text = "\(weatherData.pressureStr) hPa"
+                self.locationLabel.text = "\(weatherData.location)"
+                self.weatherStatueLabel.text = weatherData.weatherStatue
+                self.sunriseLabel.text = weatherData.sunriseStr
+                self.sunsetLabel.text = weatherData.sunsetStr
+            }
         }
     }
     
