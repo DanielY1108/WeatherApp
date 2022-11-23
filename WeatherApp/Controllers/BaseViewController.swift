@@ -6,14 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class BaseViewController: UIViewController {
     
     let weatherManager = WeatherManager.shared
     let locationManager = LocationManager.shared
+    let realmManager = RealmDataManager.shared
     
-    private var currentWeatherModel: CurrentWeatherModel?
-  
     let backgroundView = BackgroundView()
     private let customLayout = UICollectionViewLayout()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
@@ -38,9 +38,7 @@ class BaseViewController: UIViewController {
     }
     
     // 콜렉션뷰
-    private func configureCollectionView() {
-        collectionView.dataSource = self
-        
+    private func configureCollectionView() {        
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         
@@ -66,54 +64,7 @@ class BaseViewController: UIViewController {
         }
         
     }
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension BaseViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        switch section {
-        case 0:
-            return 12
-        default:
-            return 7
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            if let weatherKit = weatherManager.weatherKit {
-                cell.configWeather(with: weatherKit.hourlyForecast[indexPath.item])
-            }
-            return cell
-            
-        default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            if let weatherKit = weatherManager.weatherKit {
-                let tomorrowIndextPath = indexPath.item + 1
-                cell.configWeather(with: weatherKit.dailyForecast[tomorrowIndextPath])
-            }
-            return cell
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
-        weatherManager.fetchFromWeatherAPI(lat: 30, lon: 100) {
-            header.weatherData = self.weatherManager.weatherArray[0]
-        }
-        if let weatherKit = weatherManager.weatherKit {
-            header.configWeather(with: weatherKit.dailyForecast[indexPath.item])
-        }
-        return header
-    }
 }
 
 

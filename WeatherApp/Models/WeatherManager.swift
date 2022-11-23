@@ -13,18 +13,58 @@ final class WeatherManager {
     static let shared = WeatherManager()
     var weatherKit: Weather?
     
-    var weatherArray: [CurrentWeatherModel] = []
+    let realmManager = RealmDataManager.shared
+    
+    private var weatherArray: CurrentWeatherModel?
+    var weatherList: [CurrentWeatherModel] = []
+    
+    var weatherKitList: [Weather] = []
+    
+    private init() {
+        RealmWeatherList()
+    }
 }
 
 // MARK: - Data Setup
 
 extension WeatherManager {
+    
+    func getWeather() -> CurrentWeatherModel? {
+        return weatherArray
+    }
+    func getWeahterList() -> [CurrentWeatherModel] {
+        return weatherList
+    }
+    func getweatherKitList() -> [Weather] {
+        return weatherKitList
+    }
     func fetchFromWeatherAPI(lat: Double, lon: Double, completion: @escaping () -> Void) {
         self.fetchFromWeatherAPI(lat: lat, lon: lon) { result in
-            self.weatherArray = [result]
+            self.weatherArray = result
             completion()
         }
     }
+    
+    func AddedWeatherAPI() {
+        if let location = realmManager.read(RealmDataModel.self).last {
+            fetchFromWeatherAPI(lat: location.lat, lon: location.lon) { result in
+                self.weatherList.append(result)
+            }
+            fetchFromWeatherKit(lat: location.lat, lon: location.lon) { result in
+                self.weatherKitList.append(result)
+            }
+        }
+    }
+    
+    private func RealmWeatherList() {
+        realmManager.read(RealmDataModel.self).forEach { location in
+            self.fetchFromWeatherAPI(lat: location.lat, lon: location.lon) { result in
+                self.weatherList.append(contentsOf: [result])
+            }
+        }
+    }
+    
+    
 }
 
 
@@ -81,12 +121,25 @@ extension WeatherManager {
 
 extension WeatherManager {
 
-    func fetchFromWeatherKit(reload collectionView: UICollectionView, location: CLLocation) {
+    func fetchFromWeatherKit(reload collectionView: UICollectionView, lat: Double, lon: Double) {
         Task {
             do {
+                let location = CLLocation(latitude: lat, longitude: lon)
                 let weather = try await WeatherService.shared.weather(for: location)
                 weatherKit = weather
                 await collectionView.reloadData()
+            } catch {
+                print(String(describing: error))
+            }
+        }
+    }
+    
+    func fetchFromWeatherKit(lat: Double, lon: Double, completion: @escaping (Weather) -> Void) {
+        Task {
+            do {
+                let location = CLLocation(latitude: lat, longitude: lon)
+                let weather = try await WeatherService.shared.weather(for: location)
+                completion(weather)
             } catch {
                 print(String(describing: error))
             }

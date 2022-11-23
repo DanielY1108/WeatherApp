@@ -24,6 +24,10 @@ final class RealmDataManager: RealmData {
         self.realmData = try! Realm()
     }
     
+    func getLocationOfDefaultRealm() {
+         print("Realm is located at:", realmData.configuration.fileURL!)
+     }
+    
     func read<T: Object>(_ object: T.Type) -> Results<T>  {
         return realmData.objects(object)
     }
