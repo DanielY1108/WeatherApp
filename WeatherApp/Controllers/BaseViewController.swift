@@ -97,7 +97,8 @@ extension BaseViewController: UICollectionViewDataSource {
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             if let weatherKit = weatherManager.weatherKit {
-                cell.configWeather(with: weatherKit.dailyForecast[indexPath.item])
+                let tomorrowIndextPath = indexPath.item + 1
+                cell.configWeather(with: weatherKit.dailyForecast[tomorrowIndextPath])
             }
             return cell
         }
