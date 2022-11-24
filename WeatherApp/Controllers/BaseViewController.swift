@@ -6,13 +6,9 @@
 //
 
 import UIKit
-import RealmSwift
 
 class BaseViewController: UIViewController {
     
-    let weatherManager = WeatherManager.shared
-    let locationManager = LocationManager.shared
-    let realmManager = RealmDataManager.shared
     
     let backgroundView = BackgroundView()
     private let customLayout = UICollectionViewLayout()
@@ -66,10 +62,6 @@ class BaseViewController: UIViewController {
     }
     
 }
-
-
-
-
 
 
 

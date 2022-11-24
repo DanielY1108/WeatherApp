@@ -6,9 +6,7 @@
 //
 
 import UIKit
-import RealmSwift
 import SnapKit
-import CoreLocation
 
 
 final class MyListViewController: UIViewController {
@@ -16,10 +14,6 @@ final class MyListViewController: UIViewController {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
     private let layout = UICollectionViewLayout()
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
-
-    let realmManager = RealmDataManager.shared
-    let weatherManager = WeatherManager.shared
-    let locationManager = LocationManager.shared
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,16 +49,12 @@ final class MyListViewController: UIViewController {
 
 extension MyListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weatherManager.getWeahterList().count
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
         cell.layer.cornerRadius = 20
-        
-        cell.weatherData = weatherManager.getWeahterList()[indexPath.item]
-        cell.configWeather(with: weatherManager.getWeahterKitList()[indexPath.item])
-
         return cell
     }
 }
@@ -72,10 +62,7 @@ extension MyListViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension MyListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let location = realmManager.read(RealmDataModel.self)[indexPath.item]
-        locationManager.location = CLLocation(latitude: location.lat, longitude: location.lon)
-        
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { 
     }
 }
 
