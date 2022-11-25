@@ -8,16 +8,17 @@
 import UIKit
 import SnapKit
 import MapKit
+import CoreLocation
 
 final class SearchLocationController: UIViewController {
+    
+    private var weatherManager = WeatherManager.shared
     
     private let tavleView = UITableView(frame: .zero)
     
     private var searchCompleter = MKLocalSearchCompleter()
     private var searchResults = [MKLocalSearchCompletion]()
     
-    private var locationManager = LocationManager.shared
-    private var weatherManager = WeatherManager.shared
     
     var searchStr: String? {
         didSet {
@@ -58,7 +59,7 @@ extension SearchLocationController: KeyboardEvent {
 }
 
 // MARK: - MKLocalSearchCompleter
-    
+
 extension SearchLocationController {
     private func configSearchCompleter() {
         searchCompleter.delegate = self
@@ -77,8 +78,8 @@ extension SearchLocationController: MKLocalSearchCompleterDelegate {
     // 자동완성 완료시 결과를 받는 함수
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         // completer.results를 통해 검색한 결과를 searchResults에 담아줍니다
-            searchResults = completer.results
-            tavleView.reloadData()
+        searchResults = completer.results
+        tavleView.reloadData()
         
     }
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
@@ -114,23 +115,17 @@ extension SearchLocationController: UITableViewDelegate {
         let selectedResult = searchResults[indexPath.row]
         let searchRequest = MKLocalSearch.Request(completion: selectedResult)
         let search = MKLocalSearch(request: searchRequest)
-
+        
         search.start { response, error in
             guard error == nil else { return }
-            guard let placemark = response?.mapItems[0].placemark else { return }
-            self.locationManager.location = placemark.location
             
-            if let location = self.locationManager.location {
-                self.weatherManager.fetchFromWeatherAPI(lat: location.coordinate.latitude, lon: location.coordinate.longitude) {
-                    DispatchQueue.main.async {
-                        let subWeatherVC = SubWeatherController()
-                        self.present(subWeatherVC, animated: true)
-                    }
-                }
-                
-            }
+            guard let coordinate = response?.mapItems[0].placemark.coordinate else { return }
+            
+            let subVC = SubWeatherController()
+            subVC.getLocationFromSearch = coordinate
+            self.present(subVC, animated: true)
         }
-      
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

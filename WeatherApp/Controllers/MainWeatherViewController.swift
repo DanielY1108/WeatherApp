@@ -7,10 +7,13 @@
 
 import UIKit
 import SnapKit
-import CoreLocation
+
 
 final class MainWeatherViewController: BaseViewController {
     
+    private let weatherManager = WeatherManager.shared
+    private let realmManager = RealmDataManager.shared
+        
     private let menuTableView = UITableView()
 
     private lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
@@ -32,7 +35,6 @@ final class MainWeatherViewController: BaseViewController {
   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        locationManager.setupLocation()
     }
     
     override func configUI() {
@@ -162,27 +164,16 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            if let weatherKit = weatherManager.weatherKit {
-                cell.configWeather(with: weatherKit.hourlyForecast[indexPath.item])
-            }
             return cell
             
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            if let weatherKit = weatherManager.weatherKit {
-                let tomorrowIndextPath = indexPath.item + 1
-                cell.configWeather(with: weatherKit.dailyForecast[tomorrowIndextPath])
-            }
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
-        
-        if let weatherKit = weatherManager.weatherKit {
-            header.configWeather(with: weatherKit.dailyForecast[indexPath.item])
-        }
         return header
     }
 }

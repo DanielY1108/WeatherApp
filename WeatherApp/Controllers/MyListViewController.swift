@@ -6,71 +6,117 @@
 //
 
 import UIKit
-import RealmSwift
 import SnapKit
-import CoreLocation
-
+import RealmSwift
 
 final class MyListViewController: UIViewController {
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
-    private let layout = UICollectionViewLayout()
+    private let weatherManager = WeatherManager.shared
+    private let realmManager = RealmDataManager.shared
+    
+    lazy var tableView = UITableView(frame: .zero, style: .insetGrouped)
+    
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
-
-    let realmManager = RealmDataManager.shared
-    let weatherManager = WeatherManager.shared
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
         setupSearchBar()
         configUI()
-        configCollectionView()
+        configTableView()
         setupKeyboardEvent()
+        setupNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    private func configCollectionView() {
-        collectionView.dataSource = self
-        collectionView.register(MyListCell.self, forCellWithReuseIdentifier: Constants.ID.myListID)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
+    
+    private func configTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(MyListCell.self, forCellReuseIdentifier: Constants.ID.myListID)
     }
     
     private func configUI() {
-        self.view.addSubview(collectionView)
-        
-        collectionView.snp.makeConstraints { make in
+        self.view.addSubview(tableView)
+    
+        tableView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
     }
     
+    
+}
+
+// MARK: - NotificationCenter
+
+extension MyListViewController {
+    func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: "load"), object: nil)
+    }
+    
+    @objc func loadList(notification: NSNotification) {
+      self.tableView.reloadData()
+    }
 }
 
 
-// MARK: - UICollectionViewDataSource
+// MARK: - UITableViewDataSource {
 
-extension MyListViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weatherManager.getWeahterList().count
+extension MyListViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return realmManager.read(RealmDataModel.self).count
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
-        cell.layer.cornerRadius = 20
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
+//        cell.layer.cornerRadius = 20
+        cell.weatherData = weatherManager.getWeatherArrayFromAPIModel()[indexPath.section]
         
-        cell.weatherData = weatherManager.getWeahterList()[indexPath.item]
-        let waetherKit = weatherManager.getweatherKitList()[indexPath.item]
-        cell.configWeather(with: waetherKit)
+        let weatherKit = weatherManager.getWeatherArrayFromWeatherKit()[indexPath.section]
+        cell.configWeather(with: weatherKit.dailyForecast[0])
+        
+        cell.selectionStyle = .none
         return cell
     }
 }
 
+// MARK: - UITableViewDelegate
+
+extension MyListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 2
+    }
+  
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            let realmData = realmManager.read(RealmDataModel.self)[indexPath.section]
+            realmManager.delete(realmData)
+            let indexSet = IndexSet(arrayLiteral: indexPath.section)
+            tableView.deleteSections(indexSet, with: .fade)
+        }
+    }
+}
+
+
+
 // MARK: - Setup for keyboard show & hide animation(tableview height)
 //
 extension MyListViewController: KeyboardEvent {
-    var transformView: UIView { return collectionView }
+    var transformView: UIView { return tableView }
 }
 
 // MARK: - Setup SearchBar & UISearchResultsUpdating
