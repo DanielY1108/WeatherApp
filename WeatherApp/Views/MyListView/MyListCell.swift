@@ -9,7 +9,7 @@ import UIKit
 import WeatherKit
 
 
-final class MyListCell: UICollectionViewCell {
+final class MyListCell: UITableViewCell {
     
     var weatherData: CurrentWeatherModel? {
         didSet {
@@ -34,12 +34,14 @@ final class MyListCell: UICollectionViewCell {
     private lazy var leftSideSatckView = Utilities().configStackView([locationStackView, weatherStatueLabel], axis: .vertical, distribution: .fillEqually, alignment: .leading)
     private lazy var rightSideSatckView = Utilities().configStackView([tempLabel, highLowStackView], axis: .vertical, distribution: .fillEqually, alignment: .center)
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         configureUI()
         configureLayout()
         self.backgroundColor = .lightGray
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -49,6 +51,7 @@ final class MyListCell: UICollectionViewCell {
         self.mainview.addSubview(weatherImg)
         self.mainview.addSubview(leftSideSatckView)
         self.mainview.addSubview(rightSideSatckView)
+        
 
         tempLabel.text = "temp"
         highTempLabel.text = "high"

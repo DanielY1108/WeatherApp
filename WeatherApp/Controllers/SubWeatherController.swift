@@ -120,8 +120,8 @@ extension SubWeatherController {
             realmModel.lon = location.longitude
             
             weatherManager.weatherListSet(lat: location.latitude, lon: location.longitude) {
-                NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
                 self.realmManager.write(realmModel)
+                NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
                 self.dismiss(animated: true)
             }
         }
