@@ -7,14 +7,18 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 
 final class MyListViewController: UIViewController {
     
+    private let weatherManager = WeatherManager.shared
+    private let realmManager = RealmDataManager.shared
+    
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout.createListLayout())
     private let layout = UICollectionViewLayout()
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
@@ -22,6 +26,7 @@ final class MyListViewController: UIViewController {
         configUI()
         configCollectionView()
         setupKeyboardEvent()
+        setupNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,19 +47,38 @@ final class MyListViewController: UIViewController {
         }
     }
     
+    
 }
+
+// MARK: - NotificationCenter
+
+extension MyListViewController {
+    func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: "load"), object: nil)
+    }
+    
+    @objc func loadList(notification: NSNotification) {
+      self.collectionView.reloadData()
+    }
+}
+
 
 
 // MARK: - UICollectionViewDataSource
 
 extension MyListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return weatherManager.getWeatherArrayFromAPIModel().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
         cell.layer.cornerRadius = 20
+        cell.weatherData = weatherManager.getWeatherArrayFromAPIModel()[indexPath.item]
+        
+        let weatherKit = weatherManager.getWeatherArrayFromWeatherKit()[indexPath.item]
+        cell.configWeather(with: weatherKit.dailyForecast[0])
+        
         return cell
     }
 }
@@ -62,8 +86,10 @@ extension MyListViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension MyListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     }
+    
+    func colledit
 }
 
 // MARK: - Setup for keyboard show & hide animation(tableview height)

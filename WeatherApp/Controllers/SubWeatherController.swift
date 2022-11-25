@@ -8,12 +8,14 @@
 import UIKit
 import SnapKit
 import CoreLocation
+import RealmSwift
 
 final class SubWeatherController: BaseViewController {
     
     var getLocationFromSearch: CLLocationCoordinate2D?
         
     private let weatherManager = WeatherManager.shared
+    private let realmManager = RealmDataManager.shared
             
     private let buttonView = SubViewButton()
     
@@ -112,7 +114,17 @@ extension SubWeatherController {
     }
     
     @objc func saveButtonTapped() {
-        dismiss(animated: true)
+        let realmModel = RealmDataModel()
+        if let location = getLocationFromSearch {
+            realmModel.lat = location.latitude
+            realmModel.lon = location.longitude
+            
+            weatherManager.weatherListSet(lat: location.latitude, lon: location.longitude) {
+                NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
+                self.realmManager.write(realmModel)
+                self.dismiss(animated: true)
+            }
+        }
     }
     
     @objc func backButtonTapped() {

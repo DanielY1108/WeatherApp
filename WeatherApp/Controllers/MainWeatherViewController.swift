@@ -10,6 +10,9 @@ import SnapKit
 
 
 final class MainWeatherViewController: BaseViewController {
+    
+    private let weatherManager = WeatherManager.shared
+    private let realmManager = RealmDataManager.shared
         
     private let menuTableView = UITableView()
 

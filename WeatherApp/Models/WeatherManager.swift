@@ -12,48 +12,83 @@ import CoreLocation
 final class WeatherManager {
     static let shared = WeatherManager()
     
+    private let realmManager = RealmDataManager.shared
+    
     private var weatherModel: CurrentWeatherModel?
+    private var weatherModelArray: [CurrentWeatherModel] = []
     private var weatherKit: Weather?
+    private var weatherKitArray: [Weather] = []
+
+    private init() {
+        updateWeatherData()
+        debugPrint("My List Setup Complete")
+    }
+    
+    private func updateWeatherData() {
+        realmManager.read(RealmDataModel.self).forEach { location in
+            weatherListSet(lat: location.lat, lon: location.lon) { }
+        }
+    }
     
     func getWeatherFromAPIModel() -> CurrentWeatherModel? {
         return weatherModel
     }
-    
     func getWeatherFromWeatherKit() -> Weather? {
         return weatherKit
     }
-
-    func weatherSet(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping () -> Void) {
+    func getWeatherArrayFromAPIModel() -> [CurrentWeatherModel] {
+        return weatherModelArray
+    }
+    func getWeatherArrayFromWeatherKit() -> [Weather] {
+        return weatherKitArray
+    }
+    
+    func weatherListSet(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
-        Task {
-            self.fetchFromWeatherKit(lat: lat, lon: lon) {
-                dispatchGroup.leave()
-            }
+        self.fetchFromWeatherKit(lat: lat, lon: lon) { model in
+            self.weatherKitArray.append(model)
+            dispatchGroup.leave()
         }
         dispatchGroup.enter()
-        Task {
-            self.fetchFromWeatherAPI(lat: lat, lon: lon) { _ in
-                dispatchGroup.leave()
-            }
+        self.fetchFromWeatherAPI(lat: lat, lon: lon) { model in
+            self.weatherModelArray.append(model)
+            dispatchGroup.leave()
         }
         dispatchGroup.wait()
         dispatchGroup.notify(queue: .main) {
             completion()
         }
     }
-  
+    
+    
+    func weatherSet(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping () -> Void) {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        self.fetchFromWeatherKit(lat: lat, lon: lon) { _ in
+            dispatchGroup.leave()
+        }
+        dispatchGroup.enter()
+        self.fetchFromWeatherAPI(lat: lat, lon: lon) { _ in
+            dispatchGroup.leave()
+        }
+//        dispatchGroup.wait()
+        dispatchGroup.notify(queue: .main) {
+            completion()
+        }
+    }
+    
 }
 
 // MARK: - WeatherKit
 
 extension WeatherManager {
-    func fetchFromWeatherKit(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping () -> Void) {
+    private func fetchFromWeatherKit(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (Weather) -> Void) {
         Task {
             do {
                 let weather = try await WeatherService.shared.weather(for: CLLocation(latitude: lat, longitude: lon))
                 weatherKit = weather
-                completion()
+                completion(weather)
             } catch {
                 debugPrint(String(describing: error.localizedDescription))
             }
