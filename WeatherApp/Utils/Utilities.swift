@@ -34,9 +34,9 @@ struct Utilities {
         return view
     }
     
-    func configStackView(_ stacks: [UIView], axis: NSLayoutConstraint.Axis, distribution: UIStackView.Distribution = .fill, alignment: UIStackView.Alignment = .fill) -> UIStackView {
+    func configStackView(_ stacks: [UIView], axis: NSLayoutConstraint.Axis, distribution: UIStackView.Distribution = .fill, alignment: UIStackView.Alignment = .fill, spacing: CGFloat = 7) -> UIStackView {
         let stack = UIStackView(arrangedSubviews: stacks)
-        stack.spacing = 7
+        stack.spacing = spacing
         stack.axis = axis
         stack.alignment = alignment
         stack.distribution = distribution

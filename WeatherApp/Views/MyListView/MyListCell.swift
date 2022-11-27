@@ -29,10 +29,10 @@ final class MyListCell: UITableViewCell {
     private let locationImg = Utilities().configImange(format: .system, name: "location")
     
     private lazy var locationStackView = Utilities().configStackView([locationImg, locationLabel], axis: .horizontal)
-    private lazy var highLowStackView = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering)
+    private lazy var highLowStackView = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering, spacing: 7)
     
     private lazy var leftSideSatckView = Utilities().configStackView([locationStackView, weatherStatueLabel], axis: .vertical, distribution: .fillEqually, alignment: .leading)
-    private lazy var rightSideSatckView = Utilities().configStackView([tempLabel, highLowStackView], axis: .vertical, distribution: .fillEqually, alignment: .center)
+    private lazy var rightSideSatckView = Utilities().configStackView([tempLabel, highLowStackView], axis: .vertical, distribution: .equalCentering, alignment: .trailing)
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -74,9 +74,9 @@ final class MyListCell: UITableViewCell {
             make.width.equalTo(mainview).multipliedBy(0.6)
         }
         rightSideSatckView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(mainview)
-            make.trailing.equalTo(mainview).offset(20)
-            make.width.equalTo(mainview).multipliedBy(0.5)
+            make.top.bottom.equalTo(mainview).inset(10)
+            make.trailing.equalTo(mainview).inset(15)
+            make.width.equalTo(mainview).multipliedBy(0.4)
         }
     }
 }
@@ -85,7 +85,7 @@ extension MyListCell {
     func configData() {
         if let weatherData = weatherData {
             DispatchQueue.main.async {
-                self.tempLabel.text = weatherData.tempStr
+                self.tempLabel.text = "\(weatherData.tempStr)°"
 //                self.highTempLabel.text = weatherData.tempMaxStr
 //                self.lowTempLabel.text = weatherData.tempMinStr
                 self.locationLabel.text = weatherData.location
@@ -99,8 +99,8 @@ extension MyListCell {
         mf.unitOptions = .temperatureWithoutUnit
         mf.numberFormatter.maximumFractionDigits = 0
         
-        highTempLabel.text = "\(mf.string(from: dayWeather.highTemperature))"
-        lowTempLabel.text = "\(mf.string(from: dayWeather.lowTemperature))"
+        highTempLabel.text = "H:\(mf.string(from: dayWeather.highTemperature))"
+        lowTempLabel.text = "L:\(mf.string(from: dayWeather.lowTemperature))"
 
     }
 

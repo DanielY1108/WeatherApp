@@ -130,7 +130,7 @@ extension SearchLocationController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return view.frame.height/15
+        return view.frame.height/17
     }
 }
 

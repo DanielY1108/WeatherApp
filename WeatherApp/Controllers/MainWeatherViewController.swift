@@ -7,11 +7,13 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
 
 
 final class MainWeatherViewController: BaseViewController {
     
     private let weatherManager = WeatherManager.shared
+    private let locationManager = LocationManager.shared
     private let realmManager = RealmDataManager.shared
         
     private let menuTableView = UITableView()
@@ -24,7 +26,8 @@ final class MainWeatherViewController: BaseViewController {
     private var menuList: [MenuList] = [
         MenuList(title: "Main", segue: .main),
         MenuList(title: "MyList", segue: .myList),
-        MenuList(title: "Setting", segue: .setting)
+        MenuList(title: "Setting", segue: .setting),
+        MenuList(title: "Current location", segue: .currentLocation)
     ]
     
     override func viewDidLoad() {
@@ -54,9 +57,9 @@ final class MainWeatherViewController: BaseViewController {
         }
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(menuTableView)
-            make.bottom.equalTo(backgroundView).inset(80)
-            make.leading.equalTo(backgroundView).inset(25)
-            make.trailing.equalTo(backgroundView).inset(25)
+            make.bottom.equalTo(backgroundView).inset(40)
+            make.leading.equalTo(backgroundView).inset(20)
+            make.trailing.equalTo(backgroundView).inset(20)
         }
     }
     
@@ -132,6 +135,9 @@ extension MainWeatherViewController: UITableViewDelegate {
                 menuSwipeAnimate(action: .hide)
             case .setting:
                 navigationController?.show(SettingViewController(), sender: self)
+                menuSwipeAnimate(action: .hide)
+            case .currentLocation:
+                locationManager.setupLocation()
                 menuSwipeAnimate(action: .hide)
             }
             print(menuList[indexPath.row].segue)

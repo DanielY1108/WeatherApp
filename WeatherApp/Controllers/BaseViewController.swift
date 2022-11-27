@@ -54,9 +54,9 @@ class BaseViewController: UIViewController {
         }
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(backgroundView).offset(80)
-            make.bottom.equalTo(backgroundView).inset(80)
-            make.leading.equalTo(backgroundView).inset(25)
-            make.trailing.equalTo(backgroundView).inset(25)
+            make.bottom.equalTo(backgroundView).inset(40)
+            make.leading.equalTo(backgroundView).inset(20)
+            make.trailing.equalTo(backgroundView).inset(20)
         }
         
     }

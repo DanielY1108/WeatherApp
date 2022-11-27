@@ -9,8 +9,8 @@ import UIKit
 
 final class SearchCell: UITableViewCell {
 
-    let cityNameLabel = Utilities().configLabel(font: 18, weight: .regular, color: .label)
-    let countyNameLabel = Utilities().configLabel(font: 14, weight: .regular, color: .label)
+    let cityNameLabel = Utilities().configLabel(font: 16, weight: .regular, color: .label)
+    let countyNameLabel = Utilities().configLabel(font: 13, weight: .regular, color: .label)
     
     private lazy var stackView = Utilities().configStackView([cityNameLabel, countyNameLabel], axis: .horizontal, distribution: .equalSpacing)
     

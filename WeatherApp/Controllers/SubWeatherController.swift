@@ -44,7 +44,7 @@ final class SubWeatherController: BaseViewController {
     
     func getWeather() {
         if let location = getLocationFromSearch {
-            weatherManager.weatherSet(lat: location.latitude, lon: location.longitude) {
+            weatherManager.subWeatherSet(lat: location.latitude, lon: location.longitude) {
                 self.collectionView.reloadData()
             }
         }
@@ -72,14 +72,14 @@ extension SubWeatherController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            if let weathetKit = weatherManager.getWeatherFromWeatherKit() {
+            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
                 cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item])
             }
             return cell
             
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            if let weathetKit = weatherManager.getWeatherFromWeatherKit() {
+            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
                 cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1])
             }
             return cell
@@ -89,9 +89,9 @@ extension SubWeatherController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
         
-        header.weatherData = weatherManager.getWeatherFromAPIModel()
+        header.weatherData = weatherManager.getSubWeatherFromAPIModel()
         
-        if let weatherKit = weatherManager.getWeatherFromWeatherKit() {
+        if let weatherKit = weatherManager.getSubWeatherFromWeatherKit() {
             header.configWeather(with: weatherKit.dailyForecast[0])
             }
         return header
@@ -119,7 +119,7 @@ extension SubWeatherController {
             realmModel.lat = location.latitude
             realmModel.lon = location.longitude
             
-            weatherManager.weatherListSet(lat: location.latitude, lon: location.longitude) {
+            weatherManager.listWeatherSet(lat: location.latitude, lon: location.longitude) {
                 self.realmManager.write(realmModel)
                 NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
                 self.dismiss(animated: true)

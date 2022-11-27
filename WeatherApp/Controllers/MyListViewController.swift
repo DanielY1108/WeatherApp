@@ -51,6 +51,7 @@ final class MyListViewController: UIViewController {
     }
     
     
+    
 }
 
 // MARK: - NotificationCenter
@@ -78,10 +79,9 @@ extension MyListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
-//        cell.layer.cornerRadius = 20
-        cell.weatherData = weatherManager.getWeatherArrayFromAPIModel()[indexPath.section]
+        cell.weatherData = weatherManager.getListWeatherFromAPIModel()[indexPath.section]
         
-        let weatherKit = weatherManager.getWeatherArrayFromWeatherKit()[indexPath.section]
+        let weatherKit = weatherManager.getListWeatherFromWeatherKit()[indexPath.section]
         cell.configWeather(with: weatherKit.dailyForecast[0])
         
         cell.selectionStyle = .none
@@ -92,6 +92,12 @@ extension MyListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension MyListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let location = realmManager.read(RealmDataModel.self)[indexPath.section]
+        
+        navigationController?.popViewController(animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView()
     }
