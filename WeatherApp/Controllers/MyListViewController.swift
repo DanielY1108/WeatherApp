@@ -44,7 +44,7 @@ final class MyListViewController: UIViewController {
     
     private func configUI() {
         self.view.addSubview(tableView)
-    
+        
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
@@ -62,7 +62,7 @@ extension MyListViewController {
     }
     
     @objc func loadList(notification: NSNotification) {
-      self.tableView.reloadData()
+        self.tableView.reloadData()
     }
 }
 
@@ -103,9 +103,9 @@ extension MyListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 2
+        return 0
     }
-  
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
@@ -151,23 +151,9 @@ extension MyListViewController: UISearchResultsUpdating {
 
 extension MyListViewController {
     private func configNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.systemBackground
-        appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 18.0),
-                                          .foregroundColor: UIColor.defaultLabelColor]
-        appearance.largeTitleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 35.0),
-                                               .foregroundColor: UIColor.defaultLabelColor]
-        
-        // 기본 설정 (standard, compact, scrollEdge)
-        self.navigationController?.navigationBar.standardAppearance = appearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        self.navigationItem.title = "My List"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.tintColor = .systemBlue  // 틴트색상 설정
-        self.navigationItem.hidesSearchBarWhenScrolling = false  // 검색창 항상 위
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
+        SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .myList)
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
     }
     
     @objc private func tabBarButtonTapped() {

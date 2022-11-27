@@ -23,6 +23,8 @@
 		654C0754292CF4A8003152C3 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654C0753292CF4A8003152C3 /* UIColor+.swift */; };
 		654C075B292D1001003152C3 /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654C075A292D1001003152C3 /* RealmDataModel.swift */; };
 		654C075F292D1D2B003152C3 /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654C075E292D1D2B003152C3 /* RealmDataManager.swift */; };
+		65644C35293392000015BADD /* SettingTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65644C34293392000015BADD /* SettingTitle.swift */; };
+		65644C392933AB010015BADD /* SetupNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65644C382933AB010015BADD /* SetupNavigation.swift */; };
 		659BB50A29239DF1003A6618 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659BB50929239DF1003A6618 /* BackgroundView.swift */; };
 		659C52C62922758100EEEA70 /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52C52922758100EEEA70 /* CurrentWeatherData.swift */; };
 		659C52C82922778200EEEA70 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52C72922778200EEEA70 /* WeatherManager.swift */; };
@@ -37,6 +39,9 @@
 		65A0CEF1292B53CF00D6E862 /* UILabel+Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEF0292B53CF00D6E862 /* UILabel+Highlight.swift */; };
 		65A0CEF9292B8AE400D6E862 /* KeyboardEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEF8292B8AE400D6E862 /* KeyboardEvent.swift */; };
 		65A0CEFB292BD28100D6E862 /* SubWeatherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0CEFA292BD28100D6E862 /* SubWeatherController.swift */; };
+		65DE09A129333C6E00765F05 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DE09A029333C6E00765F05 /* SettingCell.swift */; };
+		65DE09A6293340DA00765F05 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DE09A5293340DA00765F05 /* Setting.swift */; };
+		65DE09A829337F0D00765F05 /* SettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DE09A729337F0D00765F05 /* SettingSection.swift */; };
 		65EB5B35292248B600ADF406 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65EB5B34292248B600ADF406 /* SnapKit */; };
 		65F0CF312928E41B005C57F2 /* MenuAnimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F0CF302928E41B005C57F2 /* MenuAnimate.swift */; };
 		65F0CF3429294400005C57F2 /* MyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F0CF3329294400005C57F2 /* MyListCell.swift */; };
@@ -66,6 +71,8 @@
 		654C0753292CF4A8003152C3 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		654C075A292D1001003152C3 /* RealmDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataModel.swift; sourceTree = "<group>"; };
 		654C075E292D1D2B003152C3 /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
+		65644C34293392000015BADD /* SettingTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTitle.swift; sourceTree = "<group>"; };
+		65644C382933AB010015BADD /* SetupNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupNavigation.swift; sourceTree = "<group>"; };
 		659BB50929239DF1003A6618 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		659C52C52922758100EEEA70 /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
 		659C52C72922778200EEEA70 /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
@@ -80,6 +87,9 @@
 		65A0CEF0292B53CF00D6E862 /* UILabel+Highlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Highlight.swift"; sourceTree = "<group>"; };
 		65A0CEF8292B8AE400D6E862 /* KeyboardEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardEvent.swift; sourceTree = "<group>"; };
 		65A0CEFA292BD28100D6E862 /* SubWeatherController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubWeatherController.swift; sourceTree = "<group>"; };
+		65DE09A029333C6E00765F05 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		65DE09A5293340DA00765F05 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		65DE09A729337F0D00765F05 /* SettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSection.swift; sourceTree = "<group>"; };
 		65F0CF302928E41B005C57F2 /* MenuAnimate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAnimate.swift; sourceTree = "<group>"; };
 		65F0CF3329294400005C57F2 /* MyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListCell.swift; sourceTree = "<group>"; };
 		65FBC2B129279B5500B5AE35 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -143,7 +153,7 @@
 				65430AE22920CC8B00E95B96 /* AppDelegate.swift */,
 				65430AE42920CC8B00E95B96 /* SceneDelegate.swift */,
 				659C52CB292278DC00EEEA70 /* Helper */,
-				659C52DD292363FE00EEEA70 /* Utils */,
+				659C52DD292363FE00EEEA70 /* Utilities */,
 				659C52D629228E6E00EEEA70 /* Extenstions */,
 				65430AFB2920CCE100E95B96 /* Models */,
 				65430AFC2920CCE700E95B96 /* Views */,
@@ -160,12 +170,9 @@
 			isa = PBXGroup;
 			children = (
 				65FBC2C22927F7B600B5AE35 /* MenuList.swift */,
-				659C52C52922758100EEEA70 /* CurrentWeatherData.swift */,
-				659C52D929229AE400EEEA70 /* CurrentWeatherModel.swift */,
-				659C52C72922778200EEEA70 /* WeatherManager.swift */,
-				65FBC2B129279B5500B5AE35 /* LocationManager.swift */,
-				654C075A292D1001003152C3 /* RealmDataModel.swift */,
-				654C075E292D1D2B003152C3 /* RealmDataManager.swift */,
+				65DE09A5293340DA00765F05 /* Setting.swift */,
+				65DE09A32933403200765F05 /* Weather&Location */,
+				65DE09A42933404400765F05 /* DataBase */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -175,6 +182,7 @@
 			children = (
 				65FBC2B92927EBA600B5AE35 /* MainView */,
 				65F0CF32292943A5005C57F2 /* MyListView */,
+				65DE09A229333C7300765F05 /* SettingView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -221,14 +229,45 @@
 			path = Extenstions;
 			sourceTree = "<group>";
 		};
-		659C52DD292363FE00EEEA70 /* Utils */ = {
+		659C52DD292363FE00EEEA70 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				659C52DB292363FB00EEEA70 /* Utilities.swift */,
 				65F0CF302928E41B005C57F2 /* MenuAnimate.swift */,
 				65A0CEF8292B8AE400D6E862 /* KeyboardEvent.swift */,
+				65644C34293392000015BADD /* SettingTitle.swift */,
+				65DE09A729337F0D00765F05 /* SettingSection.swift */,
+				65644C382933AB010015BADD /* SetupNavigation.swift */,
 			);
-			path = Utils;
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		65DE09A229333C7300765F05 /* SettingView */ = {
+			isa = PBXGroup;
+			children = (
+				65DE09A029333C6E00765F05 /* SettingCell.swift */,
+			);
+			path = SettingView;
+			sourceTree = "<group>";
+		};
+		65DE09A32933403200765F05 /* Weather&Location */ = {
+			isa = PBXGroup;
+			children = (
+				659C52C52922758100EEEA70 /* CurrentWeatherData.swift */,
+				659C52D929229AE400EEEA70 /* CurrentWeatherModel.swift */,
+				659C52C72922778200EEEA70 /* WeatherManager.swift */,
+				65FBC2B129279B5500B5AE35 /* LocationManager.swift */,
+			);
+			path = "Weather&Location";
+			sourceTree = "<group>";
+		};
+		65DE09A42933404400765F05 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				654C075A292D1001003152C3 /* RealmDataModel.swift */,
+				654C075E292D1D2B003152C3 /* RealmDataManager.swift */,
+			);
+			path = DataBase;
 			sourceTree = "<group>";
 		};
 		65F0CF32292943A5005C57F2 /* MyListView */ = {
@@ -333,10 +372,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65DE09A129333C6E00765F05 /* SettingCell.swift in Sources */,
 				659BB50A29239DF1003A6618 /* BackgroundView.swift in Sources */,
+				65644C35293392000015BADD /* SettingTitle.swift in Sources */,
 				65FBC2B229279B5500B5AE35 /* LocationManager.swift in Sources */,
 				654C075F292D1D2B003152C3 /* RealmDataManager.swift in Sources */,
 				659C52C82922778200EEEA70 /* WeatherManager.swift in Sources */,
+				65DE09A6293340DA00765F05 /* Setting.swift in Sources */,
 				659C52D1292285D100EEEA70 /* Constants.swift in Sources */,
 				65A0CEED292A2DE900D6E862 /* SearchCell.swift in Sources */,
 				659C52DA29229AE400EEEA70 /* CurrentWeatherModel.swift in Sources */,
@@ -345,6 +387,7 @@
 				659C52DC292363FB00EEEA70 /* Utilities.swift in Sources */,
 				65FBC2C5292801B900B5AE35 /* MenuListCell.swift in Sources */,
 				65FBC2C72928043100B5AE35 /* MyListViewController.swift in Sources */,
+				65DE09A829337F0D00765F05 /* SettingSection.swift in Sources */,
 				65430AE72920CC8B00E95B96 /* MainWeatherViewController.swift in Sources */,
 				654C0754292CF4A8003152C3 /* UIColor+.swift in Sources */,
 				65430AE32920CC8B00E95B96 /* AppDelegate.swift in Sources */,
@@ -361,6 +404,7 @@
 				654C075B292D1001003152C3 /* RealmDataModel.swift in Sources */,
 				6511D38429211415008BF87C /* DailyCell.swift in Sources */,
 				65FBC2C32927F7B600B5AE35 /* MenuList.swift in Sources */,
+				65644C392933AB010015BADD /* SetupNavigation.swift in Sources */,
 				65A0CEEB292A28AC00D6E862 /* SearchLocationController.swift in Sources */,
 				65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */,
 				65A0CEF9292B8AE400D6E862 /* KeyboardEvent.swift in Sources */,

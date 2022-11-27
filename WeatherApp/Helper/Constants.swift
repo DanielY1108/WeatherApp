@@ -20,7 +20,8 @@ struct Constants {
         
         static let myListID = "MyList_ID"
         static let resultID = "Result_ID"
-
+        
+        static let settingID = "Setting_ID"
     }
     
     

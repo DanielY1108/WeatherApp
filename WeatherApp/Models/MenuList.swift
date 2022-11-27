@@ -12,7 +12,6 @@ enum Segue {
     case myList
     case setting
     case currentLocation
-
 }
 
 struct MenuList {

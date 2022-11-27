@@ -23,7 +23,7 @@ final class MainWeatherViewController: BaseViewController {
     
     private lazy var menuAnimate = MenuAnimate(menu: false)
 
-    private var menuList: [MenuList] = [
+    private let menuList: [MenuList] = [
         MenuList(title: "Main", segue: .main),
         MenuList(title: "MyList", segue: .myList),
         MenuList(title: "Setting", segue: .setting),
@@ -170,16 +170,27 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
+            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
+                cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item])
+            }
             return cell
             
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
+            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
+                cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1])
+            }
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
+        header.weatherData = weatherManager.getSubWeatherFromAPIModel()
+        
+        if let weatherKit = weatherManager.getSubWeatherFromWeatherKit() {
+            header.configWeather(with: weatherKit.dailyForecast[0])
+            }
         return header
     }
 }
