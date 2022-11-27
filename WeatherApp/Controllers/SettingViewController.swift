@@ -126,7 +126,6 @@ extension SettingViewController: UITableViewDelegate {
 extension SettingViewController {
     private func configNavigationBar() {
         SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .setting)
-        self.navigationItem.title = "Setting"
     }
 }
 

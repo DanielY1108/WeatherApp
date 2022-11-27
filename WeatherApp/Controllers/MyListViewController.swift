@@ -152,7 +152,6 @@ extension MyListViewController: UISearchResultsUpdating {
 extension MyListViewController {
     private func configNavigationBar() {
         SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .myList)
-
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
     }
     
