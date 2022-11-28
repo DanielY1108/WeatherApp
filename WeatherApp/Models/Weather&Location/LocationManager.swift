@@ -17,7 +17,7 @@ class LocationManager: NSObject {
     private override init() {}
     private func setupLocationManager() {
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
     }
     private func saveCurrnetLocation() {
         guard let location = manager.location else { return }
