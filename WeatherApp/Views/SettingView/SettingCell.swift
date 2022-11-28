@@ -8,10 +8,10 @@
 import UIKit
 
 class SettingCell: UITableViewCell {
-
+    
     private let mainView = UIView()
     
-    let mainLabel = Utilities().configLabel(font: 18, weight: .regular, color: .label)
+    let mainLabel = FormatUI.Label(ofSize: .main, weight: .regular, color: .label).makeLabel
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
@@ -30,8 +30,8 @@ class SettingCell: UITableViewCell {
             make.edges.equalToSuperview()
         }
         mainLabel.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalTo(mainView)
-            make.leading.equalTo(mainView).inset(10)
+            make.trailing.top.bottom.equalTo(mainView)
+            make.leading.equalTo(mainView).inset(20)
         }
     }
 }

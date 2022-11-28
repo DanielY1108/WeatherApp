@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import CoreLocation
 
 protocol RealmData {
     func read<T: Object>(_ object: T.Type) -> Results<T>
@@ -14,9 +15,9 @@ protocol RealmData {
     func delete<T: Object>(_ object: T)
 }
 
-final class RealmDataManager: RealmData {
+final class RealmManager: RealmData {
     
-    static let shared = RealmDataManager()
+    static let shared = RealmManager()
     
     private let realmData: Realm
     
@@ -24,9 +25,16 @@ final class RealmDataManager: RealmData {
         self.realmData = try! Realm()
     }
     
+    func writeLocation(_ location: CLLocationCoordinate2D ) {
+        let Weather = RealmDataModel()
+        Weather.lat = location.latitude
+        Weather.lon = location.longitude
+        self.write(Weather)
+    }
+    
     func getLocationOfDefaultRealm() {
-         print("Realm is located at:", realmData.configuration.fileURL!)
-     }
+        print("Realm is located at:", realmData.configuration.fileURL!)
+    }
     
     func read<T: Object>(_ object: T.Type) -> Results<T> {
         return realmData.objects(object)

@@ -42,5 +42,4 @@ final class SubViewButton: UIView {
             make.width.equalToSuperview().multipliedBy(0.2)
         }
     }
-  
 }

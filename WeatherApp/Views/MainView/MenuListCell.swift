@@ -10,7 +10,7 @@ import SnapKit
 
 final class MenuListCell: UITableViewCell {
 
-    let titleLabel = Utilities().configLabel(font: 20, weight: .regular)
+    let titleLabel = FormatUI.Label(ofSize: .medium, weight: .regular).makeLabel
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)

@@ -11,5 +11,4 @@ import RealmSwift
 final class RealmDataModel: Object {
     @objc dynamic var lat: Double = 0.0
     @objc dynamic var lon: Double = 0.0
-
 }

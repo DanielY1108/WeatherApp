@@ -62,5 +62,4 @@ struct CurrentWeatherModel {
         sunrise = data.sys.sunrise
         sunset = data.sys.sunset
     }
-    
 }

@@ -11,6 +11,7 @@ import SnapKit
 class SettingViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let locationManager = LocationManager.shared
     
     private let settingList: [Setting] = [
         Setting(title: .location, section: .user),
@@ -42,6 +43,7 @@ class SettingViewController: UIViewController {
     
 }
 
+
 // MARK: - UITableViewDataSource
 
 extension SettingViewController: UITableViewDataSource {
@@ -63,15 +65,28 @@ extension SettingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.settingID, for: indexPath) as! SettingCell
         guard let section = SettingSection(sectionIndex: indexPath.section) else { return cell }
+        cell.selectionStyle = .none
+        
+        let switchView = UISwitch(frame: .zero)
         
         switch section {
         case .user:
             cell.mainLabel.text = userList[indexPath.row].title.rawValue
+            switch indexPath.row {
+            case 0:
+                switchView.addTarget(self, action: #selector(self.locationSwitchChanged(_:)), for: .valueChanged)
+                switchView.setOn(UserDefaults.standard.bool(forKey: Constants.UserDefault.locationSwitch), animated: true)
+            default:
+                switchView.addTarget(self, action: #selector(self.unitSwitchChanged(_:)), for: .valueChanged)
+                switchView.setOn(UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch), animated: true)
+            }
+            cell.accessoryView = switchView
+            
+            return cell
         case .info:
             cell.mainLabel.text = infoList[indexPath.row].title.rawValue
+            return cell
         }
-        cell.selectionStyle = .none
-        return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -86,6 +101,31 @@ extension SettingViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - Setup Switch
+
+extension SettingViewController: SwitchDelegate {
+    @objc func locationSwitchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.locationSwitch)
+        if sender.isOn {
+            print("Switch On")
+        } else {
+            print("Switch Off")
+        }
+        
+    }
+    
+    @objc func unitSwitchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.unitSwitch)
+        if sender.isOn {
+            print("Switch On")
+        } else {
+            print("Switch Off")
+        }
+    }
+    
+}
+
+
 // MARK: - UITableViewDelegate
 
 extension SettingViewController: UITableViewDelegate {
@@ -93,15 +133,7 @@ extension SettingViewController: UITableViewDelegate {
         guard let section = SettingSection(sectionIndex: indexPath.section) else { return }
         
         switch section {
-        case .user:
-            switch userList[indexPath.row].title {
-            case .location:
-                print("location")
-            case .temperature:
-                print("temp")
-            default:
-                break
-            }
+        case .user: break
         case .info:
             switch infoList[indexPath.row].title {
             case .about:
@@ -118,6 +150,32 @@ extension SettingViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
+    }
+}
+
+
+// MARK: - Alert(Setting Location)
+
+extension SettingViewController {
+    func setAuthAlertAction(with switchs: UISwitch) {
+        let authAlertController = UIAlertController(title: "Request location permissions", message: "Would you like to go to location permission settings?", preferredStyle: .alert)
+        
+        let setting = UIAlertAction(title: "setting", style: .default) { action in
+            if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+                print("Setting button tapped")
+                
+            }
+        }
+        let cancel = UIAlertAction(title: "cancel", style: .cancel) { action in
+            print("Cancel button tapped")
+            switchs.isOn = false
+            UserDefaults.standard.set(switchs.isOn, forKey: Constants.UserDefault.locationSwitch)
+        }
+        
+        authAlertController.addAction(setting)
+        authAlertController.addAction(cancel)
+        self.present(authAlertController, animated: true, completion: nil)
     }
 }
 

@@ -8,7 +8,6 @@
 import Foundation
 
 struct Constants {
-    
     struct ID {
         static let headerID = "Header_ID"
         static let categoryHeaderID = "Category_Header_ID"
@@ -23,8 +22,10 @@ struct Constants {
         
         static let settingID = "Setting_ID"
     }
-    
-    
+    struct UserDefault {
+        static let locationSwitch = "Location_Switch"
+        static let unitSwitch = "Unit_Switch"
+    }
 }
 
 enum Search {

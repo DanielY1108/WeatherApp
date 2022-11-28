@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum NaviList: String {
+enum NavigationList: String {
     case myList = "My List"
     case setting = "Setting"
 }
@@ -19,14 +19,13 @@ struct SetupNavigation {
         self.appearance = appearance
     }
     
-    func setup(with viewContoller: UIViewController, title: NaviList) {
+    func setup(with viewContoller: UIViewController, title: NavigationList) {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor.systemBackground
         appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 18.0),
                                           .foregroundColor: UIColor.defaultLabelColor]
         appearance.largeTitleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 35.0),
                                                .foregroundColor: UIColor.defaultLabelColor]
-        
         // 기본 설정 (standard, compact, scrollEdge)
         viewContoller.navigationController?.navigationBar.standardAppearance = appearance
         viewContoller.navigationController?.navigationBar.scrollEdgeAppearance = appearance

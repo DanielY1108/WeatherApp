@@ -11,13 +11,12 @@ import WeatherKit
 
 final class HourlyCell: UICollectionViewCell {
     
-    // 레이블
-    private let hourLabel = Utilities().configLabel(font: 16, weight: .regular)
-    private let currentTemp = Utilities().configLabel(font: 16, weight: .regular)
-    // 이미지
-    private let weatherImg = Utilities().configImange(format: .system, name: "thermometer.high")
-    // 스택뷰
-    private lazy var stackView = Utilities().configStackView([hourLabel ,weatherImg ,currentTemp], axis: .vertical, alignment: .center)
+    private let hourLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let currentTemp = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let weatherImg = FormatUI.Image(format: .systemImage, name: "thermometer.high").makeImange
+    private lazy var stackView = FormatUI.StackView(subviews: [hourLabel ,weatherImg ,currentTemp],
+                                                    axis: .vertical,
+                                                    alignment: .center).makeStackView
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,19 +53,3 @@ final class HourlyCell: UICollectionViewCell {
         weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName).fill")
     }
 }
-
-
-
-
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView4: PreviewProvider {
-    static var previews: some View {
-        MainWeatherViewController()
-            .toPreview()
-    }
-}
-#endif
-

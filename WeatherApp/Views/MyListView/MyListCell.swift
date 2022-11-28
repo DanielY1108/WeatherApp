@@ -19,20 +19,28 @@ final class MyListCell: UITableViewCell {
     
     private let mainview = UIView()
     
-    private let locationLabel = Utilities().configLabel(font: 18, weight: .medium)
-    private let weatherStatueLabel = Utilities().configLabel(font: 18, weight: .medium)
-    private let tempLabel = Utilities().configLabel(font: 40, weight: .medium)
-    private let highTempLabel = Utilities().configLabel(font: 18, weight: .medium)
-    private let lowTempLabel = Utilities().configLabel(font: 18, weight: .medium)
+    private let locationLabel = FormatUI.Label(ofSize: .main, weight: .medium).makeLabel
+    private let weatherStatueLabel = FormatUI.Label(ofSize: .main, weight: .medium).makeLabel
+    private let tempLabel = FormatUI.Label(ofSize: .secondTitle, weight: .medium).makeLabel
+    private let highTempLabel = FormatUI.Label(ofSize: .main, weight: .medium).makeLabel
+    private let lowTempLabel = FormatUI.Label(ofSize: .main, weight: .medium).makeLabel
     
-    private let weatherImg = Utilities().configImange(format: .user, name: "2.svg")
-    private let locationImg = Utilities().configImange(format: .system, name: "location")
+    private let weatherImg = FormatUI.Image(format: .userImage, name: "2.svg").makeImange
+    private let locationImg = FormatUI.Image(format: .systemImage, name: "location").makeImange
     
-    private lazy var locationStackView = Utilities().configStackView([locationImg, locationLabel], axis: .horizontal)
-    private lazy var highLowStackView = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering, spacing: 7)
-    
-    private lazy var leftSideSatckView = Utilities().configStackView([locationStackView, weatherStatueLabel], axis: .vertical, distribution: .fillEqually, alignment: .leading)
-    private lazy var rightSideSatckView = Utilities().configStackView([tempLabel, highLowStackView], axis: .vertical, distribution: .equalCentering, alignment: .trailing)
+    private lazy var locationStackView = FormatUI.StackView(subviews: [locationImg, locationLabel],
+                                                            axis: .horizontal).makeStackView
+    private lazy var highLowStackView = FormatUI.StackView(subviews: [lowTempLabel, highTempLabel],
+                                                           axis: .horizontal,
+                                                           distribution: .equalCentering).makeStackView
+    private lazy var leftSideSatckView =  FormatUI.StackView(subviews: [locationStackView, weatherStatueLabel],
+                                                             axis: .vertical,
+                                                             distribution: .fillEqually,
+                                                             alignment: .leading).makeStackView
+    private lazy var rightSideSatckView =  FormatUI.StackView(subviews: [tempLabel, highLowStackView],
+                                                              axis: .vertical,
+                                                              distribution: .equalCentering,
+                                                              alignment: .trailing).makeStackView
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -105,15 +113,3 @@ extension MyListCell {
     }
 
 }
-
-
-import SwiftUI
-
-#if DEBUG
-struct PreView8: PreviewProvider {
-    static var previews: some View {
-        MyListViewController()
-            .toPreview()
-    }
-}
-#endif

@@ -34,16 +34,3 @@ final class BackgroundView: UIView {
         }
     }
 }
-
-
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView2: PreviewProvider {
-    static var previews: some View {
-        MainWeatherViewController()
-            .toPreview()
-    }
-}
-#endif

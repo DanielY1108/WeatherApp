@@ -9,10 +9,12 @@ import UIKit
 
 final class SearchCell: UITableViewCell {
 
-    let cityNameLabel = Utilities().configLabel(font: 16, weight: .regular, color: .label)
-    let countyNameLabel = Utilities().configLabel(font: 13, weight: .regular, color: .label)
+    let cityNameLabel = FormatUI.Label(ofSize: .small, weight: .regular, color: .label).makeLabel
+    let countyNameLabel = FormatUI.Label(ofSize: .Annotation, weight: .regular, color: .label).makeLabel
     
-    private lazy var stackView = Utilities().configStackView([cityNameLabel, countyNameLabel], axis: .horizontal, distribution: .equalSpacing)
+    private lazy var stackView = FormatUI.StackView(subviews: [cityNameLabel, countyNameLabel],
+                                                    axis: .horizontal,
+                                                    distribution: .equalSpacing).makeStackView
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
@@ -36,15 +38,13 @@ final class SearchCell: UITableViewCell {
         
         cityNameLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(5)
+            make.top.equalToSuperview().inset(2)
             make.height.equalToSuperview().multipliedBy(0.6)
         }
         countyNameLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(5)
-            make.height.equalToSuperview().multipliedBy(0.2)
-            
+            make.height.equalToSuperview().multipliedBy(0.3)
         }
     }
-
 }

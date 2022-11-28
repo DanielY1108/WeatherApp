@@ -11,9 +11,7 @@ import MapKit
 import CoreLocation
 
 final class SearchLocationController: UIViewController {
-    
-    private var weatherManager = WeatherManager.shared
-    
+        
     private let tavleView = UITableView(frame: .zero)
     
     private var searchCompleter = MKLocalSearchCompleter()
@@ -100,7 +98,7 @@ extension SearchLocationController: UITableViewDataSource {
         
         DispatchQueue.main.async {
             if let searchStr = self.searchStr {
-                cell.cityNameLabel.setHighlighted(for: searchResult.title, with: searchStr)
+                cell.cityNameLabel.setHighlighted(searchResult.title, with: searchStr)
             }
             cell.countyNameLabel.text = searchResult.subtitle
         }
@@ -133,18 +131,4 @@ extension SearchLocationController: UITableViewDelegate {
         return view.frame.height/17
     }
 }
-
-
-
-
-import SwiftUI
-
-#if DEBUG
-struct PreView9: PreviewProvider {
-    static var previews: some View {
-        SearchLocationController()
-            .toPreview()
-    }
-}
-#endif
 

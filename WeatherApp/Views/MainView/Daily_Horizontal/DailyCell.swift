@@ -12,15 +12,18 @@ import WeatherKit
 final class DailyCell: UICollectionViewCell {
     
     // 레이블
-    private let dayLabel = Utilities().configLabel(font: 16, weight: .regular)
-    private let highTempLabel = Utilities().configLabel(font: 16, weight: .regular)
-    private let lowTempLabel = Utilities().configLabel(font: 16, weight: .regular)
+    private let dayLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let highTempLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let lowTempLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
     // 이미지
-    private let weatherImg = Utilities().configImange(format: .system, name: "thermometer.high")
+    private let weatherImg = FormatUI.Image(format: .systemImage, name: "thermometer.high").makeImange
     // 스택뷰
-    private lazy var stackViewLeftSide = Utilities().configStackView([dayLabel ,weatherImg], axis: .horizontal, distribution: .equalCentering)
-    private lazy var stackViewRightSide = Utilities().configStackView([lowTempLabel, highTempLabel], axis: .horizontal, distribution: .equalCentering)
-
+    private lazy var stackViewLeftSide = FormatUI.StackView(subviews: [dayLabel ,weatherImg],
+                                                            axis: .horizontal,
+                                                            distribution: .equalCentering).makeStackView
+    private lazy var stackViewRightSide = FormatUI.StackView(subviews: [lowTempLabel, highTempLabel],
+                                                             axis: .horizontal,
+                                                             distribution: .equalCentering).makeStackView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,7 +46,6 @@ final class DailyCell: UICollectionViewCell {
             make.width.equalTo(80)
             make.height.equalToSuperview().inset(14)
         }
-        
         stackViewRightSide.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview().inset(20)
             make.width.equalTo(120)
@@ -57,29 +59,10 @@ final class DailyCell: UICollectionViewCell {
         df.dateFormat = "E"
         df.locale = Locale(identifier: "en_us")
 
-        
         dayLabel.text = df.string(from: dayWeather.date)
         weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName).fill")
         highTempLabel.text = "H: \(mf.string(from: dayWeather.highTemperature))"
         lowTempLabel.text = "L : \(mf.string(from: dayWeather.lowTemperature))"
-
-    }
-    
-}
-
-
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView5: PreviewProvider {
-    static var previews: some View {
-        MainWeatherViewController()
-            .toPreview()
     }
 }
-#endif
-
-    
-
 

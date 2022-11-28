@@ -18,6 +18,3 @@ extension UIViewController {
         }
 }
 #endif
-
-
-// refernce image = "<a href="https://www.flaticon.com/kr/free-icons/" title="지시자 아이콘">지시자 아이콘  제작자: Freepik - Flaticon</a>"

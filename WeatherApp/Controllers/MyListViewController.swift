@@ -10,10 +10,7 @@ import SnapKit
 import RealmSwift
 
 final class MyListViewController: UIViewController {
-    
-    private let weatherManager = WeatherManager.shared
-    private let realmManager = RealmDataManager.shared
-    
+  
     lazy var tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
@@ -49,9 +46,6 @@ final class MyListViewController: UIViewController {
             make.edges.equalTo(view)
         }
     }
-    
-    
-    
 }
 
 // MARK: - NotificationCenter
@@ -71,7 +65,7 @@ extension MyListViewController {
 
 extension MyListViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return realmManager.read(RealmDataModel.self).count
+        return RealmManager.shared.read(RealmDataModel.self).count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -79,9 +73,9 @@ extension MyListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
-        cell.weatherData = weatherManager.getListWeatherFromAPIModel()[indexPath.section]
+        cell.weatherData = WeatherManager.shared.weatherModelList[indexPath.section]
         
-        let weatherKit = weatherManager.getListWeatherFromWeatherKit()[indexPath.section]
+        let weatherKit = WeatherManager.shared.weatherKitList[indexPath.section]
         cell.configWeather(with: weatherKit.dailyForecast[0])
         
         cell.selectionStyle = .none
@@ -92,9 +86,7 @@ extension MyListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension MyListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let location = realmManager.read(RealmDataModel.self)[indexPath.section]
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         navigationController?.popViewController(animated: true)
     }
     
@@ -109,8 +101,8 @@ extension MyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            let realmData = realmManager.read(RealmDataModel.self)[indexPath.section]
-            realmManager.delete(realmData)
+            let realmData = RealmManager.shared.read(RealmDataModel.self)[indexPath.section]
+            RealmManager.shared.delete(realmData)
             let indexSet = IndexSet(arrayLiteral: indexPath.section)
             tableView.deleteSections(indexSet, with: .fade)
         }
@@ -160,15 +152,3 @@ extension MyListViewController {
     }
 }
 
-
-
-import SwiftUI
-
-#if DEBUG
-struct PreView7: PreviewProvider {
-    static var previews: some View {
-        MyListViewController()
-            .toPreview()
-    }
-}
-#endif

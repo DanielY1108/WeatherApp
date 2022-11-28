@@ -9,52 +9,47 @@ import UIKit
 import MapKit
 import CoreLocation
 
-
-final class LocationManager: NSObject {
+class LocationManager: NSObject {
     static let shared = LocationManager()
-    
-    private let locationManager = CLLocationManager()
-    
-    private var location = CLLocation()
-
-    func setupLocation() {
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.startUpdatingLocation()
+    let manager = CLLocationManager()
+    private(set) var location: Locations?
+    private(set) var locations = [Locations]()
+    private override init() {}
+    private func setupLocationManager() {
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
     }
-    
-    func getLocation() -> CLLocation {
-        return location
+    private func saveCurrnetLocation() {
+        guard let location = manager.location else { return }
+        let lat = location.coordinate.latitude
+        let lon = location.coordinate.longitude
+        let currrentLocation = Locations(latitude: lat, longitude: lon)
+        self.location = currrentLocation
     }
-    func updateLocation(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        location = CLLocation(latitude: lat, longitude: lon)
+    func checkLocationService() {
+        setupLocationManager()
+        locationManagerDidChangeAuthorization(manager)
     }
 }
 
-// MARK: - Location Delegate
-
 extension LocationManager: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])  {
-        if let location = locations.first {
-            self.location = location
-            locationManager.stopUpdatingLocation()
-        }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        manager.stopUpdatingLocation()
     }
-    
-    // 실패시
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         manager.stopUpdatingLocation()
     }
-    
-    // 인증
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
-        case .authorizedAlways , .authorizedWhenInUse:
-            debugPrint("Location Auth: Allow")
-        case .notDetermined , .denied , .restricted:
-            debugPrint("Location Auth: denied")
+        case .notDetermined:
+            print("Location Auth: notDetermined")
+            manager.requestWhenInUseAuthorization()
+        case .authorizedAlways, .authorizedWhenInUse:
+            print("Location Auth: authorizedWhenInUse")
+            manager.startUpdatingLocation()
+            saveCurrnetLocation()
+        case .denied, .restricted:
+            print("Location Auth: denied")
         default:
             break
         }

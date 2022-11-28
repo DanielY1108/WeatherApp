@@ -17,44 +17,55 @@ final class weatherHeader: UICollectionReusableView {
         }
     }
     // 레이블
-    private let tempLabel = Utilities().configLabel(font: 60, weight: .bold)
-    private let highTempLabel = Utilities().configLabel(font: 18, weight: .regular)
-    private let lowTempLabel = Utilities().configLabel(font: 18, weight: .regular)
-    private let weatherStatueLabel = Utilities().configLabel(font: 20, weight: .regular)
-    private let locationLabel = Utilities().configLabel(font: 15, weight: .regular)
-    private let windSpeedLabel = Utilities().configLabel(font: 15, weight: .regular)
-    private let pressureLabel = Utilities().configLabel(font: 15, weight: .regular)
-    private let humidityLabel = Utilities().configLabel(font: 15, weight: .regular)
-    private let sunriseLabel = Utilities().configLabel(font: 15, weight: .regular)
-    private let sunsetLabel = Utilities().configLabel(font: 15, weight: .regular)
-
+    private let tempLabel = FormatUI.Label(ofSize: .title, weight: .bold).makeLabel
+    private let highTempLabel = FormatUI.Label(ofSize: .main, weight: .regular).makeLabel
+    private let lowTempLabel = FormatUI.Label(ofSize: .main, weight: .regular).makeLabel
+    private let weatherStatueLabel = FormatUI.Label(ofSize: .medium, weight: .regular).makeLabel
+    private let locationLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let windSpeedLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let pressureLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let humidityLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let sunriseLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
+    private let sunsetLabel = FormatUI.Label(ofSize: .small, weight: .regular).makeLabel
     // 이미지
-    private let highTempImg = Utilities().configImange(format: .system, name: "thermometer.high")
-    private let lowTempImg = Utilities().configImange(format: .system, name: "thermometer.low")
-    private let LocationImg = Utilities().configImange(format: .system, name: "location")
-    private let pressureImg = Utilities().configImange(format: .system, name: "speedometer")
-    private let windSpeedImg = Utilities().configImange(format: .system, name: "wind")
-    private let humidityImg = Utilities().configImange(format: .system, name: "humidity")
-    private let sunsetImg = Utilities().configImange(format: .system, name: "sunset.fill")
-    private let sunriseImg = Utilities().configImange(format: .system, name: "sunrise.fill")
-
+    private let highTempImg = FormatUI.Image(format: .systemImage, name: "thermometer.high").makeImange
+    private let lowTempImg = FormatUI.Image(format: .systemImage, name: "thermometer.low").makeImange
+    private let LocationImg = FormatUI.Image(format: .systemImage, name: "location").makeImange
+    private let pressureImg = FormatUI.Image(format: .systemImage, name: "speedometer").makeImange
+    private let windSpeedImg = FormatUI.Image(format: .systemImage, name: "wind").makeImange
+    private let humidityImg = FormatUI.Image(format: .systemImage, name: "humidity").makeImange
+    private let sunsetImg = FormatUI.Image(format: .systemImage, name: "sunset.fill").makeImange
+    private let sunriseImg = FormatUI.Image(format: .systemImage, name: "sunrise.fill").makeImange
     // 스택뷰
-    private lazy var topSideStackView = Utilities().configStackView([tempLabel, weatherStatueLabel, highLowStackView], axis: .vertical, alignment: .leading)
-    private lazy var BottomSideStackView = Utilities().configStackView([pressureStackView, windSpeedStackView, humidityStackView], axis: .horizontal, distribution: .equalSpacing)
-
-    private lazy var hightStackView = Utilities().configStackView([highTempImg, highTempLabel], axis: .horizontal, distribution: .fillEqually)
-    private lazy var lowStackView = Utilities().configStackView([lowTempImg, lowTempLabel], axis: .horizontal, distribution: .fillEqually)
-    private lazy var highLowStackView = Utilities().configStackView([lowStackView, hightStackView], axis: .horizontal, distribution: .equalCentering)
-
-    private lazy var sunriseStackView = Utilities().configStackView([sunriseImg, sunriseLabel], axis: .horizontal)
-    private lazy var sunsetStackView = Utilities().configStackView([sunsetImg, sunsetLabel], axis: .horizontal)
-    private lazy var sunStackView = Utilities().configStackView([sunriseStackView, sunsetStackView], axis: .horizontal)
-
-    private lazy var LocationStackView = Utilities().configStackView([LocationImg, locationLabel], axis: .horizontal)
-    
-    private lazy var pressureStackView = Utilities().configStackView([pressureImg, pressureLabel], axis: .horizontal, distribution: .fill)
-    private lazy var windSpeedStackView = Utilities().configStackView([windSpeedImg, windSpeedLabel], axis: .horizontal, distribution: .fill)
-    private lazy var humidityStackView = Utilities().configStackView([humidityImg, humidityLabel], axis: .horizontal, distribution: .fill)
+    private lazy var topSideStackView = FormatUI.StackView(subviews: [tempLabel, weatherStatueLabel, highLowStackView],
+                                                           axis: .vertical,
+                                                           alignment: .leading).makeStackView
+    private lazy var BottomSideStackView = FormatUI.StackView(subviews: [pressureStackView, windSpeedStackView, humidityStackView],
+                                                              axis: .horizontal,
+                                                              distribution: .equalSpacing).makeStackView
+    private lazy var hightStackView = FormatUI.StackView(subviews: [highTempImg, highTempLabel],
+                                                         axis: .horizontal,
+                                                         distribution: .fillEqually).makeStackView
+    private lazy var lowStackView = FormatUI.StackView(subviews: [lowTempImg, lowTempLabel],
+                                                       axis: .horizontal,
+                                                       distribution: .fillEqually).makeStackView
+    private lazy var highLowStackView = FormatUI.StackView(subviews: [lowStackView, hightStackView],
+                                                           axis: .horizontal,
+                                                           distribution: .equalCentering).makeStackView
+    private lazy var sunriseStackView = FormatUI.StackView(subviews: [sunriseImg, sunriseLabel],
+                                                           axis: .horizontal).makeStackView
+    private lazy var sunsetStackView = FormatUI.StackView(subviews: [sunsetImg, sunsetLabel],
+                                                          axis: .horizontal).makeStackView
+    private lazy var sunStackView = FormatUI.StackView(subviews: [sunriseStackView, sunsetStackView],
+                                                       axis: .horizontal).makeStackView
+    private lazy var LocationStackView =  FormatUI.StackView(subviews: [LocationImg, locationLabel],
+                                                             axis: .horizontal).makeStackView
+    private lazy var pressureStackView = FormatUI.StackView(subviews: [pressureImg, pressureLabel],
+                                                            axis: .horizontal).makeStackView
+    private lazy var windSpeedStackView = FormatUI.StackView(subviews: [windSpeedImg, windSpeedLabel],
+                                                             axis: .horizontal).makeStackView
+    private lazy var humidityStackView = FormatUI.StackView(subviews: [humidityImg, humidityLabel],
+                                                            axis: .horizontal).makeStackView
    
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,7 +118,7 @@ extension weatherHeader {
                 self.windSpeedLabel.text = "\(weatherData.windSpeedStr) m/s"
                 self.pressureLabel.text = "\(weatherData.pressureStr) hPa"
                 self.locationLabel.text = "\(weatherData.location)"
-                self.weatherStatueLabel.text = weatherData.weatherStatue
+                self.weatherStatueLabel.text = " \(weatherData.weatherStatue)"
                 self.sunriseLabel.text = weatherData.sunriseStr
                 self.sunsetLabel.text = weatherData.sunsetStr
             }
@@ -124,16 +135,3 @@ extension weatherHeader {
 
     }
 }
-
-
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView3: PreviewProvider {
-    static var previews: some View {
-        MainWeatherViewController()
-            .toPreview()
-    }
-}
-#endif

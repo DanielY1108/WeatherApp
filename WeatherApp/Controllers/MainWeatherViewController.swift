@@ -11,11 +11,7 @@ import CoreLocation
 
 
 final class MainWeatherViewController: BaseViewController {
-    
-    private let weatherManager = WeatherManager.shared
-    private let locationManager = LocationManager.shared
-    private let realmManager = RealmDataManager.shared
-        
+            
     private let menuTableView = UITableView()
 
     private lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
@@ -34,10 +30,12 @@ final class MainWeatherViewController: BaseViewController {
         super.viewDidLoad()
         configSwipeGesture()
         configMenuTableView()
+        LocationManager.shared.checkLocationService()
     }
   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        menuTableView.reloadData()
     }
     
     override func configUI() {
@@ -62,10 +60,129 @@ final class MainWeatherViewController: BaseViewController {
             make.trailing.equalTo(backgroundView).inset(20)
         }
     }
+}
+// MARK: - UICollectionViewDataSource
+
+extension MainWeatherViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        switch section {
+        case 0:
+            return 12
+        default:
+            return 7
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
+            if let weathetKit = WeatherManager.shared.weatherKit {
+                cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item])
+            }
+            return cell
+            
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
+            if let weathetKit = WeatherManager.shared.weatherKit {
+                cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1])
+            }
+            return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
+        header.weatherData = WeatherManager.shared.weatherModel
+        
+        if let weatherKit = WeatherManager.shared.weatherKit {
+            header.configWeather(with: weatherKit.dailyForecast[0])
+            }
+        return header
+    }
+}
+// MARK: - Menu TableView DataSource
+
+extension MainWeatherViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return menuList.count
+        default:
+            return WeatherManager.shared.weatherModelList.count
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.menuID, for: indexPath) as! MenuListCell
+        cell.backgroundColor = .clear
+        cell.selectionStyle = .none
+
+        switch indexPath.section {
+        case 0:
+            cell.titleLabel.textColor = .label
+            cell.titleLabel.text = menuList[indexPath.row].title
+            return cell
+        default:
+            cell.titleLabel.textColor = .systemIndigo
+            cell.titleLabel.text = WeatherManager.shared.weatherModelList[indexPath.row].location
+            return cell
+        }
+    }
 }
 
+// MARK: - Menu TableView Delegate
 
+extension MainWeatherViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            switch menuList[indexPath.row].segue {
+            case .main:
+                menuSwipeAnimate(action: .hide)
+            case .myList:
+                navigationController?.show(MyListViewController(), sender: self)
+                menuSwipeAnimate(action: .hide)
+            case .setting:
+                navigationController?.show(SettingViewController(), sender: self)
+                menuSwipeAnimate(action: .hide)
+            case .currentLocation:
+                guard let location = LocationManager.shared.location else { return }
+                print(location)
+                WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .mainViewController) {
+                    self.collectionView.reloadData()
+                }
+                self.menuSwipeAnimate(action: .hide)
+            }
+            print(menuList[indexPath.row].segue)
+        default:
+            let location = RealmManager.shared.read(RealmDataModel.self)[indexPath.row]
+            WeatherManager.shared.getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .mainViewController) {
+                self.collectionView.reloadData()
+                self.menuSwipeAnimate(action: .hide)
+            }
+            break
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            return 50
+        default:
+            return 35
+        }
+    }
+}
 // MARK: - SwipeGesture & menuList & Animate
 
 extension MainWeatherViewController {
@@ -103,112 +220,3 @@ extension MainWeatherViewController {
         }
     }
 }
-
-// MARK: - Menu TableView DataSource
-
-extension MainWeatherViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.menuID, for: indexPath) as! MenuListCell
-        cell.backgroundColor = .clear
-        cell.titleLabel.textColor = .white
-        cell.selectionStyle = .none
-        cell.titleLabel.text = menuList[indexPath.row].title
-        
-        return cell
-    }
-}
-
-// MARK: - Menu TableView Delegate
-
-extension MainWeatherViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let indexPath = tableView.indexPathForSelectedRow {            
-            switch menuList[indexPath.row].segue {
-            case .main:
-                menuSwipeAnimate(action: .hide)
-            case .myList:
-                navigationController?.show(MyListViewController(), sender: self)
-                menuSwipeAnimate(action: .hide)
-            case .setting:
-                navigationController?.show(SettingViewController(), sender: self)
-                menuSwipeAnimate(action: .hide)
-            case .currentLocation:
-                locationManager.setupLocation()
-                menuSwipeAnimate(action: .hide)
-            }
-            print(menuList[indexPath.row].segue)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension MainWeatherViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        switch section {
-        case 0:
-            return 12
-        default:
-            return 7
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
-                cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item])
-            }
-            return cell
-            
-        default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
-                cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1])
-            }
-            return cell
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
-        header.weatherData = weatherManager.getSubWeatherFromAPIModel()
-        
-        if let weatherKit = weatherManager.getSubWeatherFromWeatherKit() {
-            header.configWeather(with: weatherKit.dailyForecast[0])
-            }
-        return header
-    }
-}
-
-
-
-
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView: PreviewProvider {
-    static var previews: some View {
-        MainWeatherViewController()
-            .toPreview()
-    }
-}
-#endif
-
-
-

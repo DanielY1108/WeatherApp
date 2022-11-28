@@ -9,7 +9,6 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    
     let backgroundView = BackgroundView()
     private let customLayout = UICollectionViewLayout()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
@@ -58,24 +57,9 @@ class BaseViewController: UIViewController {
             make.leading.equalTo(backgroundView).inset(20)
             make.trailing.equalTo(backgroundView).inset(20)
         }
-        
-    }
-    
-}
-
-
-
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView10: PreviewProvider {
-    static var previews: some View {
-        MainWeatherViewController()
-            .toPreview()
     }
 }
-#endif
+
 
 
 

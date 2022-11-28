@@ -13,10 +13,7 @@ import RealmSwift
 final class SubWeatherController: BaseViewController {
     
     var getLocationFromSearch: CLLocationCoordinate2D?
-        
-    private let weatherManager = WeatherManager.shared
-    private let realmManager = RealmDataManager.shared
-            
+                    
     private let buttonView = SubViewButton()
     
     override func viewDidLoad() {
@@ -26,7 +23,7 @@ final class SubWeatherController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getWeather()
+        getWeatherData()
     }
 
     
@@ -42,9 +39,9 @@ final class SubWeatherController: BaseViewController {
         }
     }
     
-    func getWeather() {
+    func getWeatherData() {
         if let location = getLocationFromSearch {
-            weatherManager.subWeatherSet(lat: location.latitude, lon: location.longitude) {
+            WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .subViewController) {
                 self.collectionView.reloadData()
             }
         }
@@ -72,14 +69,14 @@ extension SubWeatherController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
-            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
+            if let weathetKit = WeatherManager.shared.weatherKit {
                 cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item])
             }
             return cell
             
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
-            if let weathetKit = weatherManager.getSubWeatherFromWeatherKit() {
+            if let weathetKit = WeatherManager.shared.weatherKit {
                 cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1])
             }
             return cell
@@ -89,9 +86,9 @@ extension SubWeatherController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
         
-        header.weatherData = weatherManager.getSubWeatherFromAPIModel()
+        header.weatherData = WeatherManager.shared.weatherModel
         
-        if let weatherKit = weatherManager.getSubWeatherFromWeatherKit() {
+        if let weatherKit = WeatherManager.shared.weatherKit {
             header.configWeather(with: weatherKit.dailyForecast[0])
             }
         return header
@@ -114,13 +111,9 @@ extension SubWeatherController {
     }
     
     @objc func saveButtonTapped() {
-        let realmModel = RealmDataModel()
         if let location = getLocationFromSearch {
-            realmModel.lat = location.latitude
-            realmModel.lon = location.longitude
-            
-            weatherManager.listWeatherSet(lat: location.latitude, lon: location.longitude) {
-                self.realmManager.write(realmModel)
+            WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .listViewController) {
+                RealmManager.shared.writeLocation(location)
                 NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
                 self.dismiss(animated: true)
             }
@@ -131,15 +124,3 @@ extension SubWeatherController {
         dismiss(animated: true)
     }
 }
-
-import SwiftUI
-
-#if DEBUG
-struct PreView11: PreviewProvider {
-    static var previews: some View {
-        SubWeatherController()
-            .toPreview()
-    }
-}
-#endif
-
