@@ -49,42 +49,6 @@ final class SearchLocationController: UIViewController {
         }
     }
 }
-
-// MARK: - Setup for keyboard show & hide animation(tableview height)
-//
-extension SearchLocationController: KeyboardEvent {
-    var transformView: UIView { return tavleView }
-}
-
-// MARK: - MKLocalSearchCompleter
-
-extension SearchLocationController {
-    private func configSearchCompleter() {
-        searchCompleter.delegate = self
-        searchCompleter.resultTypes = .address
-    }
-    
-    private func scanCity() {
-        guard let search = searchStr?.lowercased() else { return }
-        searchCompleter.queryFragment = search
-    }
-}
-
-// MARK: - MKLocalSearchCompleterDelegate
-
-extension SearchLocationController: MKLocalSearchCompleterDelegate {
-    // 자동완성 완료시 결과를 받는 함수
-    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        // completer.results를 통해 검색한 결과를 searchResults에 담아줍니다
-        searchResults = completer.results
-        tavleView.reloadData()
-        
-    }
-    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        print(error.localizedDescription)
-    }
-}
-
 // MARK: - UITableViewDataSource
 
 extension SearchLocationController: UITableViewDataSource {
@@ -131,4 +95,35 @@ extension SearchLocationController: UITableViewDelegate {
         return view.frame.height/17
     }
 }
+// MARK: - MKLocalSearchCompleter
 
+extension SearchLocationController {
+    private func configSearchCompleter() {
+        searchCompleter.delegate = self
+        searchCompleter.resultTypes = .address
+    }
+    
+    private func scanCity() {
+        guard let search = searchStr?.lowercased() else { return }
+        searchCompleter.queryFragment = search
+    }
+}
+// MARK: - MKLocalSearchCompleterDelegate
+
+extension SearchLocationController: MKLocalSearchCompleterDelegate {
+    // 자동완성 완료시 결과를 받는 함수
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        // completer.results를 통해 검색한 결과를 searchResults에 담아줍니다
+        searchResults = completer.results
+        tavleView.reloadData()
+        
+    }
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
+}
+// MARK: - Setup for keyboard show & hide animation(tableview height)
+//
+extension SearchLocationController: KeyboardEvent {
+    var transformView: UIView { return tavleView }
+}

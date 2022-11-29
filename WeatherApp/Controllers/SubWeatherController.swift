@@ -26,7 +26,6 @@ final class SubWeatherController: BaseViewController {
         getWeatherData()
     }
 
-    
     override func configUI() {
         super.configUI()
         collectionView.dataSource = self
@@ -40,14 +39,13 @@ final class SubWeatherController: BaseViewController {
     }
     
     func getWeatherData() {
-        if let location = getLocationFromSearch {
-            WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .subViewController) {
+        if let coordinate = getLocationFromSearch {
+            WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController) {
                 self.collectionView.reloadData()
             }
         }
     }
 }
-
 // MARK: - UICollectionViewDataSource
 
 extension SubWeatherController: UICollectionViewDataSource {
@@ -94,14 +92,6 @@ extension SubWeatherController: UICollectionViewDataSource {
         return header
     }
 }
-
-
-
-// MARK: - Realm
-
-
-
-
 // MARK: - Button setting
 
 extension SubWeatherController {
@@ -111,9 +101,9 @@ extension SubWeatherController {
     }
     
     @objc func saveButtonTapped() {
-        if let location = getLocationFromSearch {
-            WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .listViewController) {
-                RealmManager.shared.writeLocation(location)
+        if let coordinate = getLocationFromSearch {
+            WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController) {
+                RealmManager.shared.writeLocation(coordinate)
                 NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
                 self.dismiss(animated: true)
             }

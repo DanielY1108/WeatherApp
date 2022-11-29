@@ -47,20 +47,6 @@ final class MyListViewController: UIViewController {
         }
     }
 }
-
-// MARK: - NotificationCenter
-
-extension MyListViewController {
-    func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: "load"), object: nil)
-    }
-    
-    @objc func loadList(notification: NSNotification) {
-        self.tableView.reloadData()
-    }
-}
-
-
 // MARK: - UITableViewDataSource {
 
 extension MyListViewController: UITableViewDataSource {
@@ -108,15 +94,23 @@ extension MyListViewController: UITableViewDelegate {
         }
     }
 }
+// MARK: - Setup NavigationBar
 
-
-
+extension MyListViewController {
+    private func configNavigationBar() {
+        SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .myList)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
+    }
+    
+    @objc private func tabBarButtonTapped() {
+        searchController.searchBar.becomeFirstResponder()
+    }
+}
 // MARK: - Setup for keyboard show & hide animation(tableview height)
 //
 extension MyListViewController: KeyboardEvent {
     var transformView: UIView { return tableView }
 }
-
 // MARK: - Setup SearchBar & UISearchResultsUpdating
 
 extension MyListViewController: UISearchResultsUpdating {
@@ -138,17 +132,17 @@ extension MyListViewController: UISearchResultsUpdating {
         }
     }
 }
-
-// MARK: - Setup NavigationBar
+// MARK: - NotificationCenter
 
 extension MyListViewController {
-    private func configNavigationBar() {
-        SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .myList)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(tabBarButtonTapped))
+    func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: "load"), object: nil)
     }
     
-    @objc private func tabBarButtonTapped() {
-        searchController.searchBar.becomeFirstResponder()
+    @objc func loadList(notification: NSNotification) {
+        self.tableView.reloadData()
     }
 }
+
+
 
