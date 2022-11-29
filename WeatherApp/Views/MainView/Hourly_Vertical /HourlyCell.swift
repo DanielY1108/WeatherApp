@@ -50,6 +50,6 @@ final class HourlyCell: UICollectionViewCell {
         
         currentTemp.text = mf.string(from: hourWeather.temperature)
         hourLabel.text = df.string(from: hourWeather.date)
-        weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName).fill")
+        weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName)")
     }
 }

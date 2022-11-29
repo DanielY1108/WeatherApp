@@ -60,7 +60,7 @@ final class DailyCell: UICollectionViewCell {
         df.locale = Locale(identifier: "en_us")
 
         dayLabel.text = df.string(from: dayWeather.date)
-        weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName).fill")
+        weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName)")
         highTempLabel.text = "H: \(mf.string(from: dayWeather.highTemperature))"
         lowTempLabel.text = "L : \(mf.string(from: dayWeather.lowTemperature))"
     }

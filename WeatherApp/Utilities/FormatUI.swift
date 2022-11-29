@@ -48,7 +48,7 @@ struct FormatUI {
             case .systemImage:
                 view.image = UIImage(systemName: name)
             }
-            view.tintColor = .systemBlue
+            view.tintColor = .green
             view.contentMode = .scaleAspectFit
             return view
         }
