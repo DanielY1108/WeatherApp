@@ -11,7 +11,7 @@ extension UILabel {
    func setHighlighted(_ text: String, with search: String) {
        let attributedText = NSMutableAttributedString(string: text)
        let range = NSString(string: text).range(of: search, options: .caseInsensitive)
-       let highlightFont = UIFont.systemFont(ofSize: 18)
+       let highlightFont = UIFont.systemFont(ofSize: 16)
        let highlightColor = UIColor.systemRed
        let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: highlightFont, NSAttributedString.Key.foregroundColor: highlightColor]
        

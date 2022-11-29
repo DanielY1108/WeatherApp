@@ -26,6 +26,10 @@ struct Constants {
         static let locationSwitch = "Location_Switch"
         static let unitSwitch = "Unit_Switch"
     }
+    struct NotificationName {
+        static let main = "Load_Main"
+        static let list = "Load_List"
+    }
 }
 
 enum Search {

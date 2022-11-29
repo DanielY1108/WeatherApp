@@ -10,7 +10,7 @@ import SnapKit
 import RealmSwift
 
 final class MyListViewController: UIViewController {
-  
+    
     lazy var tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
@@ -72,8 +72,12 @@ extension MyListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension MyListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
-        navigationController?.popViewController(animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let models = RealmManager.shared.read(RealmDataModel.self)
+        let model = models[indexPath.section]
+        RealmManager.shared.checkLoadMainView(models, display: model)
+        NotificationCenter.default.post(name: Notification.Name(Constants.NotificationName.main), object: model)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -136,7 +140,7 @@ extension MyListViewController: UISearchResultsUpdating {
 
 extension MyListViewController {
     func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: "load"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: Constants.NotificationName.list), object: nil)
     }
     
     @objc func loadList(notification: NSNotification) {

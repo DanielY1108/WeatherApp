@@ -11,14 +11,14 @@ import CoreLocation
 
 
 final class MainWeatherViewController: BaseViewController {
-            
+    
     private let menuTableView = UITableView()
-
+    
     private lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
     private lazy var swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
     
     private lazy var menuAnimate = MenuAnimate(menu: false)
-
+    
     private let menuList: [MenuList] = [
         MenuList(title: "Main", segue: .main),
         MenuList(title: "MyList", segue: .myList),
@@ -30,17 +30,19 @@ final class MainWeatherViewController: BaseViewController {
         super.viewDidLoad()
         configSwipeGesture()
         configMenuTableView()
+        setupNotification()
         LocationManager.shared.checkLocationService()
     }
-  
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         menuTableView.reloadData()
+        loadMyCheckWeatherData()
     }
     
     override func configUI() {
         collectionView.dataSource = self
-
+        
         self.view.addSubview(backgroundView)
         self.backgroundView.addSubview(menuTableView)
         self.menuTableView.addSubview(collectionView)
@@ -58,6 +60,15 @@ final class MainWeatherViewController: BaseViewController {
             make.bottom.equalTo(backgroundView).inset(40)
             make.leading.equalTo(backgroundView).inset(20)
             make.trailing.equalTo(backgroundView).inset(20)
+        }
+    }
+    private func loadMyCheckWeatherData() {
+        RealmManager.shared.read(RealmDataModel.self).forEach { models in
+            if models.mainLoad == true {
+                WeatherManager.shared.getEachWeatherData(lat: models.lat, lon: models.lon, weatherVC: .mainViewController) {
+                    self.collectionView.reloadData()
+                }
+            }
         }
     }
 }
@@ -102,7 +113,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         
         if let weatherKit = WeatherManager.shared.weatherKit {
             header.configWeather(with: weatherKit.dailyForecast[0])
-            }
+        }
         return header
     }
 }
@@ -117,7 +128,7 @@ extension MainWeatherViewController: UITableViewDataSource {
         case 0:
             return menuList.count
         default:
-            return WeatherManager.shared.weatherModelList.count
+            return RealmManager.shared.read(RealmDataModel.self).count
             
         }
     }
@@ -126,7 +137,7 @@ extension MainWeatherViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.menuID, for: indexPath) as! MenuListCell
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
-
+        
         switch indexPath.section {
         case 0:
             cell.titleLabel.textColor = .label
@@ -134,7 +145,7 @@ extension MainWeatherViewController: UITableViewDataSource {
             return cell
         default:
             cell.titleLabel.textColor = .systemIndigo
-            cell.titleLabel.text = WeatherManager.shared.weatherModelList[indexPath.row].location
+            cell.titleLabel.text = RealmManager.shared.read(RealmDataModel.self)[indexPath.row].city
             return cell
         }
     }
@@ -156,6 +167,7 @@ extension MainWeatherViewController: UITableViewDelegate {
                 navigationController?.show(SettingViewController(), sender: self)
                 menuSwipeAnimate(action: .hide)
             case .currentLocation:
+                print("a")
                 guard let location = LocationManager.shared.location else { return }
                 print(location)
                 WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .mainViewController) {
@@ -165,11 +177,13 @@ extension MainWeatherViewController: UITableViewDelegate {
             }
             print(menuList[indexPath.row].segue)
         default:
-            let location = RealmManager.shared.read(RealmDataModel.self)[indexPath.row]
-            WeatherManager.shared.getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .mainViewController) {
+            let models = RealmManager.shared.read(RealmDataModel.self)
+            let model = models[indexPath.row]
+            RealmManager.shared.checkLoadMainView(models, display: model)
+            WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController) {
                 self.collectionView.reloadData()
-                self.menuSwipeAnimate(action: .hide)
             }
+            self.menuSwipeAnimate(action: .hide)
             break
         }
     }
@@ -217,6 +231,20 @@ extension MainWeatherViewController {
     @objc func hideMenu(_ sender: UISwipeGestureRecognizer) {
         if menuAnimate.menu == true && sender.direction == .left {
             menuSwipeAnimate(action: .hide)
+        }
+    }
+}
+// MARK: - NotificationCenter
+
+extension MainWeatherViewController {
+    func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMain(notification:)), name: NSNotification.Name(rawValue: Constants.NotificationName.main), object: nil)
+    }
+    
+    @objc func loadMain(notification: NSNotification) {
+        guard let coordinate = notification.object as? RealmDataModel else { return }
+        WeatherManager.shared.getEachWeatherData(lat: coordinate.lat, lon: coordinate.lon, weatherVC: .mainViewController) {
+            self.collectionView.reloadData()
         }
     }
 }

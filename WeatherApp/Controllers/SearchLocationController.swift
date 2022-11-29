@@ -32,11 +32,6 @@ final class SearchLocationController: UIViewController {
         setupKeyboardEvent()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
     private func configTableView() {
         self.view.addSubview(tavleView)
         self.tavleView.register(SearchCell.self, forCellReuseIdentifier: Constants.ID.resultID)
@@ -78,14 +73,14 @@ extension SearchLocationController: UITableViewDelegate {
         let searchRequest = MKLocalSearch.Request(completion: selectedResult)
         let search = MKLocalSearch(request: searchRequest)
         
-        search.start { response, error in
+        search.start { [weak self] response, error in
             guard error == nil else { return }
             
             guard let coordinate = response?.mapItems[0].placemark.coordinate else { return }
             
             let subVC = SubWeatherController()
             subVC.getLocationFromSearch = coordinate
-            self.present(subVC, animated: true)
+            self?.present(subVC, animated: true)
         }
         
         tableView.deselectRow(at: indexPath, animated: true)

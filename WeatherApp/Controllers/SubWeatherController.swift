@@ -13,7 +13,7 @@ import RealmSwift
 final class SubWeatherController: BaseViewController {
     
     var getLocationFromSearch: CLLocationCoordinate2D?
-                    
+    
     private let buttonView = SubViewButton()
     
     override func viewDidLoad() {
@@ -25,7 +25,7 @@ final class SubWeatherController: BaseViewController {
         super.viewWillAppear(animated)
         getWeatherData()
     }
-
+    
     override func configUI() {
         super.configUI()
         collectionView.dataSource = self
@@ -88,7 +88,7 @@ extension SubWeatherController: UICollectionViewDataSource {
         
         if let weatherKit = WeatherManager.shared.weatherKit {
             header.configWeather(with: weatherKit.dailyForecast[0])
-            }
+        }
         return header
     }
 }
@@ -101,13 +101,13 @@ extension SubWeatherController {
     }
     
     @objc func saveButtonTapped() {
-        if let coordinate = getLocationFromSearch {
-            WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController) {
-                RealmManager.shared.writeLocation(coordinate)
-                NotificationCenter.default.post(name: NSNotification.Name("load"), object: nil)
-                self.dismiss(animated: true)
-            }
+        guard let coordinate = getLocationFromSearch,
+              let city = WeatherManager.shared.weatherModel else { return }
+        WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController) {
+            RealmManager.shared.writeLocation(coordinate, cityName: city.location)
+            NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.list), object: nil)
         }
+        self.dismiss(animated: true)
     }
     
     @objc func backButtonTapped() {

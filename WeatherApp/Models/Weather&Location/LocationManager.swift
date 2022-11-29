@@ -13,8 +13,10 @@ class LocationManager: NSObject {
     static let shared = LocationManager()
     let manager = CLLocationManager()
     private(set) var location: Locations?
-    private(set) var locations = [Locations]()
-    private override init() {}
+    private override init() {
+        super.init()
+        self.saveCurrnetLocation()
+    }
     private func setupLocationManager() {
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
@@ -31,7 +33,6 @@ class LocationManager: NSObject {
         locationManagerDidChangeAuthorization(manager)
     }
 }
-
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         manager.stopUpdatingLocation()

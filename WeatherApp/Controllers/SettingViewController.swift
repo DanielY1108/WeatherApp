@@ -42,8 +42,6 @@ class SettingViewController: UIViewController {
     }
     
 }
-
-
 // MARK: - UITableViewDataSource
 
 extension SettingViewController: UITableViewDataSource {
@@ -100,32 +98,6 @@ extension SettingViewController: UITableViewDataSource {
         }
     }
 }
-
-// MARK: - Setup Switch
-
-extension SettingViewController: SwitchDelegate {
-    @objc func locationSwitchChanged(_ sender: UISwitch) {
-        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.locationSwitch)
-        if sender.isOn {
-            print("Switch On")
-        } else {
-            print("Switch Off")
-        }
-        
-    }
-    
-    @objc func unitSwitchChanged(_ sender: UISwitch) {
-        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.unitSwitch)
-        if sender.isOn {
-            print("Switch On")
-        } else {
-            print("Switch Off")
-        }
-    }
-    
-}
-
-
 // MARK: - UITableViewDelegate
 
 extension SettingViewController: UITableViewDelegate {
@@ -152,8 +124,29 @@ extension SettingViewController: UITableViewDelegate {
         return 40
     }
 }
+// MARK: - Setup Switch
 
-
+extension SettingViewController: SwitchDelegate {
+    @objc func locationSwitchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.locationSwitch)
+        if sender.isOn {
+            print("Switch On")
+        } else {
+            print("Switch Off")
+        }
+        
+    }
+    
+    @objc func unitSwitchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.unitSwitch)
+        if sender.isOn {
+            print("Switch On")
+        } else {
+            print("Switch Off")
+        }
+    }
+    
+}
 // MARK: - Alert(Setting Location)
 
 extension SettingViewController {
@@ -178,7 +171,6 @@ extension SettingViewController {
         self.present(authAlertController, animated: true, completion: nil)
     }
 }
-
 // MARK: - Setup NavigationBar
 
 extension SettingViewController {

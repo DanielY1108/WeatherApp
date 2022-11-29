@@ -39,30 +39,26 @@ final class WeatherManager {
         dispatchGroup.enter()
         self.fetchFromWeatherKit(lat: lat, lon: lon) { model in
             switch weatherVC {
-            case .mainViewController:
+            case .mainViewController, .subViewController:
                 self.weatherKit = model
             case .listViewController:
                 self.weatherKitList.append(model)
-            case .subViewController:
-                self.weatherKit = model
             }
             dispatchGroup.leave()
         }
         dispatchGroup.enter()
         self.fetchFromWeatherAPI(lat: lat, lon: lon) { model in
             switch weatherVC {
-            case .mainViewController:
+            case .mainViewController, .subViewController:
                 self.weatherModel = model
             case .listViewController:
                 self.weatherModelList.append(model)
-            case .subViewController:
-                self.weatherModel = model
             }
             dispatchGroup.leave()
         }
-        if weatherVC == .listViewController {
-            dispatchGroup.wait()
-        }
+//        if weatherVC == .listViewController {
+//            dispatchGroup.wait()
+//        }
         dispatchGroup.notify(queue: .main) {
             completion()
         }
