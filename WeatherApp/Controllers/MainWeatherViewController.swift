@@ -75,6 +75,7 @@ final class MainWeatherViewController: BaseViewController {
             tutorialVC.modalPresentationStyle = .fullScreen
             present(tutorialVC, animated: false)
             UserDefaults.standard.set(true, forKey: Constants.UserDefault.launchAppFirstTime)
+            RealmManager.shared.writeDefualtLocation(CLLocationCoordinate2D(), mainLoad: true)
         }
     }
     private func loadMyCheckWeatherData() {
@@ -178,15 +179,15 @@ extension MainWeatherViewController: UITableViewDelegate {
                 navigationController?.show(SettingViewController(), sender: self)
                 menuSwipeAnimate(action: .hide)
             case .currentLocation:
-                guard let coordinate = LocationManager.shared.location else {
-                    requireLoctionAlert()
+                guard let coordinate = LocationManager.shared.currentLocation else {
+                    LocationManager.shared.setupLocationManager()
+                    self.menuSwipeAnimate(action: .hide)
                     return
                 }
-                print(coordinate)
                 WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .mainViewController) {
                     self.collectionView.reloadData()
+                    self.menuSwipeAnimate(action: .hide)
                 }
-                self.menuSwipeAnimate(action: .hide)
             }
             print(menuList[indexPath.row].segue)
         default:
@@ -260,13 +261,23 @@ extension MainWeatherViewController {
     }
     
     @objc func loadMain(notification: NSNotification) {
-        guard let coordinate = notification.object as? RealmDataModel else {
-            self.collectionView.reloadData()
-            self.menuTableView.reloadData()
-            return
-        }
-        WeatherManager.shared.getEachWeatherData(lat: coordinate.lat, lon: coordinate.lon, weatherVC: .mainViewController) {
-            self.collectionView.reloadData()
+        switch notification.object {
+        case is RealmDataModel:
+            guard let coordinate = notification.object as? RealmDataModel else { return }
+            WeatherManager.shared.getEachWeatherData(lat: coordinate.lat, lon: coordinate.lon, weatherVC: .mainViewController) {
+                self.collectionView.reloadData()
+                self.menuTableView.reloadData()
+                return
+            }
+        case is CLLocationCoordinate2D:
+            guard let coordinate = notification.object as? CLLocationCoordinate2D else { return }
+            WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .mainViewController) {
+                self.collectionView.reloadData()
+                self.menuTableView.reloadData()
+                return
+            }
+        default:
+            break
         }
     }
 }

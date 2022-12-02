@@ -26,7 +26,6 @@
 		654C075F292D1D2B003152C3 /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654C075E292D1D2B003152C3 /* RealmDataManager.swift */; };
 		65644C392933AB010015BADD /* SetupNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65644C382933AB010015BADD /* SetupNavigation.swift */; };
 		65644C3F2934AADB0015BADD /* SetupSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65644C3E2934AADB0015BADD /* SetupSwitch.swift */; };
-		65644C4129350A3E0015BADD /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65644C4029350A3E0015BADD /* Location.swift */; };
 		65644C452937857F0015BADD /* TutorialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65644C442937857F0015BADD /* TutorialController.swift */; };
 		659BB50A29239DF1003A6618 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659BB50929239DF1003A6618 /* BackgroundView.swift */; };
 		659C52C62922758100EEEA70 /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659C52C52922758100EEEA70 /* CurrentWeatherData.swift */; };
@@ -76,7 +75,6 @@
 		654C075E292D1D2B003152C3 /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
 		65644C382933AB010015BADD /* SetupNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupNavigation.swift; sourceTree = "<group>"; };
 		65644C3E2934AADB0015BADD /* SetupSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupSwitch.swift; sourceTree = "<group>"; };
-		65644C4029350A3E0015BADD /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		65644C442937857F0015BADD /* TutorialController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialController.swift; sourceTree = "<group>"; };
 		659BB50929239DF1003A6618 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		659C52C52922758100EEEA70 /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
@@ -261,7 +259,6 @@
 				659C52C52922758100EEEA70 /* CurrentWeatherData.swift */,
 				659C52D929229AE400EEEA70 /* CurrentWeatherModel.swift */,
 				659C52C72922778200EEEA70 /* WeatherManager.swift */,
-				65644C4029350A3E0015BADD /* Location.swift */,
 				65FBC2B129279B5500B5AE35 /* LocationManager.swift */,
 			);
 			path = "Weather&Location";
@@ -413,7 +410,6 @@
 				65A0CEEB292A28AC00D6E862 /* SearchLocationController.swift in Sources */,
 				65644C3F2934AADB0015BADD /* SetupSwitch.swift in Sources */,
 				65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */,
-				65644C4129350A3E0015BADD /* Location.swift in Sources */,
 				65A0CEF9292B8AE400D6E862 /* KeyboardEvent.swift in Sources */,
 				65A0CEFB292BD28100D6E862 /* SubWeatherController.swift in Sources */,
 				654C0750292CCA35003152C3 /* BaseViewController.swift in Sources */,

@@ -24,16 +24,22 @@ final class RealmManager: RealmData {
     private init() {
         self.realmData = try! Realm()
     }
-    
-    func writeLocation(_ location: CLLocationCoordinate2D, cityName: String, mainLoad: Bool) {
-        let Weather = RealmDataModel()
-        Weather.lat = location.latitude
-        Weather.lon = location.longitude
-        Weather.city = cityName
-        Weather.loadMain = mainLoad
-        self.write(Weather)
+    func writeDefualtLocation(_ location: CLLocationCoordinate2D, mainLoad: Bool) {
+        let defaultModel = RealmDataModel()
+        defaultModel.lat = location.latitude
+        defaultModel.lon = location.longitude
+        defaultModel.city = "Current Location"
+        defaultModel.loadMain = mainLoad
+        self.write(defaultModel)
     }
-    
+    func writeLocation(_ location: CLLocationCoordinate2D, cityName: String, mainLoad: Bool) {
+        let dataModel = RealmDataModel()
+        dataModel.lat = location.latitude
+        dataModel.lon = location.longitude
+        dataModel.city = cityName
+        dataModel.loadMain = mainLoad
+        self.write(dataModel)
+    }
     func checkLoadMainView(_ models: Results<RealmDataModel>, display model: RealmDataModel) {
         models.forEach { model in
             self.update(model) { model in

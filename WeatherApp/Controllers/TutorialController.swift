@@ -7,21 +7,21 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
 
 class TutorialController: UIViewController {
     
     let textLabel = [
-        "깔끔한 메인뷰 좌우로 스와이프하여 메뉴스크린을 열어보세요",
-        "나의 리스트가 메뉴에도 손쉽게 접근할 수 있어요",
-        "나의 리스트에서 검색하고 지역을 추가 및 삭제할 수 있어요",
-        "검색한 날씨를 확인하고 추가 또는 취소를 하세요",
-        "세팅에서 지역설정 및 날씨단위를 바꿀 수 있어요"
+        "좌우로 스와이프하여 메뉴를 열고 닫아보세요. 손쉽게 저장한 날씨에 접근해보세요.",
+        "나의 리스트에서 검색 및 삭제할 수 있어요",
+        "세팅에서 지역설정 및 날씨단위를 바꿀 수 있어요",
+        "위치사용을 설정을 시작합니다. 거절시 기본 날씨를 저장해주세요"
     ]
-    let imageName = ["mainView.png", "menuView.png", "myListView.png", "subView.png", "settingView.png"]
+    let imageName = ["menuView.png", "myListView.png", "settingView.png", "allowLocation.png"]
     
     private let pageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.numberOfPages = 5
+        pageControl.numberOfPages = 4
         pageControl.pageIndicatorTintColor = .lightGray
         pageControl.currentPageIndicatorTintColor = .systemBlue
         return pageControl
@@ -31,7 +31,6 @@ class TutorialController: UIViewController {
     private let view2 = TutorialView()
     private let view3 = TutorialView()
     private let view4 = TutorialView()
-    private let view5 = TutorialView()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -58,15 +57,15 @@ class TutorialController: UIViewController {
         }
     }
     private func configureScrollView() {
-        scrollView.contentSize = CGSize(width: view.frame.size.width * 5, height: scrollView.frame.size.height)
+        scrollView.contentSize = CGSize(width: view.frame.size.width * 4, height: scrollView.frame.size.height)
         scrollView.isPagingEnabled = true
         
-        let contentViews = [view1, view2, view3, view4, view5]
+        let contentViews = [view1, view2, view3, view4]
         // 5개의 뷰 생성하고 스크롤 뷰에 올린다.
         
-        for x in 0...4 {
+        for x in 0...3 {
             scrollView.addSubview(contentViews[x])
-            if x < 4 {
+            if x < 3 {
                 contentViews[x].nextButton.setTitle("skip", for: .normal)
             } else {
                 contentViews[x].nextButton.setTitle("start", for: .normal)
@@ -88,8 +87,7 @@ class TutorialController: UIViewController {
         pageControl.addTarget(self, action: #selector(pageControlDidChange), for: .valueChanged)
     }
     @objc func skipButtonTapped(_ sender: UIButton) {
-//        self.dismiss(animated: true)
-                alertManager()
+        alertManager()
     }
     @objc func pageControlDidChange(_ sender: UIPageControl) {
         let currnet = sender.currentPage
@@ -97,17 +95,18 @@ class TutorialController: UIViewController {
     }
     private func alertManager() {
         let alert = UIAlertController(title: "위치 허용", message: "사용자 위치를 허용하시겠습니까?", preferredStyle: .actionSheet)
-        let allow = UIAlertAction(title: "Allow", style: .default) { action in
+        let setting = UIAlertAction(title: "Setting", style: .default) { action in
             LocationManager.shared.setupLocationManager()
             self.dismiss(animated: true)
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
-            guard let defualtLocation = LocationManager.shared.defualtLocation else { return }
-            WeatherManager.shared.getEachWeatherData(lat: defualtLocation.latitude, lon: defualtLocation.longitude, weatherVC: .subViewController) {
+        let cancel = UIAlertAction(title: "Default", style: .cancel) { action in
+            self.dismiss(animated: true)
+            let location = CLLocationCoordinate2D()
+            WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .mainViewController) {
                 self.dismiss(animated: true)
             }
         }
-        alert.addAction(allow)
+        alert.addAction(setting)
         alert.addAction(cancel)
         self.present(alert, animated: true)
     }

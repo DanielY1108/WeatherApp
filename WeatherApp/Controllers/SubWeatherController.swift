@@ -100,12 +100,8 @@ extension SubWeatherController {
     }
     
     @objc func saveButtonTapped() {
-        guard let coordinate = getLocationFromSearch,
-              let city = WeatherManager.shared.weatherModel else { return }
-        WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController) {
-            RealmManager.shared.writeLocation(coordinate, cityName: city.location, mainLoad: false)
-            NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.list), object: nil)
-        }
+        guard let coordinate = getLocationFromSearch else { return }
+        NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.list), object: coordinate)
         self.dismiss(animated: true)
     }
     

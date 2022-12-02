@@ -27,17 +27,6 @@ final class WeatherManager {
         setupWeatherList()
         debugPrint("My List Setup Complete")
     }
-//    func defaultWeatherSetting(completion: @escaping () -> Void) {
-//        getEachWeatherData(lat: -33.865143, lon: 151.209900, weatherVC: .subViewController) {
-//            completion()
-//        }
-//    }
-//    func currentWeatherSetting(completion: @escaping () -> Void) {
-//        guard let coordinate = LocationManager.shared.location else { return }
-//        getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController) {
-//            completion()
-//        }
-//    }
     private func setupWeatherList() {
         RealmManager.shared.read(RealmDataModel.self).forEach { location in
             getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .listViewController) {}
@@ -65,7 +54,7 @@ final class WeatherManager {
             }
             dispatchGroup.leave()
         }
-        if weatherVC == .subViewController {
+        if weatherVC == .subViewController || weatherVC == .mainViewController{
             dispatchGroup.wait()
         }
         dispatchGroup.notify(queue: .main) {
