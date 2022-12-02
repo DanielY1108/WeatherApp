@@ -32,6 +32,7 @@ struct FormatUI {
             let label = UILabel()
             label.font = .systemFont(ofSize: ofSize.rawValue, weight: weight)
             label.textColor = color ?? .black
+            label.text = " "
             return label
         }
     }

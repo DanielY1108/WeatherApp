@@ -24,16 +24,25 @@ final class WeatherManager {
     private(set) var weatherKitList: [Weather] = []
     
     private init() {
-        setupWeatherData()
+        setupWeatherList()
         debugPrint("My List Setup Complete")
     }
-    
-    private func setupWeatherData() {
+//    func defaultWeatherSetting(completion: @escaping () -> Void) {
+//        getEachWeatherData(lat: -33.865143, lon: 151.209900, weatherVC: .subViewController) {
+//            completion()
+//        }
+//    }
+//    func currentWeatherSetting(completion: @escaping () -> Void) {
+//        guard let coordinate = LocationManager.shared.location else { return }
+//        getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController) {
+//            completion()
+//        }
+//    }
+    private func setupWeatherList() {
         RealmManager.shared.read(RealmDataModel.self).forEach { location in
             getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .listViewController) {}
         }
     }
-    
     func getEachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, weatherVC: WeatherVC , completion: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
@@ -56,9 +65,9 @@ final class WeatherManager {
             }
             dispatchGroup.leave()
         }
-//        if weatherVC == .listViewController {
-//            dispatchGroup.wait()
-//        }
+        if weatherVC == .subViewController {
+            dispatchGroup.wait()
+        }
         dispatchGroup.notify(queue: .main) {
             completion()
         }

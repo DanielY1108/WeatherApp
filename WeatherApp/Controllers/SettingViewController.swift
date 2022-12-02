@@ -11,7 +11,6 @@ import SnapKit
 class SettingViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private let locationManager = LocationManager.shared
     
     private let settingList: [Setting] = [
         Setting(title: .location, section: .user),
@@ -20,14 +19,19 @@ class SettingViewController: UIViewController {
         Setting(title: .openSource, section: .info),
         Setting(title: .version, section: .info)
     ]
-    
     private lazy var userList = settingList.filter { SettingSection.user == $0.section }
     private lazy var infoList = settingList.filter { SettingSection.info == $0.section }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configTableView()
         configNavigationBar()
+    }
+    override func viewDidLayoutSubviews() {
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     private func configTableView() {
@@ -35,15 +39,9 @@ class SettingViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(SettingCell.self, forCellReuseIdentifier: Constants.ID.settingID)
-        
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
     }
-    
 }
 // MARK: - UITableViewDataSource
-
 extension SettingViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return SettingSection.numberOfSections
@@ -99,7 +97,6 @@ extension SettingViewController: UITableViewDataSource {
     }
 }
 // MARK: - UITableViewDelegate
-
 extension SettingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = SettingSection(sectionIndex: indexPath.section) else { return }
@@ -125,7 +122,6 @@ extension SettingViewController: UITableViewDelegate {
     }
 }
 // MARK: - Setup Switch
-
 extension SettingViewController: SwitchDelegate {
     @objc func locationSwitchChanged(_ sender: UISwitch) {
         UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.locationSwitch)
@@ -148,7 +144,6 @@ extension SettingViewController: SwitchDelegate {
     
 }
 // MARK: - Alert(Setting Location)
-
 extension SettingViewController {
     func setAuthAlertAction(with switchs: UISwitch) {
         let authAlertController = UIAlertController(title: "Request location permissions", message: "Would you like to go to location permission settings?", preferredStyle: .alert)
@@ -172,7 +167,6 @@ extension SettingViewController {
     }
 }
 // MARK: - Setup NavigationBar
-
 extension SettingViewController {
     private func configNavigationBar() {
         SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .setting)

@@ -15,40 +15,30 @@ final class MyListViewController: UIViewController {
     
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
         setupSearchBar()
-        configUI()
-        configTableView()
+        configureUI()
         setupKeyboardEvent()
         setupNotification()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-    
-    private func configTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(MyListCell.self, forCellReuseIdentifier: Constants.ID.myListID)
-    }
-    
-    private func configUI() {
-        self.view.addSubview(tableView)
-        
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
     }
+    
+    private func configureUI() {
+        self.view.addSubview(tableView)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(MyListCell.self, forCellReuseIdentifier: Constants.ID.myListID)
+    }
 }
 // MARK: - UITableViewDataSource {
-
 extension MyListViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return RealmManager.shared.read(RealmDataModel.self).count
@@ -59,6 +49,7 @@ extension MyListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
+        
         cell.weatherData = WeatherManager.shared.weatherModelList[indexPath.section]
         
         let weatherKit = WeatherManager.shared.weatherKitList[indexPath.section]
@@ -68,9 +59,7 @@ extension MyListViewController: UITableViewDataSource {
         return cell
     }
 }
-
 // MARK: - UITableViewDelegate
-
 extension MyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let models = RealmManager.shared.read(RealmDataModel.self)
@@ -99,7 +88,6 @@ extension MyListViewController: UITableViewDelegate {
     }
 }
 // MARK: - Setup NavigationBar
-
 extension MyListViewController {
     private func configNavigationBar() {
         SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .myList)
@@ -111,12 +99,10 @@ extension MyListViewController {
     }
 }
 // MARK: - Setup for keyboard show & hide animation(tableview height)
-//
 extension MyListViewController: KeyboardEvent {
     var transformView: UIView { return tableView }
 }
 // MARK: - Setup SearchBar & UISearchResultsUpdating
-
 extension MyListViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -137,7 +123,6 @@ extension MyListViewController: UISearchResultsUpdating {
     }
 }
 // MARK: - NotificationCenter
-
 extension MyListViewController {
     func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadList(notification:)), name: NSNotification.Name(rawValue: Constants.NotificationName.list), object: nil)

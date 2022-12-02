@@ -108,12 +108,11 @@ final class weatherHeader: UICollectionReusableView {
     }
 }
 
-// MARK: - CurrentWeatherDelegate
+// MARK: - CurrentWeather Configure Data
 extension weatherHeader {
     func configData() {
         if let weatherData = weatherData {
             DispatchQueue.main.async {
-                self.tempLabel.text = "\(weatherData.tempStr)°"
                 self.humidityLabel.text = "\(weatherData.humidityStr) %"
                 self.windSpeedLabel.text = "\(weatherData.windSpeedStr) m/s"
                 self.pressureLabel.text = "\(weatherData.pressureStr) hPa"
@@ -125,11 +124,12 @@ extension weatherHeader {
         }
     }
     
-    func configWeather(with dayWeather: DayWeather) {
+    func configWeather(with dayWeather: DayWeather, _ currentWeather: CurrentWeather) {
         let mf = MeasurementFormatter()
         mf.unitOptions = .temperatureWithoutUnit
         mf.numberFormatter.maximumFractionDigits = 0
         
+        tempLabel.text = "\(mf.string(from: currentWeather.temperature))"
         highTempLabel.text = "\(mf.string(from: dayWeather.highTemperature))"
         lowTempLabel.text = "\(mf.string(from: dayWeather.lowTemperature))"
 

@@ -23,6 +23,7 @@ struct Constants {
         static let settingID = "Setting_ID"
     }
     struct UserDefault {
+        static let launchAppFirstTime = "Launch_App_First_Time"
         static let locationSwitch = "Location_Switch"
         static let unitSwitch = "Unit_Switch"
     }

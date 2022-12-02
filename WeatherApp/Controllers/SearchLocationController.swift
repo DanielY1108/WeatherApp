@@ -17,35 +17,36 @@ final class SearchLocationController: UIViewController {
     private var searchCompleter = MKLocalSearchCompleter()
     private var searchResults = [MKLocalSearchCompletion]()
     
-    
     var searchStr: String? {
         didSet {
             scanCity()
         }
     }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
-        configTableView()
+        configureUI()
         configSearchCompleter()
         setupKeyboardEvent()
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tavleView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
     
-    private func configTableView() {
+    private func configureUI() {
         self.view.addSubview(tavleView)
         self.tavleView.register(SearchCell.self, forCellReuseIdentifier: Constants.ID.resultID)
         self.tavleView.dataSource = self
         self.tavleView.delegate = self
         tavleView.backgroundColor = .clear
-        
-        tavleView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
     }
 }
 // MARK: - UITableViewDataSource
-
 extension SearchLocationController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
@@ -64,9 +65,7 @@ extension SearchLocationController: UITableViewDataSource {
         return cell
     }
 }
-
 // MARK: - UITableViewDelegate
-
 extension SearchLocationController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedResult = searchResults[indexPath.row]
@@ -91,7 +90,6 @@ extension SearchLocationController: UITableViewDelegate {
     }
 }
 // MARK: - MKLocalSearchCompleter
-
 extension SearchLocationController {
     private func configSearchCompleter() {
         searchCompleter.delegate = self
@@ -104,7 +102,6 @@ extension SearchLocationController {
     }
 }
 // MARK: - MKLocalSearchCompleterDelegate
-
 extension SearchLocationController: MKLocalSearchCompleterDelegate {
     // 자동완성 완료시 결과를 받는 함수
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
@@ -118,7 +115,6 @@ extension SearchLocationController: MKLocalSearchCompleterDelegate {
     }
 }
 // MARK: - Setup for keyboard show & hide animation(tableview height)
-//
 extension SearchLocationController: KeyboardEvent {
     var transformView: UIView { return tavleView }
 }

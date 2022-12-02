@@ -16,28 +16,29 @@ final class SubWeatherController: BaseViewController {
     
     private let buttonView = SubViewButton()
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButtonAction()
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getWeatherData()
     }
-    
-    override func configUI() {
-        super.configUI()
-        collectionView.dataSource = self
-        
-        self.view.addSubview(buttonView)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         buttonView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.05)
         }
     }
-    
+
+    override func configureUI() {
+        super.configureUI()
+        collectionView.dataSource = self
+        self.view.addSubview(buttonView)
+    }
     func getWeatherData() {
         if let coordinate = getLocationFromSearch {
             WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController) {
@@ -47,7 +48,6 @@ final class SubWeatherController: BaseViewController {
     }
 }
 // MARK: - UICollectionViewDataSource
-
 extension SubWeatherController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -87,13 +87,12 @@ extension SubWeatherController: UICollectionViewDataSource {
         header.weatherData = WeatherManager.shared.weatherModel
         
         if let weatherKit = WeatherManager.shared.weatherKit {
-            header.configWeather(with: weatherKit.dailyForecast[0])
+            header.configWeather(with: weatherKit.dailyForecast[0], weatherKit.currentWeather)
         }
         return header
     }
 }
 // MARK: - Button setting
-
 extension SubWeatherController {
     private func setupButtonAction() {
         buttonView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
@@ -104,7 +103,7 @@ extension SubWeatherController {
         guard let coordinate = getLocationFromSearch,
               let city = WeatherManager.shared.weatherModel else { return }
         WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController) {
-            RealmManager.shared.writeLocation(coordinate, cityName: city.location)
+            RealmManager.shared.writeLocation(coordinate, cityName: city.location, mainLoad: false)
             NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.list), object: nil)
         }
         self.dismiss(animated: true)

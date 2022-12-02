@@ -60,13 +60,11 @@ final class MyListCell: UITableViewCell {
         self.mainview.addSubview(leftSideSatckView)
         self.mainview.addSubview(rightSideSatckView)
         
-
         tempLabel.text = "temp"
         highTempLabel.text = "high"
         lowTempLabel.text = "low"
         locationLabel.text = "locationLabel"
         weatherStatueLabel.text = "weatherStatueLabel"
-        
     }
     
     private func configureLayout() {
