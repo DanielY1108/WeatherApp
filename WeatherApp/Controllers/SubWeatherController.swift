@@ -68,14 +68,16 @@ extension SubWeatherController: UICollectionViewDataSource {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
-                cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item])
+                let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
+                unitOption == false ? cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], tempUnit: .naturalScale)
             }
             return cell
             
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
-                cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1])
+                let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
+                unitOption == false ? cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], tempUnit: .naturalScale)
             }
             return cell
         }
@@ -87,7 +89,8 @@ extension SubWeatherController: UICollectionViewDataSource {
         header.weatherData = WeatherManager.shared.weatherModel
         
         if let weatherKit = WeatherManager.shared.weatherKit {
-            header.configWeather(with: weatherKit.dailyForecast[0], weatherKit.currentWeather)
+            let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
+            unitOption == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
         }
         return header
     }

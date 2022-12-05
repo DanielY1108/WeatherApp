@@ -51,9 +51,9 @@ final class DailyCell: UICollectionViewCell {
             make.width.equalTo(120)
         }
     }
-    func configWeather(with dayWeather: DayWeather) {
+    func configWeather(with dayWeather: DayWeather, tempUnit: MeasurementFormatter.UnitOptions) {
         let mf = MeasurementFormatter()
-        mf.unitOptions = .temperatureWithoutUnit
+        mf.unitOptions = tempUnit
         mf.numberFormatter.maximumFractionDigits = 0
         let df = DateFormatter()
         df.dateFormat = "E"

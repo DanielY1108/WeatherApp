@@ -45,13 +45,13 @@ final class weatherHeader: UICollectionReusableView {
                                                               distribution: .equalSpacing).makeStackView
     private lazy var hightStackView = FormatUI.StackView(subviews: [highTempImg, highTempLabel],
                                                          axis: .horizontal,
-                                                         distribution: .fillEqually).makeStackView
+                                                         distribution: .equalSpacing).makeStackView
     private lazy var lowStackView = FormatUI.StackView(subviews: [lowTempImg, lowTempLabel],
                                                        axis: .horizontal,
-                                                       distribution: .fillEqually).makeStackView
+                                                       distribution: .equalSpacing).makeStackView
     private lazy var highLowStackView = FormatUI.StackView(subviews: [lowStackView, hightStackView],
                                                            axis: .horizontal,
-                                                           distribution: .equalCentering).makeStackView
+                                                           distribution: .fillEqually, spacing: 20).makeStackView
     private lazy var sunriseStackView = FormatUI.StackView(subviews: [sunriseImg, sunriseLabel],
                                                            axis: .horizontal).makeStackView
     private lazy var sunsetStackView = FormatUI.StackView(subviews: [sunsetImg, sunsetLabel],
@@ -124,14 +124,14 @@ extension weatherHeader {
         }
     }
     
-    func configWeather(with dayWeather: DayWeather, _ currentWeather: CurrentWeather) {
+    func configWeather(_ weather: Weather, tempUnit: MeasurementFormatter.UnitOptions) {
         let mf = MeasurementFormatter()
-        mf.unitOptions = .temperatureWithoutUnit
+        mf.unitOptions = tempUnit
         mf.numberFormatter.maximumFractionDigits = 0
         
-        tempLabel.text = "\(mf.string(from: currentWeather.temperature))"
-        highTempLabel.text = "\(mf.string(from: dayWeather.highTemperature))"
-        lowTempLabel.text = "\(mf.string(from: dayWeather.lowTemperature))"
+        tempLabel.text = "\(mf.string(from: weather.currentWeather.temperature))"
+        highTempLabel.text = "\(mf.string(from: weather.dailyForecast[0].highTemperature))"
+        lowTempLabel.text = "\(mf.string(from: weather.dailyForecast[0].lowTemperature))"
 
     }
 }

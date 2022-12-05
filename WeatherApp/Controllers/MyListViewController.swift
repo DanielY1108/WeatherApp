@@ -25,6 +25,10 @@ final class MyListViewController: UIViewController {
         setupKeyboardEvent()
         setupNotification()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.snp.makeConstraints { make in
@@ -63,9 +67,8 @@ extension MyListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension MyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let models = RealmManager.shared.read(RealmDataModel.self)
-        let model = models[indexPath.section]
-        RealmManager.shared.checkLoadMainView(models, display: model)
+        let model = RealmManager.shared.read(RealmDataModel.self)[indexPath.section]
+        RealmManager.shared.checkLoadMainView(display: model)
         NotificationCenter.default.post(name: Notification.Name(Constants.NotificationName.main), object: model)
         self.navigationController?.popViewController(animated: true)
     }
@@ -78,8 +81,10 @@ extension MyListViewController: UITableViewDelegate {
         return 0
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        indexPath.section == 0 ? false : true
+    }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         if editingStyle == .delete {
             let realmData = RealmManager.shared.read(RealmDataModel.self)[indexPath.section]
             RealmManager.shared.delete(realmData)

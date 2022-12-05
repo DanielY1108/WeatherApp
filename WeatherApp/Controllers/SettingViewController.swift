@@ -71,7 +71,13 @@ extension SettingViewController: UITableViewDataSource {
             switch indexPath.row {
             case 0:
                 switchView.addTarget(self, action: #selector(self.locationSwitchChanged(_:)), for: .valueChanged)
-                switchView.setOn(UserDefaults.standard.bool(forKey: Constants.UserDefault.locationSwitch), animated: true)
+                switch LocationManager.shared.manager.authorizationStatus {
+                case .denied, .restricted, .notDetermined:
+                    switchView.isOn = false
+                case .authorizedWhenInUse, .authorizedAlways:
+                    switchView.isOn = true
+                default: break
+                }
             default:
                 switchView.addTarget(self, action: #selector(self.unitSwitchChanged(_:)), for: .valueChanged)
                 switchView.setOn(UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch), animated: true)
@@ -124,13 +130,17 @@ extension SettingViewController: UITableViewDelegate {
 // MARK: - Setup Switch
 extension SettingViewController: SwitchDelegate {
     @objc func locationSwitchChanged(_ sender: UISwitch) {
-        UserDefaults.standard.set(sender.isOn, forKey: Constants.UserDefault.locationSwitch)
-        if sender.isOn {
-            print("Switch On")
-        } else {
+        switch LocationManager.shared.manager.authorizationStatus {
+        case .denied, .restricted, .notDetermined:
+            sender.isOn = false
+            setAuthAlertAction(with: sender)
             print("Switch Off")
+        case .authorizedWhenInUse, .authorizedAlways:
+            sender.isOn = true
+            setAuthAlertAction(with: sender)
+            print("Switch On")
+        default: break
         }
-        
     }
     
     @objc func unitSwitchChanged(_ sender: UISwitch) {
@@ -152,13 +162,11 @@ extension SettingViewController {
             if let appSettings = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
                 print("Setting button tapped")
-                
             }
         }
         let cancel = UIAlertAction(title: "cancel", style: .cancel) { action in
             print("Cancel button tapped")
-            switchs.isOn = false
-            UserDefaults.standard.set(switchs.isOn, forKey: Constants.UserDefault.locationSwitch)
+            
         }
         
         authAlertController.addAction(setting)
@@ -173,3 +181,7 @@ extension SettingViewController {
     }
 }
 
+enum UnitOption {
+    case temperatureWithoutUnit
+    case naturalScale
+}

@@ -15,7 +15,7 @@ protocol LocationServiceDelegate {
 
 class LocationManager: NSObject {
     static let shared = LocationManager()
-    private let manager = CLLocationManager()
+    let manager = CLLocationManager()
     private(set) var currentLocation: CLLocationCoordinate2D?
     private(set) var defualtLocation: CLLocationCoordinate2D?
     private override init() {}
@@ -29,6 +29,13 @@ extension LocationManager: CLLocationManagerDelegate {
         let location = locations[0].coordinate
         self.currentLocation = location
         NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.main), object: location)
+        let model = RealmManager.shared.read(RealmDataModel.self)[0]
+        RealmManager.shared.checkLoadMainView(display: model)
+        RealmManager.shared.update(model) { updateModel in
+            updateModel.lat = location.latitude
+            updateModel.lon = location.longitude
+            updateModel.loadMain = true
+        }
         manager.stopUpdatingLocation()
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -41,14 +48,6 @@ extension LocationManager: CLLocationManagerDelegate {
             manager.requestWhenInUseAuthorization()
         case .authorizedAlways, .authorizedWhenInUse:
             print("Location Auth: authorizedWhenInUse")
-            guard let location = manager.location else { return }
-            let model = RealmManager.shared.read(RealmDataModel.self)[0]
-            RealmManager.shared.update(model) { updateModel in
-                updateModel.lat = location.coordinate.latitude
-                updateModel.lon = location.coordinate.longitude
-                updateModel.loadMain = true
-            }
-        
             manager.startUpdatingLocation()
         case .denied, .restricted:
             print("Location Auth: denied")

@@ -40,7 +40,8 @@ final class RealmManager: RealmData {
         dataModel.loadMain = mainLoad
         self.write(dataModel)
     }
-    func checkLoadMainView(_ models: Results<RealmDataModel>, display model: RealmDataModel) {
+    func checkLoadMainView(display model: RealmDataModel) {
+        let models = read(RealmDataModel.self)
         models.forEach { model in
             self.update(model) { model in
                 model.loadMain = false

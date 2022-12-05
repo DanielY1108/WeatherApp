@@ -38,9 +38,9 @@ final class HourlyCell: UICollectionViewCell {
         }
     }
     
-    func configWeather(with hourWeather: HourWeather) {
+    func configWeather(with hourWeather: HourWeather, tempUnit: MeasurementFormatter.UnitOptions) {
         let mf = MeasurementFormatter()
-        mf.unitOptions = .temperatureWithoutUnit
+        mf.unitOptions = tempUnit
         mf.numberFormatter.maximumFractionDigits = 0
 
         let df = DateFormatter()
