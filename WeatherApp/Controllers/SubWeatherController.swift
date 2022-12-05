@@ -68,16 +68,14 @@ extension SubWeatherController: UICollectionViewDataSource {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
-                let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
-                unitOption == false ? cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], tempUnit: .naturalScale)
             }
             return cell
             
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
-                let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
-                unitOption == false ? cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], tempUnit: .naturalScale)
             }
             return cell
         }
@@ -89,8 +87,7 @@ extension SubWeatherController: UICollectionViewDataSource {
         header.weatherData = WeatherManager.shared.weatherModel
         
         if let weatherKit = WeatherManager.shared.weatherKit {
-            let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
-            unitOption == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
+            tempUnitSwitch() == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
         }
         return header
     }
@@ -110,5 +107,13 @@ extension SubWeatherController {
     
     @objc func backButtonTapped() {
         dismiss(animated: true)
+    }
+}
+// MARK: - UserDefaults tempUnit setting
+
+extension SubWeatherController {
+    func tempUnitSwitch() -> Bool {
+        let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
+        return unitOption
     }
 }

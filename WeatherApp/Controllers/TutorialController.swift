@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-class TutorialController: UIViewController {
+final class TutorialController: UIViewController {
     
     let textLabel = [
         "좌우로 스와이프하여 메뉴를 열고 닫아보세요. 손쉽게 저장한 날씨에 접근해보세요.",

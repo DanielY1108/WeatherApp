@@ -76,7 +76,7 @@ final class MainWeatherViewController: BaseViewController {
             tutorialVC.modalPresentationStyle = .fullScreen
             present(tutorialVC, animated: false)
             UserDefaults.standard.set(true, forKey: Constants.UserDefault.launchAppFirstTime)
-            RealmManager.shared.writeDefualtLocation(CLLocationCoordinate2D(), mainLoad: true)
+            RealmManager.shared.writeLocation(CLLocationCoordinate2D(), cityName: "Current Location", mainLoad: true)
         }
     }
     private func loadMyCheckWeatherData() {
@@ -111,8 +111,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
                 let hourWeather = weathetKit.hourlyForecast[indexPath.item]
-                let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
-                unitOption == false ? cell.configWeather(with: hourWeather, tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: hourWeather, tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? cell.configWeather(with: hourWeather, tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: hourWeather, tempUnit: .naturalScale)
 
 
             }
@@ -122,8 +121,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
                 let dailyWeather = weathetKit.dailyForecast[indexPath.item + 1]
-                let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
-                unitOption == false ? cell.configWeather(with: dailyWeather, tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: dailyWeather, tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? cell.configWeather(with: dailyWeather, tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: dailyWeather, tempUnit: .naturalScale)
             }
             return cell
         }
@@ -134,8 +132,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
         header.weatherData = WeatherManager.shared.weatherModel
         
         if let weatherKit = WeatherManager.shared.weatherKit {
-            let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
-            unitOption == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
+            tempUnitSwitch() == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
             
         }
         return header
@@ -295,5 +292,13 @@ extension MainWeatherViewController {
         default:
             break
         }
+    }
+}
+// MARK: - UserDefaults tempUnit setting
+
+extension MainWeatherViewController {
+    func tempUnitSwitch() -> Bool {
+        let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
+        return unitOption
     }
 }

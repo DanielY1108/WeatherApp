@@ -9,10 +9,6 @@ import UIKit
 import MapKit
 import CoreLocation
 
-protocol LocationServiceDelegate {
-    func updateLocation()
-}
-
 class LocationManager: NSObject {
     static let shared = LocationManager()
     let manager = CLLocationManager()

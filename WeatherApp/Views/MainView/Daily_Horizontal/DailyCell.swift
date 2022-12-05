@@ -23,7 +23,7 @@ final class DailyCell: UICollectionViewCell {
                                                             distribution: .equalCentering).makeStackView
     private lazy var stackViewRightSide = FormatUI.StackView(subviews: [lowTempLabel, highTempLabel],
                                                              axis: .horizontal,
-                                                             distribution: .equalCentering).makeStackView
+                                                             distribution: .equalSpacing).makeStackView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,7 +48,7 @@ final class DailyCell: UICollectionViewCell {
         }
         stackViewRightSide.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(120)
+            make.width.equalTo(140)
         }
     }
     func configWeather(with dayWeather: DayWeather, tempUnit: MeasurementFormatter.UnitOptions) {
@@ -62,7 +62,7 @@ final class DailyCell: UICollectionViewCell {
         dayLabel.text = df.string(from: dayWeather.date)
         weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName)")
         highTempLabel.text = "H: \(mf.string(from: dayWeather.highTemperature))"
-        lowTempLabel.text = "L : \(mf.string(from: dayWeather.lowTemperature))"
+        lowTempLabel.text = "L: \(mf.string(from: dayWeather.lowTemperature))"
     }
 }
 

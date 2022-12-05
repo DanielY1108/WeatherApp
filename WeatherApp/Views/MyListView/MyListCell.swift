@@ -91,7 +91,7 @@ extension MyListCell {
     func configData() {
         if let weatherData = weatherData {
             DispatchQueue.main.async {
-                self.tempLabel.text = "\(weatherData.tempStr)°"
+//                self.tempLabel.text = "\(weatherData.tempStr)°"
 //                self.highTempLabel.text = weatherData.tempMaxStr
 //                self.lowTempLabel.text = weatherData.tempMinStr
                 self.locationLabel.text = weatherData.location
@@ -100,13 +100,14 @@ extension MyListCell {
         }
     }
     
-    func configWeather(with dayWeather: DayWeather) {
+    func configWeather(_ weather: Weather, tempUnit: MeasurementFormatter.UnitOptions) {
         let mf = MeasurementFormatter()
-        mf.unitOptions = .temperatureWithoutUnit
+        mf.unitOptions = tempUnit
         mf.numberFormatter.maximumFractionDigits = 0
         
-        highTempLabel.text = "H:\(mf.string(from: dayWeather.highTemperature))"
-        lowTempLabel.text = "L:\(mf.string(from: dayWeather.lowTemperature))"
+        tempLabel.text = "\(mf.string(from: weather.currentWeather.temperature))"
+        highTempLabel.text = "H:\(mf.string(from: weather.dailyForecast[0].highTemperature))"
+        lowTempLabel.text = "L:\(mf.string(from: weather.dailyForecast[0].lowTemperature))"
 
     }
 

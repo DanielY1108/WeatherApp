@@ -58,7 +58,7 @@ extension MyListViewController: UITableViewDataSource {
         cell.weatherData = WeatherManager.shared.weatherModelList[indexPath.section]
         
         let weatherKit = WeatherManager.shared.weatherKitList[indexPath.section]
-        cell.configWeather(with: weatherKit.dailyForecast[0])
+        tempUnitSwitch() == false ? cell.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : cell.configWeather(weatherKit, tempUnit: .naturalScale)
         
         cell.selectionStyle = .none
         return cell
@@ -143,6 +143,12 @@ extension MyListViewController {
         }
     }
 }
-    
-    
+// MARK: - UserDefaults tempUnit setting
+
+extension MyListViewController {
+    func tempUnitSwitch() -> Bool {
+        let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
+        return unitOption
+    }
+}
 

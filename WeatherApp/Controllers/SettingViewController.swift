@@ -166,9 +166,7 @@ extension SettingViewController {
         }
         let cancel = UIAlertAction(title: "cancel", style: .cancel) { action in
             print("Cancel button tapped")
-            
         }
-        
         authAlertController.addAction(setting)
         authAlertController.addAction(cancel)
         self.present(authAlertController, animated: true, completion: nil)
@@ -181,7 +179,3 @@ extension SettingViewController {
     }
 }
 
-enum UnitOption {
-    case temperatureWithoutUnit
-    case naturalScale
-}
