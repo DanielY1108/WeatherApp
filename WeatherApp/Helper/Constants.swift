@@ -21,6 +21,7 @@ struct Constants {
         static let resultID = "Result_ID"
         
         static let settingID = "Setting_ID"
+        static let licenseID = "License_ID"
     }
     struct UserDefault {
         static let launchAppFirstTime = "Launch_App_First_Time"

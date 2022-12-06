@@ -87,6 +87,7 @@ extension SettingViewController: UITableViewDataSource {
             return cell
         case .info:
             cell.mainLabel.text = infoList[indexPath.row].title.rawValue
+            cell.accessoryType = .disclosureIndicator
             return cell
         }
     }
@@ -114,6 +115,7 @@ extension SettingViewController: UITableViewDelegate {
             case .about:
                 print("about")
             case .openSource:
+                navigationController?.show(LicenseController(), sender: nil)
                 print("opensource")
             case .version:
                 print("version")

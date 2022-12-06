@@ -1,16 +1,14 @@
 //
-//  SettingCell.swift
+//  LicenseCell.swift
 //  WeatherApp
 //
-//  Created by JINSEOK on 2022/11/27.
+//  Created by JINSEOK on 2022/12/06.
 //
 
 import UIKit
 
-class SettingCell: UITableViewCell {
-    
-    private let mainView = UIView()
-    
+class LicenseCell: UITableViewCell {
+
     let mainLabel = FormatUI.Label(ofSize: .small, weight: .regular, color: .label).makeLabel
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -22,16 +20,23 @@ class SettingCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configUI() {
-        self.addSubview(mainView)
-        mainView.addSubview(mainLabel)
-        
-        mainView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+    func configUI() {
+        self.addSubview(mainLabel)
         mainLabel.snp.makeConstraints { make in
-            make.trailing.top.bottom.equalTo(mainView)
-            make.leading.equalTo(mainView).inset(15)
+            make.top.trailing.bottom.equalToSuperview()
+            make.leading.equalToSuperview().inset(15)
         }
     }
+
 }
+// MARK: - PreView
+import SwiftUI
+
+#if DEBUG
+struct PreView1: PreviewProvider {
+    static var previews: some View {
+        LicenseController()
+            .toPreview()
+    }
+}
+#endif

@@ -22,4 +22,20 @@ extension Bundle {
             return value
         }
     }
+    
+    func readTxtFile(_ name: String) -> String? {
+        // [텍스트 파일 내용을 저장할 변수]
+        var result = ""
+        // [저장된 텍스트 파일 경로 지정 실시]
+        let paths = Bundle.main.path(forResource: "\(name)", ofType: nil)
+        guard paths != nil else { return nil }
+        // [텍스트 파일 내용 확인 실시]
+        do {
+            result = try String(contentsOfFile: paths!, encoding: .utf8)
+        }
+        catch let error as NSError {
+            return error.localizedDescription
+        }
+        return result
+    }
 }

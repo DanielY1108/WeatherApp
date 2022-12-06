@@ -117,14 +117,3 @@ extension TutorialController: UIScrollViewDelegate {
         pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
     }
 }
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView: PreviewProvider {
-    static var previews: some View {
-        TutorialController()
-            .toPreview()
-    }
-}
-#endif

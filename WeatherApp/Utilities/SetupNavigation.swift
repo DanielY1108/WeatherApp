@@ -10,6 +10,7 @@ import UIKit
 enum NavigationList: String {
     case myList = "My List"
     case setting = "Setting"
+    case license = "License"
 }
 
 struct SetupNavigation {
