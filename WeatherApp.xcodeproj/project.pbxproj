@@ -19,7 +19,7 @@
 		653FDF3F293EFDB5009A2231 /* License.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653FDF3E293EFDB5009A2231 /* License.swift */; };
 		653FDF45293F11F5009A2231 /* DetailLicenseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653FDF44293F11F5009A2231 /* DetailLicenseController.swift */; };
 		653FDF47293F17FE009A2231 /* DetailLicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653FDF46293F17FE009A2231 /* DetailLicenseView.swift */; };
-		653FDF49293F1D2B009A2231 /* RealmLICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 653FDF48293F1D2B009A2231 /* RealmLICENSE */; };
+		653FDF4C293F31BF009A2231 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 653FDF4B293F31BF009A2231 /* Settings.bundle */; };
 		65430AE32920CC8B00E95B96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE22920CC8B00E95B96 /* AppDelegate.swift */; };
 		65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE42920CC8B00E95B96 /* SceneDelegate.swift */; };
 		65430AE72920CC8B00E95B96 /* MainWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65430AE62920CC8B00E95B96 /* MainWeatherViewController.swift */; };
@@ -74,7 +74,7 @@
 		653FDF3E293EFDB5009A2231 /* License.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = License.swift; sourceTree = "<group>"; };
 		653FDF44293F11F5009A2231 /* DetailLicenseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLicenseController.swift; sourceTree = "<group>"; };
 		653FDF46293F17FE009A2231 /* DetailLicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLicenseView.swift; sourceTree = "<group>"; };
-		653FDF48293F1D2B009A2231 /* RealmLICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RealmLICENSE; sourceTree = "<group>"; };
+		653FDF4B293F31BF009A2231 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6540A10529269DB200338721 /* WeatherApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherApp.entitlements; sourceTree = "<group>"; };
 		65430ADF2920CC8B00E95B96 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65430AE22920CC8B00E95B96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 		653FDF4A293F1D39009A2231 /* License */ = {
 			isa = PBXGroup;
 			children = (
-				653FDF48293F1D2B009A2231 /* RealmLICENSE */,
+				653FDF4B293F31BF009A2231 /* Settings.bundle */,
 			);
 			path = License;
 			sourceTree = "<group>";
@@ -367,8 +367,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				653FDF49293F1D2B009A2231 /* RealmLICENSE in Resources */,
 				659C52CA292278BD00EEEA70 /* SecretKey.plist in Resources */,
+				653FDF4C293F31BF009A2231 /* Settings.bundle in Resources */,
 				65430AEF2920CC8C00E95B96 /* LaunchScreen.storyboard in Resources */,
 				65430AEC2920CC8C00E95B96 /* Assets.xcassets in Resources */,
 			);

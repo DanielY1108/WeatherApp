@@ -13,8 +13,7 @@ class LicenseController: UIViewController {
     let license: [Licenses] = [
         Licenses(name: .weatherKit),
         Licenses(name: .openWeather),
-        Licenses(name: .realm),
-        Licenses(name: .snapkit)
+        Licenses(name: .libraries)
     ]
 
     override func viewDidLoad() {
@@ -42,7 +41,7 @@ class LicenseController: UIViewController {
 
 extension LicenseController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return license.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -65,10 +64,9 @@ extension LicenseController: UITableViewDelegate {
             navigationController?.show(DetailLicenseController(), sender: nil)
         case .openWeather:
             navigationController?.show(DetailLicenseController(), sender: nil)
-        case .realm:
-            navigationController?.show(DetailLicenseController(), sender: nil)
-        case .snapkit:
-            navigationController?.show(DetailLicenseController(), sender: nil)
+        case .libraries:
+            guard let appSettings = URL(string: UIApplication.openSettingsURLString) else { return }
+            UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

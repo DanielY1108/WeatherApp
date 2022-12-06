@@ -18,9 +18,8 @@ class DetailLicenseController: UIViewController {
     }
     
     func configureUI() {
-        let tetxFile = Bundle.main.readTxtFile("RealmLICENSE")
-        detailView.mainInfo.text = tetxFile
         detailView.imageLogo.image = UIImage(named: "RealmLogo.png")
+        detailView.mainInfo.text 
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
@@ -29,16 +28,10 @@ class DetailLicenseController: UIViewController {
         scrollView.addSubview(detailView)
         detailView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.height.equalTo(5000)
+            make.height.equalTo(self.view)
             make.left.right.equalTo(self.view)
         }
-        
-        
-        
-        
     }
-
-
 }
 
 

@@ -9,16 +9,13 @@ import UIKit
 
 enum LicenseImage: String {
     case openWeather = "OpenWeatherLogo.png"
-    case snapkit = "SnapKitLogo.png"
-    case realm = "RealmLogo.png"
     case weatherKit = "apple.logo"
 }
 
 enum LicenseType: String {
-    case openWeather = "OpenWeatherMap"
-    case snapkit = "SnapKit"
-    case realm = "Realm"
     case weatherKit = "Apple WeatherKit"
+    case openWeather = "OpenWeatherMap"
+    case libraries = "Libraries"
 }
 
 struct Licenses {
