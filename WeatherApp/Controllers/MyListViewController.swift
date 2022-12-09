@@ -34,11 +34,6 @@ final class MyListViewController: UIViewController {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-    }
-    
     private func configureUI() {
         self.view.addSubview(tableView)
         tableView.dataSource = self

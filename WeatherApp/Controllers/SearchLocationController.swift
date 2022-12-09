@@ -32,11 +32,6 @@ final class SearchLocationController: UIViewController {
         setupKeyboardEvent()
         setupLayout()
     }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-     
-    }
-    
     private func configureUI() {
         self.view.addSubview(tableView)
         self.tableView.register(SearchCell.self, forCellReuseIdentifier: Constants.ID.resultID)
