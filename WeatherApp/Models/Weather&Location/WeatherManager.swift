@@ -54,9 +54,9 @@ final class WeatherManager {
             }
             dispatchGroup.leave()
         }
-//        if weatherVC == .subViewController {
-//            dispatchGroup.wait()
-//        }
+        if weatherVC == .listViewController {
+            dispatchGroup.wait()
+        }
         dispatchGroup.notify(queue: .main) {
             completion()
         }
