@@ -12,7 +12,7 @@ import CoreLocation
 
 final class SearchLocationController: UIViewController {
         
-    private let tavleView = UITableView(frame: .zero)
+    private let tableView = UITableView(frame: .zero)
     
     private var searchCompleter = MKLocalSearchCompleter()
     private var searchResults = [MKLocalSearchCompletion]()
@@ -30,20 +30,24 @@ final class SearchLocationController: UIViewController {
         configureUI()
         configSearchCompleter()
         setupKeyboardEvent()
+        setupLayout()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tavleView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+     
     }
     
     private func configureUI() {
-        self.view.addSubview(tavleView)
-        self.tavleView.register(SearchCell.self, forCellReuseIdentifier: Constants.ID.resultID)
-        self.tavleView.dataSource = self
-        self.tavleView.delegate = self
-        tavleView.backgroundColor = .clear
+        self.view.addSubview(tableView)
+        self.tableView.register(SearchCell.self, forCellReuseIdentifier: Constants.ID.resultID)
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        tableView.backgroundColor = .clear
+    }
+    private func setupLayout() {
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
 // MARK: - UITableViewDataSource
@@ -68,6 +72,7 @@ extension SearchLocationController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension SearchLocationController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let selectedResult = searchResults[indexPath.row]
         let searchRequest = MKLocalSearch.Request(completion: selectedResult)
         let search = MKLocalSearch(request: searchRequest)
@@ -107,7 +112,7 @@ extension SearchLocationController: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         // completer.results를 통해 검색한 결과를 searchResults에 담아줍니다
         searchResults = completer.results
-        tavleView.reloadData()
+        tableView.reloadData()
         
     }
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
@@ -116,5 +121,5 @@ extension SearchLocationController: MKLocalSearchCompleterDelegate {
 }
 // MARK: - Setup for keyboard show & hide animation(tableview height)
 extension SearchLocationController: KeyboardEvent {
-    var transformView: UIView { return tavleView }
+    var transformView: UIView { return tableView }
 }

@@ -28,6 +28,7 @@ final class MyListViewController: UIViewController {
         configureUI()
         setupKeyboardEvent()
         setupNotification()
+        setupLayout()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -35,23 +36,20 @@ final class MyListViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalTo(myListLicenseView.snp.top)
-        }
-        myListLicenseView.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-        }
+        
     }
     
     private func configureUI() {
         self.view.addSubview(tableView)
-        self.view.addSubview(myListLicenseView)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MyListCell.self, forCellReuseIdentifier: Constants.ID.myListID)
-       licenses.forEach { myListLicenseView.licenseData = $0 }
+        licenses.forEach { myListLicenseView.licenseData = $0 }
+    }
+    private func setupLayout() {
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
 // MARK: - UITableViewDataSource {
@@ -65,14 +63,16 @@ extension MyListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
-        
         cell.weatherData = WeatherManager.shared.weatherModelList[indexPath.section]
-        
+
         let weatherKit = WeatherManager.shared.weatherKitList[indexPath.section]
         tempUnitSwitch() == false ? cell.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : cell.configWeather(weatherKit, tempUnit: .naturalScale)
         
         cell.selectionStyle = .none
         return cell
+    }
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return myListLicenseView
     }
 }
 // MARK: - UITableViewDelegate
@@ -115,10 +115,6 @@ extension MyListViewController {
         searchController.searchBar.becomeFirstResponder()
     }
 }
-// MARK: - Setup for keyboard show & hide animation(tableview height)
-extension MyListViewController: KeyboardEvent {
-    var transformView: UIView { return tableView }
-}
 // MARK: - Setup SearchBar & UISearchResultsUpdating
 extension MyListViewController: UISearchResultsUpdating {
     
@@ -155,11 +151,13 @@ extension MyListViewController {
     }
 }
 // MARK: - UserDefaults tempUnit setting
-
 extension MyListViewController {
     func tempUnitSwitch() -> Bool {
         let unitOption = UserDefaults.standard.bool(forKey: Constants.UserDefault.unitSwitch)
         return unitOption
     }
 }
-
+// MARK: - Setup for keyboard show & hide animation(tableview height)
+extension MyListViewController: KeyboardEvent {
+    var transformView: UIView { return tableView }
+}

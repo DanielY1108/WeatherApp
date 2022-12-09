@@ -36,7 +36,7 @@ extension KeyboardEvent where Self: UIViewController {
     }
     private func keyboardWillDisappear(_ notification: Notification) {
         transformView.snp.updateConstraints { make in
-            make.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 }
