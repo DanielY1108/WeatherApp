@@ -17,9 +17,9 @@ struct MenuAnimate {
     var menu: Bool
     
     mutating func showMenu(with tableView: UITableView) {
-        let x = tableView.bounds.width * 0.32
+        let x = tableView.bounds.width * 0.37
         let originalTransform = tableView.transform
-        let scaledTransform = originalTransform.scaledBy(x: 0.85, y: 0.85)
+        let scaledTransform = originalTransform.scaledBy(x: 0.8, y: 0.8)
         let scaledAndTranslatedTransform = scaledTransform.translatedBy(x: x, y: 0)
         
         UIView.animate(withDuration: 0.7) {

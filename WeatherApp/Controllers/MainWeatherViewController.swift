@@ -50,8 +50,8 @@ final class MainWeatherViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
         menuTableView.snp.makeConstraints { make in
-            make.top.equalTo(backgroundView).offset(80)
-            make.width.equalTo(backgroundView).multipliedBy(1.4)
+            make.top.equalTo(backgroundView).offset(50)
+            make.width.equalTo(backgroundView).multipliedBy(1.5)
             make.trailing.bottom.equalTo(backgroundView)
         }
         collectionView.snp.makeConstraints { make in

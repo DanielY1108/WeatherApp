@@ -40,6 +40,7 @@ final class MyListViewController: UIViewController {
         tableView.delegate = self
         tableView.register(MyListCell.self, forCellReuseIdentifier: Constants.ID.myListID)
         licenses.forEach { myListLicenseView.licenseData = $0 }
+        tableView.tableFooterView = myListLicenseView
     }
     private func setupLayout() {
         tableView.snp.makeConstraints { make in
@@ -65,9 +66,6 @@ extension MyListViewController: UITableViewDataSource {
         
         cell.selectionStyle = .none
         return cell
-    }
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return myListLicenseView
     }
 }
 // MARK: - UITableViewDelegate
