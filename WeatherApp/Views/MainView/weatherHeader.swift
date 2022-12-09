@@ -13,7 +13,7 @@ final class weatherHeader: UICollectionReusableView {
     
     var weatherData: CurrentWeatherModel? {
         didSet {
-            configData()
+            configWeatherData()
         }
     }
     // 레이블
@@ -110,7 +110,7 @@ final class weatherHeader: UICollectionReusableView {
 
 // MARK: - CurrentWeather Configure Data
 extension weatherHeader {
-    func configData() {
+    func configWeatherData() {
         if let weatherData = weatherData {
             DispatchQueue.main.async {
                 self.humidityLabel.text = "\(weatherData.humidityStr) %"

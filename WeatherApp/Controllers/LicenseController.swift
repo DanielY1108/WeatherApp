@@ -10,15 +10,14 @@ import UIKit
 class LicenseController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    let license: [Licenses] = [
-        Licenses(name: .weatherKit),
-        Licenses(name: .openWeather),
-        Licenses(name: .libraries)
+    let licenses: [License] = [
+        License(.weatherKit),
+        License(.openWeather),
+        License(.libraries)
     ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.backgroundColor = .black
         configNavigationBar()
         configureUI()
     }
@@ -41,29 +40,29 @@ class LicenseController: UIViewController {
 
 extension LicenseController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return license.count
+        return licenses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.licenseID, for: indexPath) as! LicenseCell
-        cell.mainLabel.text = license[indexPath.row].name.rawValue
+        cell.mainLabel.text = licenses[indexPath.row].name
+        print(licenses[indexPath.row].name)
         cell.accessoryType = .detailDisclosureButton
         cell.selectionStyle = .none
         return cell
     }
-    
-    
-    
 }
 // MARK: - UITableViewDelegate
 
 extension LicenseController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch license[indexPath.row].name {
+        let detailViewController = DetailLicenseController()
+        detailViewController.licenseSeleted = licenses[indexPath.row]
+        switch licenses[indexPath.row].type {
         case .weatherKit:
-            navigationController?.show(DetailLicenseController(), sender: nil)
+            navigationController?.show(detailViewController, sender: nil)
         case .openWeather:
-            navigationController?.show(DetailLicenseController(), sender: nil)
+            navigationController?.show(detailViewController, sender: nil)
         case .libraries:
             guard let appSettings = URL(string: UIApplication.openSettingsURLString) else { return }
             UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)

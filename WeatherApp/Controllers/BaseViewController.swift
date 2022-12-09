@@ -13,6 +13,11 @@ class BaseViewController: UIViewController {
     private let customLayout = UICollectionViewLayout()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: customLayout.createMainLayout())
     
+    let licenses: [License] = [
+        License(.weatherKit),
+        License(.openWeather)
+    ]
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +50,7 @@ class BaseViewController: UIViewController {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(weatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
+        collectionView.register(LicenseFooter.self, forSupplementaryViewOfKind: Constants.ID.categoryFooterID, withReuseIdentifier: Constants.ID.footerID)
         collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
         collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
     }

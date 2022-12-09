@@ -9,8 +9,13 @@ import UIKit
 
 class DetailLicenseController: UIViewController {
     
-    let detailView = DetailLicenseView()
-    let scrollView = UIScrollView()
+    var licenseSeleted: License? {
+        didSet {
+            updateLicense()
+        }
+    }
+
+    let detailLicenseView = DetailLicenseView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,20 +23,26 @@ class DetailLicenseController: UIViewController {
     }
     
     func configureUI() {
-        detailView.imageLogo.image = UIImage(named: "RealmLogo.png")
-        detailView.mainInfo.text 
-        
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
+        self.view.addSubview(detailLicenseView)
+        detailLicenseView.backgroundColor = .systemBackground
+        detailLicenseView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        scrollView.addSubview(detailView)
-        detailView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.height.equalTo(self.view)
-            make.left.right.equalTo(self.view)
+    }
+    
+    func updateLicense() {
+        guard let license = licenseSeleted else { return }
+        let checkLicenseType = license.type
+        DispatchQueue.main.async {
+            self.detailLicenseView.mainLabel.text = license.name
+            self.detailLicenseView.urlTextView.text = license.url
+            switch checkLicenseType {
+            case .weatherKit:
+                self.detailLicenseView.imageView.image = UIImage(systemName: license.imageName!)
+            case .openWeather:
+                self.detailLicenseView.imageView.image = UIImage(named: license.imageName!)
+            default: break
+            }
         }
     }
 }
-
-

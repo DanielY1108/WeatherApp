@@ -91,9 +91,6 @@ extension MyListCell {
     func configData() {
         if let weatherData = weatherData {
             DispatchQueue.main.async {
-//                self.tempLabel.text = "\(weatherData.tempStr)°"
-//                self.highTempLabel.text = weatherData.tempMaxStr
-//                self.lowTempLabel.text = weatherData.tempMinStr
                 self.locationLabel.text = weatherData.location
                 self.weatherStatueLabel.text = weatherData.weatherStatue
             }

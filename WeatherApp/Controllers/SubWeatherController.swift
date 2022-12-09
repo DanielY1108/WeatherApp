@@ -82,14 +82,21 @@ extension SubWeatherController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
-        
-        header.weatherData = WeatherManager.shared.weatherModel
-        
-        if let weatherKit = WeatherManager.shared.weatherKit {
-            tempUnitSwitch() == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
+        switch indexPath.section {
+        case 0:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
+            header.weatherData = WeatherManager.shared.weatherModel
+            if let weatherKit = WeatherManager.shared.weatherKit {
+                tempUnitSwitch() == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
+            }
+            return header
+        default:
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.footerID, for: indexPath) as! LicenseFooter
+            licenses.forEach { license in
+                footer.licenseData = license
+            }
+            return footer
         }
-        return header
     }
 }
 // MARK: - Button setting

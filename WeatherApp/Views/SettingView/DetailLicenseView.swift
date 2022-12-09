@@ -8,28 +8,27 @@
 import UIKit
 
 class DetailLicenseView: UIView {
-    
-    let imageLogo: UIImageView = {
+    let mainLabel = UILabel()
+    let imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         return view
     }()
-    
-    let mainInfo: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .gray
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        return label
+    let urlTextView: UITextView = {
+        let view = UITextView()
+        view.isEditable = false
+        view.isScrollEnabled = false
+        view.dataDetectorTypes = .link
+        view.textColor = .label
+        view.font = .systemFont(ofSize: 16)
+        return view
     }()
-    
-    lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [imageLogo, mainInfo])
+    private lazy var stackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [mainLabel, urlTextView])
         stack.axis = .vertical
         stack.spacing = 10
-        stack.alignment = .center
         stack.distribution = .fill
+        stack.alignment = .center
         return stack
     }()
     
@@ -42,12 +41,20 @@ class DetailLicenseView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configUI() {
+    private func configUI() {
+        self.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).offset(50)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(200)
+            make.height.equalTo(80)
+        }
         self.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.edges.equalTo(self)
+            make.top.equalTo(imageView.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(80)
         }
     }
-    
-    
 }
+

@@ -29,14 +29,3 @@ class LicenseCell: UITableViewCell {
     }
 
 }
-// MARK: - PreView
-import SwiftUI
-
-#if DEBUG
-struct PreView1: PreviewProvider {
-    static var previews: some View {
-        LicenseController()
-            .toPreview()
-    }
-}
-#endif

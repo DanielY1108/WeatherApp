@@ -13,9 +13,13 @@ import CoreLocation
 final class MyListViewController: UIViewController {
     
     lazy var tableView = UITableView(frame: .zero, style: .insetGrouped)
-    
+    private let myListLicenseView = MyListLicenseView()
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
     
+    let licenses: [License] = [
+        License(.weatherKit),
+        License(.openWeather)
+    ]
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,15 +36,22 @@ final class MyListViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view)
+            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(myListLicenseView.snp.top)
+        }
+        myListLicenseView.snp.makeConstraints { make in
+            make.height.equalTo(20)
+            make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
     private func configureUI() {
         self.view.addSubview(tableView)
+        self.view.addSubview(myListLicenseView)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MyListCell.self, forCellReuseIdentifier: Constants.ID.myListID)
+       licenses.forEach { myListLicenseView.licenseData = $0 }
     }
 }
 // MARK: - UITableViewDataSource {

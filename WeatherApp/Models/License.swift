@@ -7,26 +7,44 @@
 
 import UIKit
 
-enum LicenseImage: String {
-    case openWeather = "OpenWeatherLogo.png"
-    case weatherKit = "apple.logo"
+enum LicenseName: String {
+    case weatherKitName = "WeatherKit"
+    case openWeatherName = "OpenWeatherMap"
+    case librariesName = "Libraries"
+}
+enum LicenseUrl: String {
+    case weatherKitUrlString = "https://weatherkit.apple.com/legal-attribution.html"
+    case openWeatherUrlString = "https://openweathermap.org/"
+}
+enum LicensImageName: String {
+    case weatherKitImageName = "apple.logo"
+    case openWeatherImageName = "OpenWeatherLogo.png"
+}
+enum LicenseType {
+    case weatherKit
+    case openWeather
+    case libraries
 }
 
-enum LicenseType: String {
-    case weatherKit = "Apple WeatherKit"
-    case openWeather = "OpenWeatherMap"
-    case libraries = "Libraries"
-}
-
-struct Licenses {
-    let name: LicenseType
-    init(name: LicenseType) {
-        self.name = name
+struct License {
+    let type: LicenseType
+    let name: LicenseName.RawValue
+    var url: LicenseUrl.RawValue?
+    var imageName: LicensImageName.RawValue?
+    
+    init(_ licenseType: LicenseType) {
+        self.type = licenseType
+        switch licenseType {
+        case .weatherKit:
+            self.name = LicenseName.weatherKitName.rawValue
+            self.url = LicenseUrl.weatherKitUrlString.rawValue
+            self.imageName = LicensImageName.weatherKitImageName.rawValue
+        case .openWeather:
+            self.name = LicenseName.openWeatherName.rawValue
+            self.url = LicenseUrl.openWeatherUrlString.rawValue
+            self.imageName = LicensImageName.openWeatherImageName.rawValue
+        case .libraries:
+            self.name = LicenseName.librariesName.rawValue
+        }
     }
-}
-
-struct DetailLicense {
-    var name: LicenseType
-    var info: String
-    var imageName: LicenseImage
 }

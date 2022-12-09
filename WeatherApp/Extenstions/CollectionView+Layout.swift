@@ -27,8 +27,9 @@ extension UICollectionViewLayout {
                 let itme = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)))
                 itme.contentInsets.bottom = 5
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [itme])
-                
                 let section = NSCollectionLayoutSection(group: group)
+                let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(20)), elementKind: Constants.ID.categoryFooterID, alignment: .bottom)
+                section.boundarySupplementaryItems = [sectionFooter]
                 
                 return section
             }

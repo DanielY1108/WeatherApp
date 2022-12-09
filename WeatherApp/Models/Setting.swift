@@ -15,7 +15,7 @@ enum SettingTitle: String {
     case version = "Version 1.0"
 }
 
-enum SettingSection: Int{
+enum SettingSection: Int {
     static let numberOfSections = 2
     static let titleOfUser = "User Setting"
     static let titleOfInfo = "Info"
