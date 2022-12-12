@@ -13,7 +13,7 @@ import CoreLocation
 final class MyListViewController: UIViewController {
     
     lazy var tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private let myListLicenseView = MyListLicenseView()
+    private lazy var myListLicenseView = MyListLicenseView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 15))
     private let searchController = UISearchController(searchResultsController: SearchLocationController())
     
     let licenses: [License] = [
@@ -84,7 +84,6 @@ extension MyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
-    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         indexPath.section == 0 ? false : true
     }
