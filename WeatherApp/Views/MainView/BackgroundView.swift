@@ -28,9 +28,9 @@ final class BackgroundView: UIView {
     
     private func configureImage() {
         backgruondImg.image = UIImage(named: "background.svg")
-        backgruondImg.contentMode = .scaleAspectFit
+        backgruondImg.contentMode = .scaleAspectFill
         backgruondImg.snp.makeConstraints { make in
-            make.center.equalTo(self)
+            make.edges.equalToSuperview()
         }
     }
 }

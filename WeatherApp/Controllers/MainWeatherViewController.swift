@@ -41,9 +41,6 @@ final class MainWeatherViewController: BaseViewController {
         collectionView.reloadData()
         menuTableView.reloadData()
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         backgroundView.snp.makeConstraints { make in

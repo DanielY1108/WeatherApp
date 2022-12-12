@@ -14,7 +14,7 @@ class DetailLicenseController: UIViewController {
             updateLicense()
         }
     }
-
+    
     let detailLicenseView = DetailLicenseView()
     
     override func viewDidLoad() {
@@ -39,8 +39,21 @@ class DetailLicenseController: UIViewController {
             switch checkLicenseType {
             case .weatherKit:
                 self.detailLicenseView.imageView.image = UIImage(systemName: license.imageName!)
+                self.detailLicenseView.useDataLabel.text = """
+                                                           Weather Data Used for
+                                                           
+                                                           Currnet Teperature,
+                                                           Hourly Teperature,
+                                                           Daily Teperature
+                                                           """
             case .openWeather:
                 self.detailLicenseView.imageView.image = UIImage(named: license.imageName!)
+                self.detailLicenseView.useDataLabel.text = """
+                                                           Weather Information Used for
+                                                           
+                                                           Weather Statu, City name
+                                                           Pressure, Humidity, Wind
+                                                           """
             default: break
             }
         }

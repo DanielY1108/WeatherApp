@@ -8,7 +8,7 @@
 import UIKit
 
 enum LicenseName: String {
-    case weatherKitName = "WeatherKit"
+    case weatherKitName = "Weather"
     case openWeatherName = "OpenWeatherMap"
     case librariesName = "Libraries"
 }

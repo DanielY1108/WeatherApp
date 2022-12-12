@@ -47,7 +47,7 @@ final class MyListCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         configureUI()
         configureLayout()
-        self.backgroundColor = .lightGray
+        self.backgroundColor = #colorLiteral(red: 0.02380630374, green: 0.6114115715, blue: 0.788046062, alpha: 1)
     }
     
     required init?(coder: NSCoder) {

@@ -9,9 +9,10 @@ import Foundation
 
 enum SettingTitle: String {
     case location = "Location Setting"
-    case temperature = "Temperature Unit"
-    case about = "About Weather"
-    case openSource = "Open Source License"
+    case unitTemperature = "Unit Temperature ( °C, °F )"
+    case about = "About"
+    case contactUs = "Contect Us"
+    case license = "License"
     case version = "Version 1.0"
 }
 

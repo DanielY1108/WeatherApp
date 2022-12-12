@@ -11,6 +11,7 @@ class DetailLicenseView: UIView {
     let mainLabel = UILabel()
     let imageView: UIImageView = {
         let view = UIImageView()
+        view.tintColor = .label
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -22,6 +23,12 @@ class DetailLicenseView: UIView {
         view.textColor = .label
         view.font = .systemFont(ofSize: 16)
         return view
+    }()
+    let useDataLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 16)
+        return label
     }()
     private lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [mainLabel, urlTextView])
@@ -53,7 +60,12 @@ class DetailLicenseView: UIView {
         stackView.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(80)
+            make.height.equalTo(70)
+        }
+        self.addSubview(useDataLabel)
+        useDataLabel.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).offset(20)
+            make.centerX.equalTo(safeAreaLayoutGuide)
         }
     }
 }

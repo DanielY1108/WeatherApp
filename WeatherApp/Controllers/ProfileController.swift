@@ -17,7 +17,7 @@ class ProfileController: UIViewController {
     }
     
     func configureUI() {
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
         self.view.backgroundColor = .systemBackground
         self.view.addSubview(profileView)
         profileView.snp.makeConstraints { make in

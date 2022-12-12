@@ -12,7 +12,7 @@ class LicenseView: UIView {
     let mainLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .lightGray
+        label.textColor = .gray
         return label
     }()
     let imageView: UIImageView = {
@@ -31,6 +31,7 @@ class LicenseView: UIView {
         view.font = .systemFont(ofSize: 12)
         return view
     }()
+ 
     lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [imageView, mainLabel, urlTextView])
         stack.axis = .horizontal

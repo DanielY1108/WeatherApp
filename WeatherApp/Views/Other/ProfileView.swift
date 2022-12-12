@@ -59,7 +59,7 @@ class ProfileView: UIView {
         appImageView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(100)
             make.centerX.equalTo(safeAreaLayoutGuide)
-            make.width.height.equalTo(100)
+            make.width.height.equalTo(150)
         }
         self.addSubview(labelStackView)
         labelStackView.snp.makeConstraints { make in
@@ -71,9 +71,9 @@ class ProfileView: UIView {
     
     func setupUI() {
         appImageView.image = UIImage(named: "AppIcon.png")
-        appLabel.text = "WeatherApp"
+        appLabel.text = "Weather"
         creatorLabel.text = "Create by JINSEOK YANG"
-        createLabel.text = "Created 2022/12/12"
+        createLabel.text = "Create 2022/12/12"
         emailTextView.text = "scarlet040@gmail.com"
     }
     

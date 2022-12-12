@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import MessageUI
 
 class SettingViewController: UIViewController {
     
@@ -14,9 +15,10 @@ class SettingViewController: UIViewController {
     
     private let settingList: [Setting] = [
         Setting(title: .location, section: .user),
-        Setting(title: .temperature, section: .user),
+        Setting(title: .unitTemperature, section: .user),
         Setting(title: .about, section: .info),
-        Setting(title: .openSource, section: .info),
+        Setting(title: .contactUs, section: .info),
+        Setting(title: .license, section: .info),
         Setting(title: .version, section: .info)
     ]
     private lazy var userList = settingList.filter { SettingSection.user == $0.section }
@@ -87,7 +89,13 @@ extension SettingViewController: UITableViewDataSource {
             return cell
         case .info:
             cell.mainLabel.text = infoList[indexPath.row].title.rawValue
-            cell.accessoryType = .disclosureIndicator
+            switch infoList[indexPath.row].title {
+            case .about:
+                cell.accessoryType = .disclosureIndicator
+            case .license:
+                cell.accessoryType = .disclosureIndicator
+            default: break
+            }
             return cell
         }
     }
@@ -115,13 +123,15 @@ extension SettingViewController: UITableViewDelegate {
             case .about:
                 navigationController?.show(ProfileController(), sender: nil)
                 print("about")
-            case .openSource:
+            case .contactUs:
+                setupEmailController()
+                print("contect us")
+            case .license:
                 navigationController?.show(LicenseController(), sender: nil)
                 print("opensource")
             case .version:
                 print("version")
-            default:
-                break
+            default: break
             }
         }
     }
@@ -181,4 +191,40 @@ extension SettingViewController {
         SetupNavigation(appearance: UINavigationBarAppearance()).setup(with: self, title: .setting)
     }
 }
+// MARK: - MFMailComposeViewControllerDelegate & setup
+extension SettingViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
+    func setupEmailController() {
+        if MFMailComposeViewController.canSendMail() {
+            let composeVC = MFMailComposeViewController()
+            composeVC.mailComposeDelegate = self
+            
+            composeVC.setToRecipients(["scarlet040@gmail.com"])
+            composeVC.setSubject("WeatherApp Feedback")
+            composeVC.setMessageBody("""
+                                     
+                                     
+                                     -----------------------------------------------
+                                     Please send me any inconveniences or improvements.
+                                     """, isHTML: false)
+            
+            self.present(composeVC, animated: true)
+        } else {
+            showSendMailErrorAlert()
+        }
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertController(title: "Failed send message", message: "Please check your email settings and try again.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Done", style: .default) { (action) in
+            print("Done")
+        }
+        sendMailErrorAlert.addAction(confirmAction)
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+}
+
 
