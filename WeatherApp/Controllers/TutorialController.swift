@@ -94,7 +94,7 @@ final class TutorialController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: view.frame.size.width * CGFloat(currnet), y: 0), animated: true)
     }
     private func alertManager() {
-        let alert = UIAlertController(title: "위치 허용", message: "사용자 위치를 허용하시겠습니까?", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Allow location", message: "Are you sure you want to allow user location? You can change it in settings at any time.", preferredStyle: .actionSheet)
         let setting = UIAlertAction(title: "Setting", style: .default) { action in
             LocationManager.shared.setupLocationManager()
             self.dismiss(animated: true)
