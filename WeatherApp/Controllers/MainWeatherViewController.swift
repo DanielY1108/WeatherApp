@@ -111,7 +111,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.hourlyID, for: indexPath) as! HourlyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
                 let hourWeather = weathetKit.hourlyForecast[indexPath.item]
-                tempUnitSwitch() == false ? cell.configWeather(with: hourWeather, tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: hourWeather, tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? cell.configWeather(with: hourWeather, unitTemp: .celsius) : cell.configWeather(with: hourWeather, unitTemp: .fahrenheit)
             }
             return cell
             
@@ -119,7 +119,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ID.dailyID, for: indexPath) as! DailyCell
             if let weathetKit = WeatherManager.shared.weatherKit {
                 let dailyWeather = weathetKit.dailyForecast[indexPath.item + 1]
-                tempUnitSwitch() == false ? cell.configWeather(with: dailyWeather, tempUnit: .temperatureWithoutUnit) : cell.configWeather(with: dailyWeather, tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? cell.configWeather(with: dailyWeather, unitTemp: .celsius) : cell.configWeather(with: dailyWeather, unitTemp: .fahrenheit)
             }
             return cell
         }
@@ -131,7 +131,7 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.headerID, for: indexPath) as! weatherHeader
             header.weatherData = WeatherManager.shared.weatherModel
             if let weatherKit = WeatherManager.shared.weatherKit {
-                tempUnitSwitch() == false ? header.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : header.configWeather(weatherKit, tempUnit: .naturalScale)
+                tempUnitSwitch() == false ? header.configWeather(weatherKit, unitTemp: .celsius) : header.configWeather(weatherKit, unitTemp: .fahrenheit)
             }
             return header
         default:

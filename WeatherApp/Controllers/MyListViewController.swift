@@ -62,7 +62,7 @@ extension MyListViewController: UITableViewDataSource {
         cell.weatherData = WeatherManager.shared.weatherModelList[indexPath.section]
 
         let weatherKit = WeatherManager.shared.weatherKitList[indexPath.section]
-        tempUnitSwitch() == false ? cell.configWeather(weatherKit, tempUnit: .temperatureWithoutUnit) : cell.configWeather(weatherKit, tempUnit: .naturalScale)
+        tempUnitSwitch() == false ? cell.configWeather(weatherKit, unitTemp: .celsius) : cell.configWeather(weatherKit, unitTemp: .fahrenheit)
         
         cell.selectionStyle = .none
         return cell

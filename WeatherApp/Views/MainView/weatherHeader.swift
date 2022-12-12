@@ -124,14 +124,21 @@ extension weatherHeader {
         }
     }
     
-    func configWeather(_ weather: Weather, tempUnit: MeasurementFormatter.UnitOptions) {
+    func configWeather(_ weather: Weather, unitTemp: UnitTemperature) {
         let mf = MeasurementFormatter()
-        mf.unitOptions = tempUnit
+        mf.unitOptions = .providedUnit
         mf.numberFormatter.maximumFractionDigits = 0
         
-        tempLabel.text = "\(mf.string(from: weather.currentWeather.temperature))"
-        highTempLabel.text = "\(mf.string(from: weather.dailyForecast[0].highTemperature))"
-        lowTempLabel.text = "\(mf.string(from: weather.dailyForecast[0].lowTemperature))"
+        let currentTemperature = weather.currentWeather.temperature
+        let convertTemperature = currentTemperature.converted(to: unitTemp)
+        
+        let todayWeather = weather.dailyForecast[0]
+        let convertHighTemperature = todayWeather.highTemperature.converted(to: unitTemp)
+        let convertLowTemperature = todayWeather.lowTemperature.converted(to: unitTemp)
+
+        tempLabel.text = mf.string(from: convertTemperature)
+        highTempLabel.text = mf.string(from: convertHighTemperature)
+        lowTempLabel.text = mf.string(from: convertLowTemperature)
 
     }
 }

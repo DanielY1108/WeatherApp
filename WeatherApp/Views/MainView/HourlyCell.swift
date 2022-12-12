@@ -38,17 +38,19 @@ final class HourlyCell: UICollectionViewCell {
         }
     }
     
-    func configWeather(with hourWeather: HourWeather, tempUnit: MeasurementFormatter.UnitOptions) {
+    func configWeather(with hourWeather: HourWeather, unitTemp: UnitTemperature) {
         let mf = MeasurementFormatter()
-        mf.unitOptions = tempUnit
+        mf.unitOptions = .providedUnit
         mf.numberFormatter.maximumFractionDigits = 0
-
+        
         let df = DateFormatter()
         df.dateFormat = "h a"
         df.amSymbol = "am"
         df.pmSymbol = "pm"
+
+        let convertTemperature = hourWeather.temperature.converted(to: unitTemp)
         
-        currentTemp.text = mf.string(from: hourWeather.temperature)
+        currentTemp.text = mf.string(from: convertTemperature)
         hourLabel.text = df.string(from: hourWeather.date)
         weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName)")
     }

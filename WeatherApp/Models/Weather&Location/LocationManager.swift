@@ -9,6 +9,10 @@ import UIKit
 import MapKit
 import CoreLocation
 
+enum LocationError: Error {
+    case coordinateError
+}
+
 class LocationManager: NSObject {
     static let shared = LocationManager()
     let manager = CLLocationManager()
@@ -18,6 +22,13 @@ class LocationManager: NSObject {
     func setupLocationManager() {
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+    }
+    func getLocationName(lat: Double, lon: Double) async throws -> String {
+        let geoCoder = CLGeocoder()
+        let location = CLLocation(latitude: lat, longitude: lon)
+        let placemark = try await geoCoder.reverseGeocodeLocation(location)
+        guard let cityName = placemark[0].locality else { throw LocationError.coordinateError }
+        return cityName
     }
 }
 extension LocationManager: CLLocationManagerDelegate {
