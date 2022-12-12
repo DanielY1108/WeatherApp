@@ -8,11 +8,21 @@
 import UIKit
 
 class ProfileController: UIViewController {
+    
+    let profileView = ProfileView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        configureUI()
     }
     
+    func configureUI() {
+        navigationController?.navigationBar.prefersLargeTitles = false
+        self.view.backgroundColor = .systemBackground
+        self.view.addSubview(profileView)
+        profileView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
 
 }

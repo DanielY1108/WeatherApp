@@ -113,6 +113,7 @@ extension SettingViewController: UITableViewDelegate {
         case .info:
             switch infoList[indexPath.row].title {
             case .about:
+                navigationController?.show(ProfileController(), sender: nil)
                 print("about")
             case .openSource:
                 navigationController?.show(LicenseController(), sender: nil)

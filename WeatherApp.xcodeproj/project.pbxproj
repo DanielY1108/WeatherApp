@@ -11,6 +11,7 @@
 		6511D3822921108E008BF87C /* HourlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D3812921108E008BF87C /* HourlyCell.swift */; };
 		6511D38429211415008BF87C /* DailyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D38329211415008BF87C /* DailyCell.swift */; };
 		6511D38629211D16008BF87C /* PreviewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6511D38529211D16008BF87C /* PreviewExtension.swift */; };
+		651275402946E874006A2347 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6512753F2946E874006A2347 /* ProfileView.swift */; };
 		651B27F2294214BA00FC6524 /* LicenseFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B27F1294214BA00FC6524 /* LicenseFooter.swift */; };
 		651B27F42942220C00FC6524 /* TextView+hyperLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B27F32942220C00FC6524 /* TextView+hyperLink.swift */; };
 		651B27F629422CAC00FC6524 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B27F529422CAC00FC6524 /* LicenseView.swift */; };
@@ -71,6 +72,7 @@
 		6511D3812921108E008BF87C /* HourlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCell.swift; sourceTree = "<group>"; };
 		6511D38329211415008BF87C /* DailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCell.swift; sourceTree = "<group>"; };
 		6511D38529211D16008BF87C /* PreviewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewExtension.swift; sourceTree = "<group>"; };
+		6512753F2946E874006A2347 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		651B27F1294214BA00FC6524 /* LicenseFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseFooter.swift; sourceTree = "<group>"; };
 		651B27F32942220C00FC6524 /* TextView+hyperLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+hyperLink.swift"; sourceTree = "<group>"; };
 		651B27F529422CAC00FC6524 /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6512753E2946E84B006A2347 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				651B27F529422CAC00FC6524 /* LicenseView.swift */,
+				6512753F2946E874006A2347 /* ProfileView.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		653FDF4A293F1D39009A2231 /* License */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,10 +212,10 @@
 			isa = PBXGroup;
 			children = (
 				6529380B29389CB0009443A1 /* TutorialView.swift */,
-				651B27F529422CAC00FC6524 /* LicenseView.swift */,
 				65FBC2B92927EBA600B5AE35 /* MainView */,
 				65F0CF32292943A5005C57F2 /* MyListView */,
 				65DE09A229333C7300765F05 /* SettingView */,
+				6512753E2946E84B006A2347 /* Other */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -439,6 +450,7 @@
 				653FDF37293DEE85009A2231 /* SwitchDelegate.swift in Sources */,
 				65644C392933AB010015BADD /* SetupNavigation.swift in Sources */,
 				65A0CEEB292A28AC00D6E862 /* SearchLocationController.swift in Sources */,
+				651275402946E874006A2347 /* ProfileView.swift in Sources */,
 				65430AE52920CC8B00E95B96 /* SceneDelegate.swift in Sources */,
 				65A0CEF9292B8AE400D6E862 /* KeyboardEvent.swift in Sources */,
 				65A0CEFB292BD28100D6E862 /* SubWeatherController.swift in Sources */,
