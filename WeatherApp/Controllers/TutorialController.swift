@@ -12,12 +12,12 @@ import CoreLocation
 final class TutorialController: UIViewController {
     
     let textLabel = [
-        "좌우로 스와이프하여 메뉴를 열고 닫아보세요. 손쉽게 저장한 날씨에 접근해보세요.",
-        "나의 리스트에서 검색 및 삭제할 수 있어요",
-        "세팅에서 지역설정 및 날씨단위를 바꿀 수 있어요",
-        "위치사용을 설정을 시작합니다. 거절시 기본 날씨를 저장해주세요"
+        "Swipe screen to open the menu. Get easy access to the weather.",
+        "You can search and delete from My List.",
+        "Change the location and unit in Settings.",
+        "let's get started on weatherApp."
     ]
-    let imageName = ["menuView.png", "myListView.png", "settingView.png", "allowLocation.png"]
+    let imageName = ["menuView.png", "myListView.png", "settingView.png", ""]
     
     private let pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -31,6 +31,7 @@ final class TutorialController: UIViewController {
     private let view2 = TutorialView()
     private let view3 = TutorialView()
     private let view4 = TutorialView()
+
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -61,14 +62,13 @@ final class TutorialController: UIViewController {
         scrollView.isPagingEnabled = true
         
         let contentViews = [view1, view2, view3, view4]
-        // 5개의 뷰 생성하고 스크롤 뷰에 올린다.
         
         for x in 0...3 {
             scrollView.addSubview(contentViews[x])
             if x < 3 {
-                contentViews[x].nextButton.setTitle("skip", for: .normal)
+                contentViews[x].nextButton.setTitle("Skip", for: .normal)
             } else {
-                contentViews[x].nextButton.setTitle("start", for: .normal)
+                contentViews[x].nextButton.setTitle("Start", for: .normal)
             }
             contentViews[x].nextButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
             contentViews[x].mainLabel.text = textLabel[x]
