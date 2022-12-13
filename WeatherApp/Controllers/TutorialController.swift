@@ -17,7 +17,7 @@ final class TutorialController: UIViewController {
         "Change the location and unit in Settings.",
         "let's get started on weatherApp."
     ]
-    let imageName = ["menuView.png", "myListView.png", "settingView.png", ""]
+    let imageName = ["menuView.png", "myListView.png", "settingView.png"]
     
     private let pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -67,12 +67,12 @@ final class TutorialController: UIViewController {
             scrollView.addSubview(contentViews[x])
             if x < 3 {
                 contentViews[x].nextButton.setTitle("Skip", for: .normal)
+                contentViews[x].imageView.image = UIImage(named: imageName[x])
             } else {
                 contentViews[x].nextButton.setTitle("Start", for: .normal)
             }
             contentViews[x].nextButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
             contentViews[x].mainLabel.text = textLabel[x]
-            contentViews[x].imageView.image = UIImage(named: imageName[x])
             contentViews[x].snp.makeConstraints { make in
                 make.top.bottom.equalTo(scrollView.safeAreaLayoutGuide)
                 make.width.equalTo(scrollView)
@@ -94,7 +94,7 @@ final class TutorialController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: view.frame.size.width * CGFloat(currnet), y: 0), animated: true)
     }
     private func alertManager() {
-        let alert = UIAlertController(title: "Allow location", message: "Are you sure you want to allow user location? You can change it in settings at any time.", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Allow location", message: "Are you sure you want to allow location? You can change it in settings at any time.", preferredStyle: .actionSheet)
         let setting = UIAlertAction(title: "Setting", style: .default) { action in
             LocationManager.shared.setupLocationManager()
             self.dismiss(animated: true)

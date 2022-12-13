@@ -596,8 +596,8 @@
 				DEVELOPMENT_TEAM = ZG488AACV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherApp/Info.plist;
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, allow the location.\n";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, allow the location.\n";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -631,8 +631,8 @@
 				DEVELOPMENT_TEAM = ZG488AACV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherApp/Info.plist;
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, allow the location.\n";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, allow the location.\n";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
