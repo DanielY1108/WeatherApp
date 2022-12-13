@@ -23,7 +23,9 @@ final class SubWeatherController: BaseViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getWeatherData()
+        Task {
+            await getWeatherData()
+        }
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -33,17 +35,16 @@ final class SubWeatherController: BaseViewController {
             make.height.equalToSuperview().multipliedBy(0.05)
         }
     }
-
+    
     override func configureUI() {
         super.configureUI()
         collectionView.dataSource = self
         self.view.addSubview(buttonView)
     }
-    func getWeatherData() {
+    func getWeatherData() async {
         if let coordinate = getLocationFromSearch {
-            WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController) {
-                self.collectionView.reloadData()
-            }
+            await WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController)
+            self.collectionView.reloadData()
         }
     }
 }
@@ -109,7 +110,7 @@ extension SubWeatherController {
     @objc func saveButtonTapped() {
         guard let coordinate = getLocationFromSearch else { return }
         NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.list), object: coordinate)
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
     
     @objc func backButtonTapped() {

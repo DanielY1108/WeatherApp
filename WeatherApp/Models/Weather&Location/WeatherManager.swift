@@ -9,6 +9,13 @@ import UIKit
 import WeatherKit
 import CoreLocation
 
+enum WeatherError: Error {
+    case invaildLocation
+    case invaildUrl
+    case invaildResonse
+    case invaildData
+}
+
 enum WeatherVC {
     case mainViewController
     case listViewController
@@ -27,94 +34,58 @@ final class WeatherManager {
         setupWeatherList()
         debugPrint("My List Setup Complete")
     }
+    
     private func setupWeatherList() {
-        RealmManager.shared.read(RealmDataModel.self).forEach { location in
-            getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .listViewController) {}
+        DispatchQueue.main.async {
+            RealmManager.shared.read(RealmDataModel.self).forEach { location in
+                Task {
+                    await self.getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .listViewController)
+                }
+            }
         }
     }
-    func getEachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, weatherVC: WeatherVC , completion: @escaping () -> Void) {
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        self.fetchFromWeatherKit(lat: lat, lon: lon) { model in
+    
+    func getEachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, weatherVC: WeatherVC) async {
+        do {
+            let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
+            let weatherAPIData = try await fetchFromWeatherAPIfetchFromWeatherAPI(lat: lat, lon: lon)
             switch weatherVC {
             case .mainViewController, .subViewController:
-                self.weatherKit = model
+                weatherKit = weatherKitData
+                weatherModel = weatherAPIData
             case .listViewController:
-                self.weatherKitList.append(model)
+                weatherKitList.append(weatherKitData)
+                weatherModelList.append(weatherAPIData)
             }
-            dispatchGroup.leave()
-        }
-        dispatchGroup.enter()
-        self.fetchFromWeatherAPI(lat: lat, lon: lon) { model in
-            switch weatherVC {
-            case .mainViewController, .subViewController:
-                self.weatherModel = model
-            case .listViewController:
-                self.weatherModelList.append(model)
-            }
-            dispatchGroup.leave()
-        }
-        if weatherVC == .listViewController {
-            dispatchGroup.wait()
-        }
-        dispatchGroup.notify(queue: .main) {
-            completion()
+        } catch {
+            print(error)
         }
     }
 }
 
 // MARK: - WeatherKit
-
 extension WeatherManager {
-    private func fetchFromWeatherKit(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (Weather) -> Void) {
-        Task {
-            do {
-                let weather = try await WeatherService.shared.weather(for: CLLocation(latitude: lat, longitude: lon))
-                completion(weather)
-            } catch {
-                debugPrint(String(describing: error.localizedDescription))
-            }
-        }
+    private func fetchFromWeatherKit(lat: CLLocationDegrees, lon: CLLocationDegrees) async throws -> Weather {
+        let weather = try await WeatherService.shared.weather(for: CLLocation(latitude: lat, longitude: lon))
+        return weather
     }
 }
 
 // MARK: - OpenWeatherMap
 
 extension WeatherManager {
-    
-    private func fetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (CurrentWeatherModel) -> Void) {
-        if let url = WeatherAPI.coordinate(lat, lon).getWeatherURLComponent.url {
-            performRequest(url) { result in
-                completion(result)
-            }
-        }
-    }
-    private func performRequest(_ url: URL, completion: @escaping (CurrentWeatherModel) -> Void) {
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard error == nil else {
-                debugPrint(String(describing: error))
-                return
-            }
-            guard let safeData = data else {
-                debugPrint(String(describing: error))
-                return
-            }
-            if let weather = self.parseJSON(safeData) {
-                completion(weather)
-            }
-        }
-        task.resume()
-    }
-    private func parseJSON(_ data: Data) -> CurrentWeatherModel? {
+    private func fetchFromWeatherAPIfetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) async throws -> CurrentWeatherModel {
+        guard let url = WeatherAPI.coordinate(lat, lon).getWeatherURLComponent.url else { throw WeatherError.invaildUrl }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = (response as? HTTPURLResponse), (200 ..< 299) ~= response.statusCode else { throw WeatherError.invaildResonse }
         do {
-            let decodeData = try JSONDecoder().decode(CurrentWeatherData.self, from: data)
-            
-            let weateherData = CurrentWeatherModel(data: decodeData)
-            return weateherData
+            let parseJSON = try JSONDecoder().decode(CurrentWeatherData.self, from: data)
+            let weatherData = CurrentWeatherModel(data: parseJSON)
+            return weatherData
         } catch {
-            debugPrint(error.localizedDescription)
-            return nil
+            throw WeatherError.invaildData
         }
     }
 }
+
+

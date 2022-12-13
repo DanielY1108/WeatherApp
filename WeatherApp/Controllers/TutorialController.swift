@@ -102,7 +102,8 @@ final class TutorialController: UIViewController {
         let cancel = UIAlertAction(title: "Default", style: .cancel) { action in
             self.dismiss(animated: true)
             let location = CLLocationCoordinate2D()
-            WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .mainViewController) {
+            Task {
+                await WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .mainViewController)
                 self.dismiss(animated: true)
             }
         }

@@ -136,7 +136,8 @@ extension MyListViewController {
     @objc func loadList(notification: NSNotification) {
         guard let coordinate = notification.object as? CLLocationCoordinate2D,
               let city = WeatherManager.shared.weatherModel else { return }
-        WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController) {
+        Task {
+            await WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .listViewController)
             RealmManager.shared.writeLocation(coordinate, cityName: city.location, mainLoad: false)
             self.tableView.reloadData()
         }
