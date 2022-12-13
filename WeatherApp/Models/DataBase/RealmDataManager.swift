@@ -44,7 +44,18 @@ final class RealmManager: RealmData {
             model.loadMain = true
         }
     }
-    
+    func loadMyCheckWeatherData(completion: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            self.read(RealmDataModel.self).forEach { model in
+                if model.loadMain == true {
+                    Task {
+                        await WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController)
+                        completion()
+                    }
+                }
+            }
+        }
+    }
     func getLocationOfDefaultRealm() {
         print("Realm is located at:", realmData.configuration.fileURL!)
     }
