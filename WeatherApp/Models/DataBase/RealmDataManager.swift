@@ -33,7 +33,7 @@ final class RealmManager: RealmData {
         dataModel.loadMain = mainLoad
         self.write(dataModel)
     }
-    func checkLoadMainView(display model: RealmDataModel) {
+    func updateRealmForLoadMain(_ model: RealmDataModel) {
         let models = read(RealmDataModel.self)
         models.forEach { model in
             self.update(model) { model in
@@ -44,7 +44,7 @@ final class RealmManager: RealmData {
             model.loadMain = true
         }
     }
-    func loadMyCheckWeatherData(completion: @escaping () -> Void) {
+    func checkLoadWeatherData(completion: @escaping () -> Void) {
         DispatchQueue.main.async {
             self.read(RealmDataModel.self).forEach { model in
                 if model.loadMain == true {

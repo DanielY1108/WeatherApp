@@ -133,7 +133,7 @@ extension weatherHeader {
         
         tempLabel.text = currentTemperatureString
         highTempLabel.text = highTemperatureString
-        lowTempLabel.text = highTemperatureString
+        lowTempLabel.text = LowTemperatureString
 
     }
 }

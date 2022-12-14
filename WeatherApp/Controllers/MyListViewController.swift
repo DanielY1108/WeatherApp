@@ -72,7 +72,7 @@ extension MyListViewController: UITableViewDataSource {
 extension MyListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = RealmManager.shared.read(RealmDataModel.self)[indexPath.section]
-        RealmManager.shared.checkLoadMainView(display: model)
+        RealmManager.shared.updateRealmForLoadMain(model)
         NotificationCenter.default.post(name: Notification.Name(Constants.NotificationName.main), object: model)
         self.navigationController?.popViewController(animated: true)
     }

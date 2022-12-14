@@ -37,7 +37,7 @@ final class MainWeatherViewController: BaseViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadMyCheckWeatherData()
+        checkLoadWeatherData()
         collectionView.reloadData()
         menuTableView.reloadData()
     }
@@ -76,8 +76,8 @@ final class MainWeatherViewController: BaseViewController {
             RealmManager.shared.writeLocation(CLLocationCoordinate2D(), cityName: "Current Location", mainLoad: true)
         }
     }
-    private func loadMyCheckWeatherData() {
-        RealmManager.shared.loadMyCheckWeatherData {
+    private func checkLoadWeatherData() {
+        RealmManager.shared.checkLoadWeatherData {
             self.collectionView.reloadData()
         }
     }
@@ -192,7 +192,7 @@ extension MainWeatherViewController: UITableViewDelegate {
                     print("2")
                     LocationManager.shared.setupLocationManager()
                     let model = RealmManager.shared.read(RealmDataModel.self)[0]
-                    RealmManager.shared.checkLoadMainView(display: model)
+                    RealmManager.shared.updateRealmForLoadMain(model)
                     Task {
                         await WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController)
                         self.collectionView.reloadData()
@@ -205,7 +205,7 @@ extension MainWeatherViewController: UITableViewDelegate {
             print(menuList[indexPath.row].segue)
         default:
             let model = RealmManager.shared.read(RealmDataModel.self)[indexPath.row + 1]
-            RealmManager.shared.checkLoadMainView(display: model)
+            RealmManager.shared.updateRealmForLoadMain(model)
             Task {
                 await WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController)
                 self.collectionView.reloadData()

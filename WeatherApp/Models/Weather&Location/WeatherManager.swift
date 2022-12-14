@@ -35,16 +35,24 @@ final class WeatherManager {
         debugPrint("My List Setup Complete")
     }
     
+    func updateCurrentLoactionWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        Task {
+            let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
+            let weatherAPIData = try await fetchFromWeatherAPIfetchFromWeatherAPI(lat: lat, lon: lon)
+            weatherKitList[0] = weatherKitData
+            weatherModelList[0] = weatherAPIData
+        }
+    }
     private func setupWeatherList() {
         DispatchQueue.main.async {
             RealmManager.shared.read(RealmDataModel.self).forEach { location in
                 Task {
                     await self.getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .listViewController)
+                    print("1")
                 }
             }
         }
     }
-    
     func getEachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, weatherVC: WeatherVC) async {
         do {
             let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
