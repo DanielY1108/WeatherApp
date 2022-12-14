@@ -17,7 +17,7 @@ final class HourlyCell: UICollectionViewCell {
     private lazy var stackView = FormatUI.StackView(subviews: [hourLabel ,weatherImg ,currentTemp],
                                                     axis: .vertical,
                                                     alignment: .center).makeStackView
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -38,19 +38,15 @@ final class HourlyCell: UICollectionViewCell {
         }
     }
     
-    func configWeather(with hourWeather: HourWeather, unitTemp: UnitTemperature) {
-        let mf = MeasurementFormatter()
-        mf.unitOptions = .providedUnit
-        mf.numberFormatter.maximumFractionDigits = 0
+    func configWeather(with hourWeather: HourWeather, unitTemp: UnitTemp) {
+        let hourlyTemperatureString = unitTemp.convertingToString(temperature: hourWeather.temperature)
         
         let df = DateFormatter()
         df.dateFormat = "h a"
         df.amSymbol = "am"
         df.pmSymbol = "pm"
-
-        let convertTemperature = hourWeather.temperature.converted(to: unitTemp)
         
-        currentTemp.text = mf.string(from: convertTemperature)
+        currentTemp.text = hourlyTemperatureString
         hourLabel.text = df.string(from: hourWeather.date)
         weatherImg.image = UIImage(systemName: "\(hourWeather.symbolName)")
     }

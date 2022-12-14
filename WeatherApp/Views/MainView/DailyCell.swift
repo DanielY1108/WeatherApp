@@ -51,21 +51,17 @@ final class DailyCell: UICollectionViewCell {
             make.width.equalTo(140)
         }
     }
-    func configWeather(with dayWeather: DayWeather, unitTemp: UnitTemperature) {
-        let mf = MeasurementFormatter()
-        mf.unitOptions = .providedUnit
-        mf.numberFormatter.maximumFractionDigits = 0
-        
+    func configWeather(with dayWeather: DayWeather, unitTemp: UnitTemp) {
+        let highTemperatureString = unitTemp.convertingToString(temperature: dayWeather.highTemperature)
+        let LowTemperatureString = unitTemp.convertingToString(temperature: dayWeather.lowTemperature)
+
         let df = DateFormatter()
         df.dateFormat = "E"
         df.locale = Locale(identifier: "en_us")
 
-        let convertHighTemperature = dayWeather.highTemperature.converted(to: unitTemp)
-        let convertLowTemperature = dayWeather.lowTemperature.converted(to: unitTemp)
-        
         dayLabel.text = df.string(from: dayWeather.date)
         weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName)")
-        highTempLabel.text = "H: \(mf.string(from: convertHighTemperature))"
-        lowTempLabel.text = "L: \(mf.string(from: convertLowTemperature))"
+        highTempLabel.text = "H: \(highTemperatureString)"
+        lowTempLabel.text = "L: \(LowTemperatureString)"
     }
 }

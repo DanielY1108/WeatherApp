@@ -97,21 +97,16 @@ extension MyListCell {
         }
     }
     
-    func configWeather(_ weather: Weather, unitTemp: UnitTemperature) {
-        let mf = MeasurementFormatter()
-        mf.unitOptions = .providedUnit
-        mf.numberFormatter.maximumFractionDigits = 0
-        
+    func configWeather(_ weather: Weather, unitTemp: UnitTemp) {
         let currentTemperature = weather.currentWeather.temperature
-        let convertTemperature = currentTemperature.converted(to: unitTemp)
-        
         let todayWeather = weather.dailyForecast[0]
-        let convertHighTemperature = todayWeather.highTemperature.converted(to: unitTemp)
-        let convertLowTemperature = todayWeather.lowTemperature.converted(to: unitTemp)
+        let currentTemperatureString = unitTemp.convertingToString(temperature: currentTemperature)
+        let highTemperatureString = unitTemp.convertingToString(temperature: todayWeather.highTemperature)
+        let LowTemperatureString = unitTemp.convertingToString(temperature: todayWeather.lowTemperature)
         
-        tempLabel.text = mf.string(from: convertTemperature)
-        highTempLabel.text = "H:\(mf.string(from: convertHighTemperature))"
-        lowTempLabel.text = "L:\(mf.string(from: convertLowTemperature))"
+        tempLabel.text = currentTemperatureString
+        highTempLabel.text = "H:\(highTemperatureString)"
+        lowTempLabel.text = "L:\(LowTemperatureString)"
 
     }
 
