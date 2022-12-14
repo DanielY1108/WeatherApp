@@ -54,11 +54,11 @@ final class DailyCell: UICollectionViewCell {
     func configWeather(with dayWeather: DayWeather, unitTemp: UnitTemp) {
         let highTemperatureString = unitTemp.convertingToString(temperature: dayWeather.highTemperature)
         let LowTemperatureString = unitTemp.convertingToString(temperature: dayWeather.lowTemperature)
-
+        
         let df = DateFormatter()
         df.dateFormat = "E"
         df.locale = Locale(identifier: "en_us")
-
+        
         dayLabel.text = df.string(from: dayWeather.date)
         weatherImg.image = UIImage(systemName: "\(dayWeather.symbolName)")
         highTempLabel.text = "H: \(highTemperatureString)"

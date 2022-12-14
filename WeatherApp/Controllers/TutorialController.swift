@@ -103,7 +103,7 @@ final class TutorialController: UIViewController {
             self.dismiss(animated: true)
             let location = CLLocationCoordinate2D()
             Task {
-                await WeatherManager.shared.getEachWeatherData(lat: location.latitude, lon: location.longitude, weatherVC: .mainViewController)
+                await WeatherManager.shared.eachWeatherData(lat: location.latitude, lon: location.longitude, in: .mainViewController)
                 self.dismiss(animated: true)
             }
         }

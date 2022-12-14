@@ -38,7 +38,7 @@ final class WeatherManager {
     func updateCurrentLoactionWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
         Task {
             let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
-            let weatherAPIData = try await fetchFromWeatherAPIfetchFromWeatherAPI(lat: lat, lon: lon)
+            let weatherAPIData = try await fetchFromWeatherAPI(lat: lat, lon: lon)
             weatherKitList[0] = weatherKitData
             weatherModelList[0] = weatherAPIData
         }
@@ -47,17 +47,16 @@ final class WeatherManager {
         DispatchQueue.main.async {
             RealmManager.shared.read(RealmDataModel.self).forEach { location in
                 Task {
-                    await self.getEachWeatherData(lat: location.lat, lon: location.lon, weatherVC: .listViewController)
-                    print("1")
+                    await self.eachWeatherData(lat: location.lat, lon: location.lon, in: .listViewController)
                 }
             }
         }
     }
-    func getEachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, weatherVC: WeatherVC) async {
+    func eachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, in controller: WeatherVC) async {
         do {
             let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
-            let weatherAPIData = try await fetchFromWeatherAPIfetchFromWeatherAPI(lat: lat, lon: lon)
-            switch weatherVC {
+            let weatherAPIData = try await fetchFromWeatherAPI(lat: lat, lon: lon)
+            switch controller {
             case .mainViewController, .subViewController:
                 weatherKit = weatherKitData
                 weatherModel = weatherAPIData
@@ -82,7 +81,7 @@ extension WeatherManager {
 // MARK: - OpenWeatherMap
 
 extension WeatherManager {
-    private func fetchFromWeatherAPIfetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) async throws -> CurrentWeatherModel {
+    private func fetchFromWeatherAPI(lat: CLLocationDegrees, lon: CLLocationDegrees) async throws -> CurrentWeatherModel {
         guard let url = WeatherAPI.coordinate(lat, lon).getWeatherURLComponent.url else { throw WeatherError.invaildUrl }
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = (response as? HTTPURLResponse), (200 ..< 299) ~= response.statusCode else { throw WeatherError.invaildResonse }
@@ -95,5 +94,3 @@ extension WeatherManager {
         }
     }
 }
-
-

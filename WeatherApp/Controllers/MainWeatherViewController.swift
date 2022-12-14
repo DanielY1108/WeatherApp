@@ -14,10 +14,7 @@ import WeatherKit
 final class MainWeatherViewController: BaseViewController {
         
     private let menuTableView = UITableView()
-    
-    private lazy var swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
-    private lazy var swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
-    private lazy var menuAnimate = MenuAnimate(menu: false)
+    private var menuAnimate = MenuAnimate(isOn: false)
     
     private let menuList: [MenuList] = [
         MenuList(title: "Main", segue: .main),
@@ -187,19 +184,16 @@ extension MainWeatherViewController: UITableViewDelegate {
                 case .denied, .restricted:
                     self.requireLoctionAlert()
                     self.menuSwipeAnimate(action: .hide)
-                    print("1")
                 case .authorizedAlways, .authorizedWhenInUse, .notDetermined:
-                    print("2")
                     LocationManager.shared.setupLocationManager()
                     let model = RealmManager.shared.read(RealmDataModel.self)[0]
                     RealmManager.shared.updateRealmForLoadMain(model)
                     Task {
-                        await WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController)
+                        await WeatherManager.shared.eachWeatherData(lat: model.lat, lon: model.lon, in: .mainViewController)
                         self.collectionView.reloadData()
                     }
                     self.menuSwipeAnimate(action: .hide)
-                default:
-                    print("3")
+                default: break
                 }
             }
             print(menuList[indexPath.row].segue)
@@ -207,7 +201,7 @@ extension MainWeatherViewController: UITableViewDelegate {
             let model = RealmManager.shared.read(RealmDataModel.self)[indexPath.row + 1]
             RealmManager.shared.updateRealmForLoadMain(model)
             Task {
-                await WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController)
+                await WeatherManager.shared.eachWeatherData(lat: model.lat, lon: model.lon, in: .mainViewController)
                 self.collectionView.reloadData()
             }
             self.menuSwipeAnimate(action: .hide)
@@ -234,6 +228,8 @@ extension MainWeatherViewController {
         menuTableView.register(MenuListCell.self, forCellReuseIdentifier: Constants.ID.menuID)
     }
     private func configSwipeGesture() {
+        let swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(showMenu(_:)))
+        let swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(hideMenu(_:)))
         menuTableView.addGestureRecognizer(swipeGestureLeft)
         menuTableView.addGestureRecognizer(swipeGestureRight)
         swipeGestureLeft.direction = .left
@@ -247,12 +243,12 @@ extension MainWeatherViewController {
         }
     }
     @objc func showMenu(_ sender: UISwipeGestureRecognizer) {
-        if menuAnimate.menu == false && sender.direction == .right {
+        if menuAnimate.isOn == false && sender.direction == .right {
             menuSwipeAnimate(action: .show)
         }
     }
     @objc func hideMenu(_ sender: UISwipeGestureRecognizer) {
-        if menuAnimate.menu == true && sender.direction == .left {
+        if menuAnimate.isOn == true && sender.direction == .left {
             menuSwipeAnimate(action: .hide)
         }
     }
@@ -278,7 +274,7 @@ extension MainWeatherViewController {
         case is RealmDataModel:
             guard let coordinate = notification.object as? RealmDataModel else { return }
             Task {
-                await WeatherManager.shared.getEachWeatherData(lat: coordinate.lat, lon: coordinate.lon, weatherVC: .mainViewController)
+                await WeatherManager.shared.eachWeatherData(lat: coordinate.lat, lon: coordinate.lon, in: .mainViewController)
                 self.collectionView.reloadData()
                 self.menuTableView.reloadData()
                 return
@@ -286,7 +282,7 @@ extension MainWeatherViewController {
         case is CLLocationCoordinate2D:
             guard let coordinate = notification.object as? CLLocationCoordinate2D else { return }
             Task {
-                await WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .mainViewController)
+                await WeatherManager.shared.eachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, in: .mainViewController)
                 self.collectionView.reloadData()
                 self.menuTableView.reloadData()
                 return

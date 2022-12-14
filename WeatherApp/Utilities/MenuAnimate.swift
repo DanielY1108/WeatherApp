@@ -14,7 +14,7 @@ enum MenuAction {
 
 struct MenuAnimate {
     // 슬라이드 확인 여부를 Bool로 처리
-    var menu: Bool
+    var isOn: Bool
     
     mutating func showMenu(with tableView: UITableView) {
         let x = tableView.bounds.width * 0.37
@@ -25,7 +25,7 @@ struct MenuAnimate {
         UIView.animate(withDuration: 0.7) {
             tableView.transform = scaledAndTranslatedTransform
         }
-        self.menu = true
+        self.isOn = true
     }
     
     mutating func hideMenu(with tableView: UITableView) {
@@ -34,6 +34,6 @@ struct MenuAnimate {
             
             tableView.transform = .identity
         }
-        self.menu = false
+        self.isOn = false
     }
 }

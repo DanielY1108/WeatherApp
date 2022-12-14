@@ -49,7 +49,7 @@ final class RealmManager: RealmData {
             self.read(RealmDataModel.self).forEach { model in
                 if model.loadMain == true {
                     Task {
-                        await WeatherManager.shared.getEachWeatherData(lat: model.lat, lon: model.lon, weatherVC: .mainViewController)
+                        await WeatherManager.shared.eachWeatherData(lat: model.lat, lon: model.lon, in: .mainViewController)
                         completion()
                     }
                 }

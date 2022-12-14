@@ -43,7 +43,7 @@ final class SubWeatherController: BaseViewController {
     }
     func getWeatherData() async {
         if let coordinate = getLocationFromSearch {
-            await WeatherManager.shared.getEachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, weatherVC: .subViewController)
+            await WeatherManager.shared.eachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, in: .subViewController)
             self.collectionView.reloadData()
         }
     }
