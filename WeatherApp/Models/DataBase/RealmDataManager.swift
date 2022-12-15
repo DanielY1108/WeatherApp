@@ -31,6 +31,7 @@ final class RealmManager: RealmData {
         dataModel.lon = location.longitude
         dataModel.city = cityName
         dataModel.loadMain = mainLoad
+        dataModel.date = Date()
         self.write(dataModel)
     }
     func updateRealmForLoadMain(_ model: RealmDataModel) {
@@ -96,6 +97,10 @@ final class RealmManager: RealmData {
             print(error.localizedDescription)
         }
     }
+    
+    func sort<T: Object>(_ object: T.Type, by keyPath: String, ascending: Bool = true) -> Results<T> {
+           return realmData.objects(object).sorted(byKeyPath: keyPath, ascending: ascending)
+       }
 }
 
 

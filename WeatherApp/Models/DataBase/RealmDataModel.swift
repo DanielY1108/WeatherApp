@@ -13,4 +13,5 @@ final class RealmDataModel: Object {
     @objc dynamic var lon: Double = 0.0
     @objc dynamic var city: String = ""
     @objc dynamic var loadMain: Bool = false
+    @objc dynamic var date: Date?
 }

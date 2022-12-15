@@ -28,7 +28,7 @@ final class MyListViewController: UIViewController {
         configureUI()
         setupKeyboardEvent()
         setupNotification()
-        setupLayout()
+        configureLayout()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -42,7 +42,7 @@ final class MyListViewController: UIViewController {
         licenses.forEach { myListLicenseView.licenseData = $0 }
         tableView.tableFooterView = myListLicenseView
     }
-    private func setupLayout() {
+    private func configureLayout() {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -60,7 +60,6 @@ extension MyListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ID.myListID, for: indexPath) as! MyListCell
         cell.weatherData = WeatherManager.shared.weatherModelList[indexPath.section]
-
         let weatherKit = WeatherManager.shared.weatherKitList[indexPath.section]
         tempUnitSwitch() == false ? cell.configWeather(weatherKit, unitTemp: .celsius) : cell.configWeather(weatherKit, unitTemp: .fahrenheit)
         

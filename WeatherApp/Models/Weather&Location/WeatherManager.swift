@@ -45,8 +45,10 @@ final class WeatherManager {
     }
     private func setupWeatherList() {
         DispatchQueue.main.async {
-            RealmManager.shared.read(RealmDataModel.self).forEach { location in
+            let weatherData = RealmManager.shared.sort(RealmDataModel.self, by: "date")
+            weatherData.forEach { location in
                 Task {
+                    print(location)
                     await self.eachWeatherData(lat: location.lat, lon: location.lon, in: .listViewController)
                 }
             }
