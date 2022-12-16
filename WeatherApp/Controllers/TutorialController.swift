@@ -15,7 +15,7 @@ final class TutorialController: UIViewController {
         "Swipe screen to open the menu. Get easy access to the weather.",
         "You can search and delete from My List.",
         "Change the location and unit in Settings.",
-        "let's get started on weatherApp."
+        "let's get started on Simple Weather."
     ]
     let imageName = ["menuView.png", "myListView.png", "settingView.png"]
     
