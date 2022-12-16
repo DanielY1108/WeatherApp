@@ -23,10 +23,8 @@ final class SubWeatherController: BaseViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Task {
-            await getWeatherData()
+            getWeatherData()
         }
-    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         buttonView.snp.makeConstraints { make in
@@ -41,10 +39,12 @@ final class SubWeatherController: BaseViewController {
         collectionView.dataSource = self
         self.view.addSubview(buttonView)
     }
-    func getWeatherData() async {
+    func getWeatherData() {
         if let coordinate = getLocationFromSearch {
-            await WeatherManager.shared.eachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, in: .subViewController)
-            self.collectionView.reloadData()
+            Task {
+                await WeatherManager.shared.eachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, in: .subViewController)
+                self.collectionView.reloadData()
+            }
         }
     }
 }

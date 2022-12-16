@@ -35,6 +35,8 @@ final class WeatherManager {
         debugPrint("My List Setup Complete")
     }
      func setupWeatherList() {
+         weatherKitList = []
+         weatherModelList = []
         DispatchQueue.main.async {
             let weatherData = RealmManager.shared.sort(RealmDataModel.self, by: "date")
             weatherData.forEach { location in
