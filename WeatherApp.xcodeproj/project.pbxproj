@@ -68,7 +68,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		650E9951294CA1BA000378C8 /* SimpleWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SimpleWeather.entitlements; path = SimpleWeather/SimpleWeather.entitlements; sourceTree = "<group>"; };
 		6511D37B2920D8A0008BF87C /* weatherHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weatherHeader.swift; sourceTree = "<group>"; };
 		6511D3812921108E008BF87C /* HourlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCell.swift; sourceTree = "<group>"; };
 		6511D38329211415008BF87C /* DailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCell.swift; sourceTree = "<group>"; };
@@ -86,7 +85,8 @@
 		653FDF44293F11F5009A2231 /* DetailLicenseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLicenseController.swift; sourceTree = "<group>"; };
 		653FDF46293F17FE009A2231 /* DetailLicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLicenseView.swift; sourceTree = "<group>"; };
 		653FDF4B293F31BF009A2231 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		65430ADF2920CC8B00E95B96 /* SimpleWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6540A10529269DB200338721 /* WeatherApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherApp.entitlements; sourceTree = "<group>"; };
+		65430ADF2920CC8B00E95B96 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65430AE22920CC8B00E95B96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65430AE42920CC8B00E95B96 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		65430AE62920CC8B00E95B96 /* MainWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWeatherViewController.swift; sourceTree = "<group>"; };
@@ -162,8 +162,7 @@
 		65430AD62920CC8B00E95B96 = {
 			isa = PBXGroup;
 			children = (
-				650E9951294CA1BA000378C8 /* SimpleWeather.entitlements */,
-				65430AE12920CC8B00E95B96 /* SimpleWeather */,
+				65430AE12920CC8B00E95B96 /* WeatherApp */,
 				65430AE02920CC8B00E95B96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -171,14 +170,15 @@
 		65430AE02920CC8B00E95B96 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65430ADF2920CC8B00E95B96 /* SimpleWeather.app */,
+				65430ADF2920CC8B00E95B96 /* WeatherApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		65430AE12920CC8B00E95B96 /* SimpleWeather */ = {
+		65430AE12920CC8B00E95B96 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				6540A10529269DB200338721 /* WeatherApp.entitlements */,
 				65430AE22920CC8B00E95B96 /* AppDelegate.swift */,
 				65430AE42920CC8B00E95B96 /* SceneDelegate.swift */,
 				653FDF4A293F1D39009A2231 /* License */,
@@ -193,7 +193,7 @@
 				65430AF02920CC8C00E95B96 /* Info.plist */,
 				6511D38529211D16008BF87C /* PreviewExtension.swift */,
 			);
-			path = SimpleWeather;
+			path = WeatherApp;
 			sourceTree = "<group>";
 		};
 		65430AFB2920CCE100E95B96 /* Models */ = {
@@ -329,9 +329,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65430ADE2920CC8B00E95B96 /* SimpleWeather */ = {
+		65430ADE2920CC8B00E95B96 /* WeatherApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65430AF32920CC8C00E95B96 /* Build configuration list for PBXNativeTarget "SimpleWeather" */;
+			buildConfigurationList = 65430AF32920CC8C00E95B96 /* Build configuration list for PBXNativeTarget "WeatherApp" */;
 			buildPhases = (
 				65430ADB2920CC8B00E95B96 /* Sources */,
 				65430ADC2920CC8B00E95B96 /* Frameworks */,
@@ -341,14 +341,14 @@
 			);
 			dependencies = (
 			);
-			name = SimpleWeather;
+			name = WeatherApp;
 			packageProductDependencies = (
 				65430AF72920CCD400E95B96 /* Realm */,
 				65430AF92920CCD400E95B96 /* RealmSwift */,
 				65EB5B34292248B600ADF406 /* SnapKit */,
 			);
 			productName = WeatherApp;
-			productReference = 65430ADF2920CC8B00E95B96 /* SimpleWeather.app */;
+			productReference = 65430ADF2920CC8B00E95B96 /* WeatherApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -366,7 +366,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 65430ADA2920CC8B00E95B96 /* Build configuration list for PBXProject "SimpleWeather" */;
+			buildConfigurationList = 65430ADA2920CC8B00E95B96 /* Build configuration list for PBXProject "WeatherApp" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -383,7 +383,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65430ADE2920CC8B00E95B96 /* SimpleWeather */,
+				65430ADE2920CC8B00E95B96 /* WeatherApp */,
 			);
 		};
 /* End PBXProject section */
@@ -594,13 +594,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SimpleWeather/SimpleWeather.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = WeatherApp/WeatherApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZG488AACV6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SimpleWeather/Info.plist;
+				INFOPLIST_FILE = WeatherApp/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -614,9 +613,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.github.iOS-JS.SimpleWeather";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.iOS-JS.WeatherApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -631,13 +629,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SimpleWeather/SimpleWeather.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = WeatherApp/WeatherApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZG488AACV6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SimpleWeather/Info.plist;
+				INFOPLIST_FILE = WeatherApp/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -651,9 +648,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.github.iOS-JS.SimpleWeather";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.iOS-JS.WeatherApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -666,7 +662,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		65430ADA2920CC8B00E95B96 /* Build configuration list for PBXProject "SimpleWeather" */ = {
+		65430ADA2920CC8B00E95B96 /* Build configuration list for PBXProject "WeatherApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65430AF12920CC8C00E95B96 /* Debug */,
@@ -675,7 +671,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65430AF32920CC8C00E95B96 /* Build configuration list for PBXNativeTarget "SimpleWeather" */ = {
+		65430AF32920CC8C00E95B96 /* Build configuration list for PBXNativeTarget "WeatherApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65430AF42920CC8C00E95B96 /* Debug */,
