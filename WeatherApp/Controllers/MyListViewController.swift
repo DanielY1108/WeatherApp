@@ -92,6 +92,7 @@ extension MyListViewController: UITableViewDelegate {
             RealmManager.shared.delete(realmData)
             let indexSet = IndexSet(arrayLiteral: indexPath.section)
             tableView.deleteSections(indexSet, with: .fade)
+            WeatherManager.shared.deleteWeatherList(indexPath: indexPath.section)
         }
     }
 }

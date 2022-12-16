@@ -603,7 +603,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
@@ -638,7 +638,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;

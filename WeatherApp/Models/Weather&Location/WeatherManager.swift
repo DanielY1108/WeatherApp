@@ -29,46 +29,50 @@ final class WeatherManager {
     private(set) var weatherKit: Weather?
     private(set) var weatherModelList: [CurrentWeatherModel] = []
     private(set) var weatherKitList: [Weather] = []
-    
+
     private init() {
         setupWeatherList()
         debugPrint("My List Setup Complete")
     }
-    
-    func updateCurrentLoactionWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        Task {
-            let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
-            let weatherAPIData = try await fetchFromWeatherAPI(lat: lat, lon: lon)
-            weatherKitList[0] = weatherKitData
-            weatherModelList[0] = weatherAPIData
-        }
-    }
-    private func setupWeatherList() {
+     func setupWeatherList() {
         DispatchQueue.main.async {
             let weatherData = RealmManager.shared.sort(RealmDataModel.self, by: "date")
             weatherData.forEach { location in
                 Task {
-                    print(location)
+                    sleep(1)
                     await self.eachWeatherData(lat: location.lat, lon: location.lon, in: .listViewController)
+                    print(location.city)
                 }
             }
         }
     }
     func eachWeatherData(lat: CLLocationDegrees, lon: CLLocationDegrees, in controller: WeatherVC) async {
         do {
-            let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
-            let weatherAPIData = try await fetchFromWeatherAPI(lat: lat, lon: lon)
+            async let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
+            async let weatherAPIData = try await fetchFromWeatherAPI(lat: lat, lon: lon)
             switch controller {
             case .mainViewController, .subViewController:
-                weatherKit = weatherKitData
-                weatherModel = weatherAPIData
+                weatherKit = try await weatherKitData
+                weatherModel = try await weatherAPIData
             case .listViewController:
-                weatherKitList.append(weatherKitData)
-                weatherModelList.append(weatherAPIData)
+                try await weatherKitList.append(weatherKitData)
+                try await weatherModelList.append(weatherAPIData)
             }
         } catch {
             print(error)
         }
+    }
+    func updateCurrentLoactionWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        Task {
+            async let weatherKitData = try await fetchFromWeatherKit(lat: lat, lon: lon)
+            async let weatherAPIData = try await fetchFromWeatherAPI(lat: lat, lon: lon)
+            weatherKitList[0] = try await weatherKitData
+            weatherModelList[0] = try await weatherAPIData
+        }
+    }
+    func deleteWeatherList(indexPath: Int) {
+        weatherKitList.remove(at: indexPath)
+        weatherModelList.remove(at: indexPath)
     }
 }
 

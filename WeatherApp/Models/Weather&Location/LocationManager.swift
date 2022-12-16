@@ -43,7 +43,6 @@ extension LocationManager: CLLocationManagerDelegate {
             updateModel.lon = location.longitude
             updateModel.loadMain = true
         }
-        WeatherManager.shared.updateCurrentLoactionWeather(lat: model.lat, lon: model.lon)
         manager.stopUpdatingLocation()
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
