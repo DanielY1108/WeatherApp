@@ -103,6 +103,9 @@ extension MainWeatherViewController: UICollectionViewDataSource {
                 let hourWeather = weathetKit.hourlyForecast[indexPath.item]
                 tempUnitSwitch() == false ? cell.configWeather(with: hourWeather, unitTemp: .celsius) : cell.configWeather(with: hourWeather, unitTemp: .fahrenheit)
             }
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.systemBlue.cgColor
+            cell.layer.cornerRadius = 10
             return cell
             
         default:
@@ -110,7 +113,10 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             if let weathetKit = WeatherManager.shared.weatherKit {
                 let dailyWeather = weathetKit.dailyForecast[indexPath.item + 1]
                 tempUnitSwitch() == false ? cell.configWeather(with: dailyWeather, unitTemp: .celsius) : cell.configWeather(with: dailyWeather, unitTemp: .fahrenheit)
-            }
+                }
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.systemBlue.cgColor
+            cell.layer.cornerRadius = 10
             return cell
         }
     }
@@ -123,6 +129,9 @@ extension MainWeatherViewController: UICollectionViewDataSource {
             if let weatherKit = WeatherManager.shared.weatherKit {
                 tempUnitSwitch() == false ? header.configWeather(weatherKit, unitTemp: .celsius) : header.configWeather(weatherKit, unitTemp: .fahrenheit)
             }
+            header.layer.borderWidth = 1
+            header.layer.borderColor = UIColor.systemBlue.cgColor
+            header.layer.cornerRadius = 10
             return header
         default:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.footerID, for: indexPath) as! LicenseFooter

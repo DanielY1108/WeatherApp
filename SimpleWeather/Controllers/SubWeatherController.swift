@@ -28,7 +28,7 @@ final class SubWeatherController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         buttonView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(15)
             make.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.05)
         }
@@ -71,6 +71,9 @@ extension SubWeatherController: UICollectionViewDataSource {
             if let weathetKit = WeatherManager.shared.weatherKit {
                 unitTempSwitch() == false ? cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], unitTemp: .celsius) : cell.configWeather(with: weathetKit.hourlyForecast[indexPath.item], unitTemp: .fahrenheit)
             }
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.systemBlue.cgColor
+            cell.layer.cornerRadius = 10
             return cell
             
         default:
@@ -78,6 +81,9 @@ extension SubWeatherController: UICollectionViewDataSource {
             if let weathetKit = WeatherManager.shared.weatherKit {
                 unitTempSwitch() == false ? cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], unitTemp: .celsius) : cell.configWeather(with: weathetKit.dailyForecast[indexPath.item + 1], unitTemp: .fahrenheit)
             }
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.systemBlue.cgColor
+            cell.layer.cornerRadius = 10
             return cell
         }
     }
@@ -90,6 +96,9 @@ extension SubWeatherController: UICollectionViewDataSource {
             if let weatherKit = WeatherManager.shared.weatherKit {
                 unitTempSwitch() == false ? header.configWeather(weatherKit, unitTemp: .celsius) : header.configWeather(weatherKit, unitTemp: .fahrenheit)
             }
+            header.layer.borderWidth = 1
+            header.layer.borderColor = UIColor.systemBlue.cgColor
+            header.layer.cornerRadius = 10
             return header
         default:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Constants.ID.footerID, for: indexPath) as! LicenseFooter
