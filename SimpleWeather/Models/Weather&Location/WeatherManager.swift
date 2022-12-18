@@ -34,17 +34,24 @@ final class WeatherManager {
         setupWeatherList()
         debugPrint("My List Setup Complete")
     }
-     func setupWeatherList() {
-         weatherKitList = []
-         weatherModelList = []
-        DispatchQueue.main.async {
-            let weatherData = RealmManager.shared.sort(RealmDataModel.self, by: "date")
-            weatherData.forEach { location in
-                Task {
-                    sleep(1)
-                    await self.eachWeatherData(lat: location.lat, lon: location.lon, in: .listViewController)
-                    print(location.city)
-                }
+    func setupWeatherList() {
+        weatherKitList = []
+        weatherModelList = []
+        var list: [CLLocation] = []
+        let weatherData = RealmManager.shared.sort(RealmDataModel.self, by: "date")
+        weatherData.forEach { result in
+            list.append(CLLocation(latitude: result.lat, longitude: result.lon))
+        }
+        let data = AsyncStream<CLLocation> { continuation in
+            for location in list {
+                continuation.yield(location)
+            }
+            continuation.finish()
+        }
+        Task {
+            for await location in data {
+                let coordinate = location.coordinate
+                await self.eachWeatherData(lat: coordinate.latitude, lon: coordinate.longitude, in: .listViewController)
             }
         }
     }
