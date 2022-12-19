@@ -36,7 +36,6 @@ extension LocationManager: CLLocationManagerDelegate {
         let location = locations[0].coordinate
         self.currentLocation = location
         NotificationCenter.default.post(name: NSNotification.Name(Constants.NotificationName.main), object: location)
-        WeatherManager.shared.setupWeatherList()
         let model = RealmManager.shared.read(RealmDataModel.self)[0]
         RealmManager.shared.updateRealmForLoadMain(model)
         RealmManager.shared.update(model) { updateModel in
@@ -44,6 +43,7 @@ extension LocationManager: CLLocationManagerDelegate {
             updateModel.lon = location.longitude
             updateModel.loadMain = true
         }
+        WeatherManager.shared.setupWeatherList()
         manager.stopUpdatingLocation()
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
