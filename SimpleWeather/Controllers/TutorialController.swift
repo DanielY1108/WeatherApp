@@ -30,8 +30,8 @@ final class TutorialController: UIViewController {
     private let view1 = TutorialView()
     private let view2 = TutorialView()
     private let view3 = TutorialView()
-    private let view4 = TutorialView()
-
+    private let allowLocationView = AllowLocationView()
+    
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -61,60 +61,54 @@ final class TutorialController: UIViewController {
         scrollView.contentSize = CGSize(width: view.frame.size.width * 4, height: scrollView.frame.size.height)
         scrollView.isPagingEnabled = true
         
-        let contentViews = [view1, view2, view3, view4]
+        let contentViews = [view1, view2, view3]
         
-        for x in 0...3 {
+        for x in 0...2 {
             scrollView.addSubview(contentViews[x])
-            if x < 3 {
-                contentViews[x].nextButton.setTitle("Skip", for: .normal)
-                contentViews[x].imageView.image = UIImage(named: imageName[x])
-            } else {
-                contentViews[x].nextButton.setTitle("Start", for: .normal)
-            }
+            
+            contentViews[x].nextButton.setTitle("Skip", for: .normal)
             contentViews[x].nextButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+            contentViews[x].imageView.image = UIImage(named: imageName[x])
             contentViews[x].mainLabel.text = textLabel[x]
-            contentViews[x].snp.makeConstraints { make in
-                make.top.bottom.equalTo(scrollView.safeAreaLayoutGuide)
-                make.width.equalTo(scrollView)
-                make.leading.equalTo(scrollView).offset(view.frame.size.width * CGFloat(x))
+            
+            contentViews[x].snp.makeConstraints {
+                $0.top.bottom.equalTo(scrollView.safeAreaLayoutGuide)
+                $0.width.equalTo(scrollView)
+                $0.leading.equalTo(scrollView).offset(view.frame.size.width * CGFloat(x))
             }
         }
+        // allow location notice
+        scrollView.addSubview(allowLocationView)
+        allowLocationView.snp.makeConstraints {
+            $0.top.bottom.equalTo(scrollView.safeAreaLayoutGuide)
+            $0.width.equalTo(scrollView)
+            $0.leading.equalTo(scrollView).offset(view.frame.size.width * 3)
+        }
         scrollView.showsHorizontalScrollIndicator = false
-        
     }
     private func configureUI() {
+        allowLocationView.delegate = self
         scrollView.delegate = self
         pageControl.addTarget(self, action: #selector(pageControlDidChange), for: .valueChanged)
     }
-    @objc func skipButtonTapped(_ sender: UIButton) {
-        alertManager()
-    }
-    @objc func pageControlDidChange(_ sender: UIPageControl) {
+    @objc private func pageControlDidChange(_ sender: UIPageControl) {
         let currnet = sender.currentPage
         scrollView.setContentOffset(CGPoint(x: view.frame.size.width * CGFloat(currnet), y: 0), animated: true)
     }
-    private func alertManager() {
-        let alert = UIAlertController(title: "Allow location", message: "Are you sure you want to allow location? You can change it in settings at any time.", preferredStyle: .actionSheet)
-        let setting = UIAlertAction(title: "Setting", style: .default) { action in
-            LocationManager.shared.setupLocationManager()
-            self.dismiss(animated: true)
-        }
-        let cancel = UIAlertAction(title: "Default", style: .cancel) { action in
-            self.dismiss(animated: true)
-            let location = CLLocationCoordinate2D()
-            Task {
-                await WeatherManager.shared.eachWeatherData(lat: location.latitude, lon: location.longitude, in: .mainViewController)
-                self.dismiss(animated: true)
-            }
-        }
-        alert.addAction(setting)
-        alert.addAction(cancel)
-        self.present(alert, animated: true)
+    @objc private func skipButtonTapped(_ sender: UIButton) {
+        scrollView.setContentOffset(CGPoint(x: view.frame.size.width * 3, y: 0), animated: false)
     }
 }
 
 extension TutorialController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+    }
+}
+
+extension TutorialController: LocationViewButtonDelegate {
+    func tappedContinue() {
+        LocationManager.shared.setupLocationManager()
+        self.dismiss(animated: true)
     }
 }

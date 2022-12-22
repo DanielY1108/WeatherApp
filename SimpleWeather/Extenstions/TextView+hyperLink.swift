@@ -8,7 +8,7 @@
 import UIKit
 
 extension UITextView {
-    func hyperLink(originalText: String, hyperLink: String, urlString: String) {
+    func hyperLink(originalText: String, hyperLink: String, urlString: String, fontSize: CGFloat = 12) {
         self.text = originalText
         let style = NSMutableParagraphStyle()
         style.alignment = .left
@@ -18,8 +18,8 @@ extension UITextView {
         let fullRange = NSMakeRange(0, attributedOriginalText.length)
         attributedOriginalText.addAttribute(NSAttributedString.Key.link, value: urlString, range: linkRange)
         attributedOriginalText.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: fullRange)
-        attributedOriginalText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: fullRange)
-        attributedOriginalText.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 12), range: fullRange)
+        attributedOriginalText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.white, range: fullRange)
+        attributedOriginalText.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: fontSize), range: fullRange)
         
         self.linkTextAttributes = [
             kCTForegroundColorAttributeName: UIColor.systemBlue,

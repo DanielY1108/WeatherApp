@@ -15,6 +15,8 @@
 		651B27F2294214BA00FC6524 /* LicenseFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B27F1294214BA00FC6524 /* LicenseFooter.swift */; };
 		651B27F42942220C00FC6524 /* TextView+hyperLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B27F32942220C00FC6524 /* TextView+hyperLink.swift */; };
 		651B27F629422CAC00FC6524 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B27F529422CAC00FC6524 /* LicenseView.swift */; };
+		651FEA63295376E80000CB97 /* AllowLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651FEA62295376E80000CB97 /* AllowLocationView.swift */; };
+		651FEA67295458970000CB97 /* tutorialText.txt in Resources */ = {isa = PBXBuildFile; fileRef = 651FEA66295458970000CB97 /* tutorialText.txt */; };
 		6529380C29389CB0009443A1 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529380B29389CB0009443A1 /* TutorialView.swift */; };
 		653FDF37293DEE85009A2231 /* SwitchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653FDF36293DEE85009A2231 /* SwitchDelegate.swift */; };
 		653FDF39293EF143009A2231 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653FDF38293EF143009A2231 /* ProfileController.swift */; };
@@ -76,6 +78,8 @@
 		651B27F1294214BA00FC6524 /* LicenseFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseFooter.swift; sourceTree = "<group>"; };
 		651B27F32942220C00FC6524 /* TextView+hyperLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+hyperLink.swift"; sourceTree = "<group>"; };
 		651B27F529422CAC00FC6524 /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
+		651FEA62295376E80000CB97 /* AllowLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowLocationView.swift; sourceTree = "<group>"; };
+		651FEA66295458970000CB97 /* tutorialText.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorialText.txt; sourceTree = "<group>"; };
 		6529380B29389CB0009443A1 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		653FDF36293DEE85009A2231 /* SwitchDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchDelegate.swift; sourceTree = "<group>"; };
 		653FDF38293EF143009A2231 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
@@ -151,6 +155,15 @@
 			path = Other;
 			sourceTree = "<group>";
 		};
+		651FEA61295376C60000CB97 /* TutorialView */ = {
+			isa = PBXGroup;
+			children = (
+				6529380B29389CB0009443A1 /* TutorialView.swift */,
+				651FEA62295376E80000CB97 /* AllowLocationView.swift */,
+			);
+			path = TutorialView;
+			sourceTree = "<group>";
+		};
 		653FDF4A293F1D39009A2231 /* License */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,7 +224,7 @@
 		65430AFC2920CCE700E95B96 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6529380B29389CB0009443A1 /* TutorialView.swift */,
+				651FEA61295376C60000CB97 /* TutorialView */,
 				65FBC2B92927EBA600B5AE35 /* MainView */,
 				65F0CF32292943A5005C57F2 /* MyListView */,
 				65DE09A229333C7300765F05 /* SettingView */,
@@ -240,6 +253,7 @@
 		659C52CB292278DC00EEEA70 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				651FEA66295458970000CB97 /* tutorialText.txt */,
 				659C52C9292278BD00EEEA70 /* SecretKey.plist */,
 				659C52CC2922790800EEEA70 /* Bundle.swift */,
 				659C52D0292285D100EEEA70 /* Constants.swift */,
@@ -396,6 +410,7 @@
 				659C52CA292278BD00EEEA70 /* SecretKey.plist in Resources */,
 				653FDF4C293F31BF009A2231 /* Settings.bundle in Resources */,
 				65430AEF2920CC8C00E95B96 /* LaunchScreen.storyboard in Resources */,
+				651FEA67295458970000CB97 /* tutorialText.txt in Resources */,
 				65430AEC2920CC8C00E95B96 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +447,7 @@
 				65A0CEF1292B53CF00D6E862 /* UILabel+Highlight.swift in Sources */,
 				651B27F2294214BA00FC6524 /* LicenseFooter.swift in Sources */,
 				659C52CD2922790800EEEA70 /* Bundle.swift in Sources */,
+				651FEA63295376E80000CB97 /* AllowLocationView.swift in Sources */,
 				653FDF3B293EF314009A2231 /* LicenseController.swift in Sources */,
 				654C0752292CE288003152C3 /* SubViewButton.swift in Sources */,
 				6511D38629211D16008BF87C /* PreviewExtension.swift in Sources */,
@@ -600,8 +616,8 @@
 				DEVELOPMENT_TEAM = ZG488AACV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SimpleWeather/Info.plist;
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location in order to provide accurate weather for where yo are at";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location in order to provide accurate weather for where yo are at";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -635,8 +651,8 @@
 				DEVELOPMENT_TEAM = ZG488AACV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SimpleWeather/Info.plist;
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "If you want to know the weather in your current location, Allow the location.\n";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location in order to provide accurate weather for where yo are at";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location in order to provide accurate weather for where yo are at";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
