@@ -42,9 +42,11 @@ class DetailLicenseController: UIViewController {
                 self.detailLicenseView.useDataLabel.text = """
                                                            Weather Data Used for
                                                            
-                                                              Currnet Teperature,
-                                                              Hourly Teperature,
-                                                              Daily Teperature
+                                                              Currnet Forecast,
+                                                              Hourly Forecast,
+                                                              Daily Forecast,
+                                                              Weather Status Icon
+
                                                            """
             case .openWeather:
                 self.detailLicenseView.imageView.image = UIImage(named: license.imageName!)
