@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import WeatherKit
 
-final class weatherHeader: UICollectionReusableView {
+final class WeatherHeader: UICollectionReusableView {
     
     var weatherData: CurrentWeatherModel? {
         didSet {
@@ -109,7 +109,7 @@ final class weatherHeader: UICollectionReusableView {
 }
 
 // MARK: - CurrentWeather Configure Data
-extension weatherHeader {
+extension WeatherHeader {
     func configWeatherData() {
         if let weatherData = weatherData {
             DispatchQueue.main.async {

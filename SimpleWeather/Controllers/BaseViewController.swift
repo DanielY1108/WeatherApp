@@ -49,7 +49,7 @@ class BaseViewController: UIViewController {
         self.backgroundView.addSubview(collectionView)
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.register(weatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
+        collectionView.register(WeatherHeader.self, forSupplementaryViewOfKind: Constants.ID.categoryHeaderID, withReuseIdentifier: Constants.ID.headerID)
         collectionView.register(LicenseFooter.self, forSupplementaryViewOfKind: Constants.ID.categoryFooterID, withReuseIdentifier: Constants.ID.footerID)
         collectionView.register(DailyCell.self, forCellWithReuseIdentifier: Constants.ID.dailyID)
         collectionView.register(HourlyCell.self, forCellWithReuseIdentifier: Constants.ID.hourlyID)
